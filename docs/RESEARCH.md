@@ -60,18 +60,39 @@ Impact of leaving out NAV CANADA:
 
 ## 2. Exam facts
 
-| Exam | Questions | Time | Pass mark | Status | Source |
-|---|---|---|---|---|---|
-| PSTAR | 50, drawn from about 200 in TP 11919 | Not confirmed (a third party says 90 min) | 90% | Pass mark confirmed from the French 7th edition. Time is open. | TP 11919 |
-| PPAER | 100 | 3 hours | 60% overall, and 60% in each of Air Law, Navigation, Meteorology and Aeronautics – General Knowledge | Partial. Figures come from the TP 12880 5th edition (2006, revised 2010). They need confirming in the 6th edition (May 2025). | TP 12880, CAR 400.02 |
-| PPAER partial pass | Failed subjects may be rewritten as supplementary exams | — | — | Partial | TP 12880 |
+Confirmed on 2026-11-18 against the downloaded TP 12880 (6th ed., May
+2025) and TP 11919 (7th ed., December 2022).
 
-Third parties report these figures, but none is confirmed:
-- PPAER fee of CAD 100–105
-- Written results valid for 24 months
-- PSTAR fee of CAD 35
+| Exam | Questions | Time | Pass mark | Source |
+|---|---|---|---|---|
+| PSTAR | 50, selected from about 200 in TP 11919 (14 sections) | Not stated in TP 11919 | 90% | TP 11919, introduction |
+| PPAER | 100 | 3 hours | 60% overall, and 60% in each of Air Law, Navigation, Meteorology and Aeronautics – General Knowledge | TP 12880, p. 4 |
+| PALAW (Air Law supplementary) | 20 | 1 hour | 60% | TP 12880, p. 5 |
+| PANAV (Navigation supplementary) | 20 | 2 hours | 60% | TP 12880, p. 5 |
+| PAMET (Meteorology supplementary) | 30 | 1½ hours | 60% | TP 12880, p. 5 |
+| PAGEN (Aeronautics – General Knowledge supplementary) | 30 | 1½ hours | 60% | TP 12880, p. 5 |
 
-These must not be shown to students as fact.
+Rules from TP 12880:
+- **Partial pass:** 60% or more overall, but under 60% in one or more
+  subjects. The candidate writes a supplementary exam for each failed
+  subject, in one sitting. Several supplementaries together may not
+  exceed 3 hours.
+- **Fail:** under 60% overall. The full exam must be rewritten
+  (CAR 421.26).
+- **Rewrite waiting periods (CAR 400.04):** 14 days after a first
+  failure, 30 days after a second, then 30 days more for each further
+  failure, up to 180 days. PSTAR may be rewritten at any time after
+  reviewing weak areas.
+- **Validity:** all exams for a licence must be completed within the
+  24 months before the licence application.
+- **Feedback:** the results letter lists the questions answered
+  incorrectly.
+
+Still unconfirmed, and not to be shown to students as fact:
+- The PSTAR time limit. A third party says 90 minutes.
+- Exam fees. Third parties say CAD 100–105 for PPAER and CAD 35 for
+  PSTAR. TP 12880 mentions "the appropriate examination fee" without
+  an amount.
 
 ## 3. Source register: publicly available
 
@@ -92,7 +113,7 @@ These must not be shown to students as fact.
 | Source | Publisher | Edition / date | URL | Licence | Pathways | Quality | Confidence |
 |---|---|---|---|---|---|---|---|
 | Canadian Aviation Regulations (SOR/96-433) | Justice Laws | Consolidated regularly. Point-in-time versions go back to 2006. | [Full text](https://laws.justice.gc.ca/eng/regulations/SOR-96-433/FullText.html) | Reproduction terms of federal law: **Open** | PSTAR, PPAER Air Law | High. XML is available (about 4 MB). | Confirmed |
-| TC Aeronautical Information Manual (TC AIM, TP 14371) | TC | Revised twice a year. The latest issue found is Oct 2024; the current issue is **Open**. | [TC page](https://tc.canada.ca/en/aviation/publications/transport-canada-aeronautical-information-manual-tc-aim-tp-14371) | TC non-commercial | All | High. Available as a full PDF (about 28 MB) and per-chapter PDFs. | Confirmed |
+| TC Aeronautical Information Manual (TC AIM, TP 14371) | TC | Revised twice a year. Current issue: 2026-2 (Oct 2026). | [TC page](https://tc.canada.ca/en/aviation/publications/transport-canada-aeronautical-information-manual-tc-aim-tp-14371) | TC non-commercial | All | High. Available as a full PDF (about 28 MB) and per-chapter PDFs. | Confirmed |
 | RIC-21: Study Guide for the Restricted Operator Certificate with Aeronautical Qualification (ROC-A) | ISED Canada | Current web version | [ISED page](https://ised-isde.canada.ca/site/spectrum-management-telecommunications/en/node/817) | ISED (Crown) | Radio | Medium–High | Confirmed |
 
 ### 3.3 Navigation and aeronautical data
@@ -124,8 +145,8 @@ file names use `lawm-*`.
 | Pilot Examiner Manual (TP 14277) | TC | 7th ed., Oct 2019 | [TC page](https://tc.canada.ca/en/aviation/publications/pilot-examiner-manual-seventh-edition-tp-14277) | TC non-commercial | Flight test | High | Confirmed |
 | Aviation Safety Letter (TP 185) | TC | Ongoing (Issue 2/2025 found). Older issues are in the LAC web archive. | [TC page](https://tc.canada.ca/en/aviation/publications/aviation-safety-letter) | TC non-commercial | Human factors, decision-making, scenarios | Medium | Confirmed |
 | TSB air investigation reports | TSB Canada | Ongoing | [Terms](https://tsb-bst.gc.ca/eng/avis-notices/avis-notices.asp) | Non-commercial reproduction allowed with credit (from archived terms; current wording **Open**). Findings must not be used in legal proceedings. | Scenarios | Medium–High | Partial |
-| Pilot's Handbook of Aeronautical Knowledge (FAA-H-8083-25C) | FAA | 2023 | faa.gov | US federal work, likely public domain | Aeronautics theory only (**non-Canadian**) | Medium | Partial |
-| Aviation Weather Handbook (FAA-H-8083-28) | FAA | Revised Dec 2024 | faa.gov | Likely public domain | Weather theory only (**non-Canadian**) | Medium | Partial |
+| Pilot's Handbook of Aeronautical Knowledge (FAA-H-8083-25C) | FAA | 2023 | faa.gov | US federal work, likely public domain | Aeronautics theory only (**non-Canadian**) | Medium | Confirmed |
+| Aviation Weather Handbook (FAA-H-8083-28B) | FAA | Approved April 2026 | faa.gov | Likely public domain | Weather theory only (**non-Canadian**) | Medium | Confirmed |
 
 ## 4. Restricted or not public: findings
 
@@ -170,13 +191,14 @@ file names use `lawm-*`.
 
 ## 6. Open items
 
-1. Confirm the PPAER format and pass marks in TP 12880, 6th ed. (May
-   2025).
-2. Confirm the PSTAR time limit and whether its questions may be reused.
-3. Identify the current TC AIM issue and the current Aviation Weather
-   Services Guide edition.
+1. Confirm the PSTAR time limit.
+2. ~~Confirm the PPAER format in TP 12880~~ Done 2026-11-18 (section 2).
+3. ~~Identify the current TC AIM issue~~ Done: issue 2026-2, October
+   2026. (The Aviation Weather Services Guide is no longer needed,
+   because NAV CANADA documents are excluded.)
 4. Check whether the TC Flight Training Manual is available.
-5. Confirm the current FAA handbook revisions on faa.gov.
+5. ~~Confirm the current FAA handbook revisions~~ Done: PHAK 25C
+   (2023) and Aviation Weather Handbook 28B (April 2026).
 6. Do research-plan task 5 (assess extraction quality) once document
    acquisition is approved.
 7. Do research-plan task 4 (map TP 12880 objectives to sources) once

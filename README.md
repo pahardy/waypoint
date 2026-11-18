@@ -55,9 +55,18 @@ npm install
 npm run dev                                # http://localhost:3000
 ```
 
-Tests: `uv run pytest` in `api/` (needs the database and `DATABASE_URL`),
+Source documents and curriculum (downloads about 140 MB into `data/`):
+
+```
+cd ingest
+uv run ingest fetch
+uv run ingest objectives
+```
+
+Tests: `uv run pytest` in `api/` and `ingest/` (`api/` needs the database and `DATABASE_URL`),
 `npm test` in `web/`. CI runs these on every push.
 
 ## Status
 
-Phase 0 (project skeleton) in place. See `docs/TECHNICAL_PLAN.md`.
+Phase 0 (project skeleton) and phase 1 (document acquisition and
+curriculum) in place. See `docs/TECHNICAL_PLAN.md`.
