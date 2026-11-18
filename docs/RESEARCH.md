@@ -14,6 +14,26 @@ Confidence levels:
 - **Partial:** found in older editions or secondary sources only.
 - **Open:** not resolved. Listed in section 6.
 
+## Decisions (2026-11-18)
+
+- Waypoint is a non-commercial test project. It may never have users.
+- Transport Canada and other federal government documents will be
+  used in the knowledge base.
+- NAV CANADA documents will not be ingested. NAV CANADA is a private,
+  not-for-profit corporation, so its documents are not Crown
+  copyright, and its reuse terms are unknown.
+- *From the Ground Up* will not be ingested.
+
+Impact of leaving out NAV CANADA:
+- **Meteorology:** the Aviation Weather Services Guide and the
+  regional weather manuals are lost. The MET chapter of the TC AIM,
+  MANOBS (ECCC) and the FAA Aviation Weather Handbook cover most of
+  the theory. Canadian product formats (for example the GFA) rely on
+  the TC AIM alone.
+- **Navigation:** the CFS, charts and Designated Airspace Handbook are
+  lost. The TC AIM covers airspace classes and chart principles.
+  Exercises based on real aerodromes and charts are not possible.
+
 ## 1. Summary
 
 - **Core curriculum documents:** All of them are free from Transport
@@ -113,10 +133,10 @@ file names use `lawm-*`.
 |---|---|---|---|
 | PPAER exam question bank | Not public. The only official question material is the 2008 sample exam (TP 13014). | Practice difficulty and topic weighting must be estimated. TP 13014 predates the 2025 guide. | Write questions against the TP 12880 (2025) objectives. Use TP 13014 only to check question style. Have an SME calibrate them. |
 | PSTAR questions | **Public.** TP 11919 contains about 200 questions, and the exam draws 50 of them. | Positive: PSTAR practice can use official questions. | Confirm with TC whether we may reuse them, given the commercial-use restriction. |
-| *From the Ground Up* (Aviation Publishers) | 30th ed., © 2024 Aviation Publishers Co. Ltd. | The de facto Canadian ground-school text, which cannot be ingested without a licence. | Contact the publisher about licensing. Until then, cite it only as recommended reading. |
+| *From the Ground Up* (Aviation Publishers) | 30th ed., © 2024 Aviation Publishers Co. Ltd. | The de facto Canadian ground-school text, which cannot be ingested without a licence. | **Decided: not ingested.** May be cited as recommended reading. |
 | TC Flight Training Manual | 4th ed. (revised) 2004, Crown copyright (T52-14/2004E). Current availability and distributor are **Open**. | It is the standard reference for flight exercises. If it is obtainable, it falls under TC terms. | Confirm its availability and whether TC permission covers it. |
 | Aircraft POHs | Manufacturer copyright. Not researched further. | No aircraft-specific speeds or procedures. | Keep the plan's mitigation: generic content only, and optional student uploads after legal review. |
-| NAV CANADA CFS and charts | Paid products. No reuse licence found. | Navigation scenarios cannot reproduce real charts or aerodrome entries. | Ask NAV CANADA's aeronautical publications sales office for licensing terms. |
+| NAV CANADA documents (all of section 3.3, and the weather guides in 3.4) | No reuse licence found. The CFS and charts are paid products. | See the Decisions section. | **Decided: not ingested.** |
 | Examiner internal practice | TP 14277 and Standard 428 are public. Only informal marking practice is not. | Smaller gap than the plan assumed. | Fill it with instructor and examiner interviews during validation. |
 | Commercial question banks and apps | Several exist (for example open-exam-prep.com, Dauntless GroundSchool, thewisepilot.com). | Copyrighted, and their accuracy varies. | Do not ingest. |
 
@@ -128,16 +148,20 @@ file names use `lawm-*`.
    say permission is required to revise, adapt or translate a work,
    or to distribute a final product commercially. Requests go to
    TCcopyright-droitdauteurTC@tc.gc.ca.
-   - Implication: chunking, summarizing and generating questions may
-     count as "adapting". If Waypoint is commercial, we need written
-     permission from TC.
+   - Implication: Waypoint is non-commercial, so the commercial
+     restriction does not apply. The notice still asks for permission
+     to adapt a work, and summarizing or generating questions could
+     count as adapting. This is low risk for a private test project.
+     Request permission only if Waypoint is ever made public.
 2. **Open Government Licence – Canada:** No TC page we found applies
    this licence to aviation publications. We must not assume it does.
 3. **Justice Laws:** The reproduction terms for consolidated
    regulations still need checking.
 4. **NAV CANADA:** Free documents (Designated Airspace Handbook,
    weather guides, regional manuals) and paid products (CFS, charts)
-   have no published reuse terms that we found.
+   have no published reuse terms that we found. NAV CANADA is a
+   private company, so its own copyright applies. **Decided: not
+   ingested.**
 5. **TSB:** Reports may be reproduced non-commercially with credit
    (archived terms). There is an explicit restriction on use in legal
    or disciplinary proceedings.
@@ -151,15 +175,13 @@ file names use `lawm-*`.
 2. Confirm the PSTAR time limit and whether its questions may be reused.
 3. Identify the current TC AIM issue and the current Aviation Weather
    Services Guide edition.
-4. Read the Justice Laws reproduction notice.
-5. Contact TC copyright about adaptation and commercial use.
-6. Contact NAV CANADA about licensing.
-7. Check the current TSB terms wording.
-8. Check whether the TC Flight Training Manual is available and what
-   its licence is.
-9. Contact Aviation Publishers about licensing *From the Ground Up*.
-10. Confirm the current FAA handbook revisions on faa.gov.
-11. Do research-plan task 5 (assess extraction quality) once document
-    acquisition is approved.
-12. Do research-plan task 4 (map TP 12880 objectives to sources) once
-    the guide is acquired.
+4. Check whether the TC Flight Training Manual is available.
+5. Confirm the current FAA handbook revisions on faa.gov.
+6. Do research-plan task 5 (assess extraction quality) once document
+   acquisition is approved.
+7. Do research-plan task 4 (map TP 12880 objectives to sources) once
+   the guide is acquired.
+
+Dropped because the project is non-commercial: contacting TC, NAV
+CANADA and Aviation Publishers about licensing; the Justice Laws and
+TSB terms checks.
