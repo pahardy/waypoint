@@ -30,6 +30,10 @@ from the project specification and tracked issues.
 
 - `CLAUDE.md` -- product specification and development sequence
 - `docs/RESEARCH_PLAN.md` -- plan for identifying knowledge-base sources
+- `docs/RESEARCH.md` -- source research results and decisions
+- `docs/TECHNICAL_PLAN.md` -- architecture and phased development plan
+  (phase details in `docs/plans/`)
+- `docs/BRANDING.md` -- brand, look and feel
 
 ## Status
 
