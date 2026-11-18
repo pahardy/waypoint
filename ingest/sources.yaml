@@ -1,0 +1,186 @@
+# Documents acquired into data/raw/ (git-ignored). Metadata only.
+# Decisions: docs/RESEARCH.md. No NAV CANADA documents.
+
+- id: tp11919
+  title: "Study and Reference Guide: Student Pilot Permit or Private Pilot Licence for Foreign and Military Applicants, Aviation Regulations"
+  publisher: Transport Canada
+  tp_number: TP 11919E
+  edition: Seventh edition
+  published: "2022-12"
+  url: https://tc.canada.ca/sites/default/files/2023-11/TP11919E_-_seventh_edition.pdf
+  jurisdiction: CA
+  format: pdf
+  priority: 1
+  exams: [PSTAR]
+  licence: TC, non-commercial reproduction permitted
+
+- id: tp11919-answers
+  title: "PSTAR Answer Key (TP 11919E)"
+  publisher: Transport Canada
+  tp_number: TP 11919E
+  edition: Seventh edition
+  published: "2022-12"
+  url: https://tc.canada.ca/sites/default/files/2022-12/tp11919e_-_pstar_answer_key_english_dec2022.pdf
+  jurisdiction: CA
+  format: pdf
+  priority: 1
+  exams: [PSTAR]
+  licence: TC, non-commercial reproduction permitted
+
+- id: tp12880
+  title: "Study and Reference Guide for Written Examinations for the Private Pilot Licence Aeroplane"
+  publisher: Transport Canada
+  tp_number: TP 12880E
+  edition: Sixth edition
+  published: "2025-05"
+  url: https://tc.canada.ca/sites/default/files/2025-07/TP_12880_E.pdf
+  jurisdiction: CA
+  format: pdf
+  priority: 1
+  exams: [PPAER]
+  licence: TC, "may be reproduced as required"
+
+- id: tp13723
+  title: "Flight Test Guide: Private Pilot Licence Aeroplane"
+  publisher: Transport Canada
+  tp_number: TP 13723E
+  edition: Sixth edition (revised)
+  published: "2021-03"
+  url: https://tc.canada.ca/sites/default/files/2021-02/FLIGHT_TEST_GUIDE_PRIVATE_PILOT_LICENCE_-_AEROPLANE_TP_13723E_SIXTH_EDITION.pdf
+  jurisdiction: CA
+  format: pdf
+  priority: 1
+  exams: [FLIGHT_TEST]
+  licence: TC, non-commercial reproduction permitted
+
+- id: tc-aim
+  title: "Transport Canada Aeronautical Information Manual (TC AIM)"
+  publisher: Transport Canada
+  tp_number: TP 14371E
+  edition: "2026-2"
+  published: "2026-10"
+  url: https://tc.canada.ca/sites/default/files/2026-10/aim-2026-2_access_en.pdf
+  jurisdiction: CA
+  format: pdf
+  priority: 1
+  exams: [PSTAR, PPAER, FLIGHT_TEST]
+  licence: TC, non-commercial reproduction permitted
+
+- id: cars
+  title: "Canadian Aviation Regulations (SOR/96-433)"
+  publisher: Department of Justice Canada
+  edition: Consolidated to 2026-06-17
+  published: "2026-06"
+  url: https://laws-lois.justice.gc.ca/eng/XML/SOR-96-433.xml
+  jurisdiction: CA
+  format: xml
+  priority: 1
+  exams: [PSTAR, PPAER, FLIGHT_TEST]
+  licence: Federal law; reproduction terms not checked (non-commercial use)
+
+# Priority 2
+
+- id: std421
+  title: "Standard 421: Flight Crew Permits, Licences and Ratings"
+  publisher: Transport Canada
+  edition: Current web page
+  published: current
+  url: https://tc.canada.ca/en/corporate-services/acts-regulations/list-regulations/canadian-aviation-regulations-sor-96-433/standards/standard-421-flight-crew-permits-licences-ratings-canadian-aviation-regulations-cars
+  jurisdiction: CA
+  format: html
+  priority: 2
+  exams: [PSTAR, PPAER, FLIGHT_TEST]
+  licence: TC, non-commercial reproduction permitted
+
+- id: std428
+  title: "Standard 428: Conduct of Flight Tests"
+  publisher: Transport Canada
+  edition: Current web page
+  published: current
+  url: https://tc.canada.ca/en/corporate-services/acts-regulations/list-regulations/canadian-aviation-regulations-sor-96-433/standards/standard-428-conduct-flight-tests-canadian-aviation-regulations-cars
+  jurisdiction: CA
+  format: html
+  priority: 2
+  exams: [FLIGHT_TEST]
+  licence: TC, non-commercial reproduction permitted
+
+- id: tp13014
+  title: "Sample Examination: Recreational Pilot Permit and Private Pilot Licence, Aeroplane"
+  publisher: Transport Canada
+  tp_number: TP 13014E
+  edition: Fourth edition
+  published: "2008-11"
+  url: https://tc.canada.ca/sites/default/files/2021-04/tp13014e.pdf
+  jurisdiction: CA
+  format: pdf
+  priority: 2
+  exams: [PPAER]
+  licence: TC, non-commercial reproduction permitted
+
+- id: tp975
+  title: "Flight Instructor Guide: Aeroplane"
+  publisher: Transport Canada
+  tp_number: TP 975E
+  edition: Revised September 2004
+  published: "2004-09"
+  url: https://tc.canada.ca/sites/default/files/migrated/tp975e.pdf
+  jurisdiction: CA
+  format: pdf
+  priority: 2
+  exams: [FLIGHT_TEST]
+  licence: TC, non-commercial reproduction permitted
+
+- id: tp14277
+  title: "Pilot Examiner Manual"
+  publisher: Transport Canada
+  tp_number: TP 14277
+  edition: Seventh edition
+  published: "2019-10"
+  url: https://tc.canada.ca/en/aviation/publications/pilot-examiner-manual-seventh-edition-tp-14277
+  jurisdiction: CA
+  format: html
+  priority: 2
+  exams: [FLIGHT_TEST]
+  licence: TC, non-commercial reproduction permitted
+
+- id: ric21
+  title: "RIC-21: Study Guide for the Restricted Operator Certificate with Aeronautical Qualification"
+  publisher: Innovation, Science and Economic Development Canada
+  edition: Current web page
+  published: current
+  url: https://ised-isde.canada.ca/site/spectrum-management-telecommunications/en/node/817
+  jurisdiction: CA
+  format: html
+  priority: 2
+  exams: [PSTAR, PPAER]
+  licence: Crown copyright, non-commercial use
+
+# Priority 3 (theory only; never cited for Canadian rules)
+# Deferred: MANOBS (multi-page web manual), Aviation Safety Letter issues and
+# TSB reports (need selection; used for scenarios in phase 5).
+
+- id: faa-phak
+  title: "Pilot's Handbook of Aeronautical Knowledge"
+  publisher: Federal Aviation Administration
+  tp_number: FAA-H-8083-25C
+  edition: FAA-H-8083-25C
+  published: "2023"
+  url: https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/faa-h-8083-25c.pdf
+  jurisdiction: non-CA
+  format: pdf
+  priority: 3
+  exams: [PPAER]
+  licence: US federal work, public domain
+
+- id: faa-awh
+  title: "Aviation Weather Handbook"
+  publisher: Federal Aviation Administration
+  tp_number: FAA-H-8083-28B
+  edition: FAA-H-8083-28B
+  published: "2026-04"
+  url: https://www.faa.gov/sites/faa.gov/files/FAA-H-8083-28B.pdf
+  jurisdiction: non-CA
+  format: pdf
+  priority: 3
+  exams: [PPAER]
+  licence: US federal work, public domain
