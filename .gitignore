@@ -1,0 +1,30 @@
+# Acquired documents and derived data (never committed: public repo)
+data/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Supabase local
+supabase/.temp/
+supabase/.branches/
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/
