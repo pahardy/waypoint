@@ -51,6 +51,27 @@ document holds the shared structure. Look and feel follow
 5. Hosting decision: keep it local, or deploy the frontend and backend
    to a hosting provider.
 
+## Tests
+
+Component (CI, Vitest and React Testing Library):
+- Each shared component renders its states, for example the Badge
+  variants, a Gauge at 0%, 60% and 100%, and the Timer near zero.
+- Gauges and status colours have text equivalents.
+
+Accessibility (CI):
+- An automated accessibility scan (axe, through Playwright) on each
+  route in both themes, with no serious or critical issues.
+
+End-to-end (CI, Playwright, stub LLM):
+- Sign in with a test account on the local Supabase stack.
+- Chat, a full quiz, results and the dashboard, each at desktop and
+  phone sizes.
+- Unauthenticated users are redirected from protected pages to sign-in.
+- The disclaimer is present on every page.
+
+API (CI):
+- Requests with a missing, expired or invalid token get 401.
+
 ## Done when
 
 - All routes work on a phone-sized screen and in both themes.

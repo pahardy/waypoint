@@ -53,6 +53,25 @@ Out of scope: NAV CANADA documents and *From the Ground Up*.
 5. Extract the PSTAR and flight-test objectives in the same way.
 6. Add the priority 2 and 3 sources.
 
+## Tests
+
+Unit (CI):
+- `sources.yaml` loads and validates: required fields are present, ids
+  are unique, and no source is published by NAV CANADA.
+- `fetch` with a mocked HTTP client writes the file and `meta.json`
+  with the correct SHA-256 and retrieval date.
+- `fetch` skips a source whose hash is unchanged, and keeps the
+  previous copy when a new download's hash differs, logging the
+  change.
+- `fetch` reports an HTTP 404 for one source and continues with the
+  others.
+- `objectives.yaml` validates: every objective has an exam, subject,
+  text and source reference, and ids are unique.
+
+Manual (recorded in this document when done):
+- Each priority 1 file opens and matches the expected edition.
+- Objective counts per subject match the count in TP 12880.
+
 ## Done when
 
 - Every priority 1 source is in `data/raw/` with recorded metadata.

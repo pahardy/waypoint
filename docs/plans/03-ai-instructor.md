@@ -33,6 +33,32 @@ Spec MVP step 3.
 - **Conversations:** stored in a `conversation` table so phase 6 can
   use them.
 
+## Tests
+
+Unit (CI, stub LLM):
+- Prompt assembly includes the system prompt, the retrieved chunks
+  with their references, and the conversation, in that order.
+- Citation parsing extracts references from the answer and maps them
+  to chunk ids. A reference to a chunk that was not retrieved is
+  flagged.
+- When retrieval returns nothing, the "not found in sources" path runs
+  without calling the LLM for facts.
+- `non-CA` chunks are labelled as such in the prompt.
+- LLM errors and timeouts return a clear error to the client, not a
+  partial answer presented as complete.
+
+API (CI, stub LLM and stub retrieval):
+- `POST /chat` streams an answer and then sends the citation list.
+- A conversation is saved and can be read back.
+- Requests without a valid session are rejected (once accounts exist,
+  see plan 07).
+
+End-to-end (CI, stub LLM):
+- Ask a question on the chat page, see the streamed answer and a
+  citation chip that opens the source detail.
+
+Eval (on demand, real model): see Evaluation below.
+
 ## Evaluation
 
 - **Eval set:** about 40 questions with expected key facts and

@@ -31,6 +31,31 @@ Spec MVP step 5.
 - Weather data in scenarios is synthetic and clearly labelled. No live
   NAV CANADA data is used.
 
+## Tests
+
+Unit (CI):
+- Exercise YAML validation: every exercise has a prompt, stages,
+  rubric criteria with weights, and source references.
+- Score calculation from criterion marks and weights, including all
+  met, none met and mixed.
+- Scenario state machine: stages advance in order, revealed facts
+  accumulate, and a finished scenario cannot advance.
+- Grading response parsing (stub LLM): a valid response maps to
+  criterion marks. A response that is missing a criterion, or that
+  gives no evidence quote, is rejected and retried once.
+
+API and database (CI, stub LLM):
+- Start a session, answer each stage, and get the graded result.
+- Session state survives a reload.
+
+End-to-end (CI, stub LLM):
+- Complete one scenario and see the rubric feedback and disclaimer.
+
+Eval (on demand, real model):
+- Grading consistency: 10 sample answers graded 3 times each. Agreement
+  is recorded in `docs/evals/`.
+- Grading against expected marks: sample answers with known grades.
+
 ## Steps
 
 1. Build one oral question with a three-criterion rubric, end to end,

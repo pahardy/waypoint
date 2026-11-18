@@ -33,6 +33,25 @@ objective_mastery(user_id, objective_id, correct, seen,
 3. Recommendations, with their reasons shown.
 4. Self-rated confidence per topic.
 
+## Tests
+
+Unit (CI):
+- Mastery: a new objective, all correct, all wrong, and recent answers
+  outweighing old ones.
+- Weak areas: an objective below the threshold but seen fewer than N
+  times is not flagged. A low self-rating is flagged.
+- Recommendations: return at most 5, only from the chosen exam, each
+  with a reason string. Ties are ordered predictably.
+
+API and database (CI):
+- Submitting a quiz updates `objective_mastery` for exactly the
+  objectives it covered.
+- Users see only their own progress.
+
+End-to-end (CI):
+- After a quiz with deliberate wrong answers, the dashboard shows the
+  related objectives as weak, with the reason.
+
 ## Done when
 
 - Every recommendation shows the reason for it.

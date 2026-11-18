@@ -50,6 +50,33 @@ chunk_objective(chunk_id, objective_id)
 - **Embedding choice:** compare 2–3 embedding models on the eval set.
   Pick the best one that is affordable.
 
+## Tests
+
+Unit (CI), using fixture files in `tests/fixtures/`:
+- PDF extraction of a two-page fixture keeps headings and section
+  numbers, and records the page.
+- XML extraction of a regulation excerpt produces one record per
+  section with the correct reference, for example `602.14(2)(a)`.
+- Normalization removes repeated headers, footers and page numbers,
+  and rejoins hyphenated words.
+- Chunking never crosses a section boundary, keeps every chunk within
+  the size limits, and keeps the heading path.
+- Every chunk carries the fields needed for a citation: document id,
+  edition and section reference.
+- Jurisdiction tags: chunks from an FAA document are `non-CA`.
+
+API and database (CI, stub embeddings that return fixed vectors):
+- Loading the fixtures writes the expected documents and chunks, and
+  re-running the load does not create duplicates.
+- `POST /retrieve` returns chunks ordered by score, respects the exam,
+  subject and jurisdiction filters, and returns an empty list (not an
+  error) when nothing matches.
+- Hybrid search: a query that matches a chunk only by keyword is still
+  returned.
+
+Eval (on demand, real embeddings):
+- Retrieval eval set: recall@5 and MRR, recorded in `docs/evals/`.
+
 ## Steps
 
 1. Ingest only the TC AIM. Inspect the chunks by hand.

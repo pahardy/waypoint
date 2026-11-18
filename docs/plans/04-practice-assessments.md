@@ -34,6 +34,39 @@ attempt_item(attempt_id, question_id, chosen_index, correct)
   are not scored.
 - PPAER result is pass, partial pass or fail, following TP 12880.
 
+## Tests
+
+Unit (CI):
+- Scoring: all correct, none correct, exactly at the pass mark, and
+  just below the pass mark.
+- PPAER result: pass, partial pass (60% overall but under 60% in one
+  subject) and fail.
+- Timing: an answer submitted one second before the limit is scored,
+  and one second after is not. An attempt with no answers scores 0.
+- Mock exam assembly: the right question count and subject mix, no
+  duplicates, and only `reviewed` questions.
+- PSTAR import: the question count matches TP 11919, and every
+  question has exactly one correct answer.
+- Question validation: rejects questions without an objective, a
+  source chunk or an explanation.
+
+API and database (CI):
+- Start an attempt, answer, submit, and fetch the results. The results
+  match the unit-level scoring.
+- A user cannot read or submit another user's attempt.
+- Generated questions are always returned with origin `generated` and
+  shown as practice questions.
+
+Component and end-to-end (CI):
+- The timer counts down and the exam auto-submits at zero (with the
+  clock mocked).
+- Complete a 10-question quiz and see the results page with a
+  per-subject breakdown.
+
+Eval (on demand, real model):
+- Question drafting: a sample of drafted questions is checked for
+  answerability from the cited chunk before human review.
+
 ## Steps
 
 1. Import the PSTAR questions. Build a 10-question topic quiz with

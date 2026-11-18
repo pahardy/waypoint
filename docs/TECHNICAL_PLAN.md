@@ -98,6 +98,18 @@ Steps, each verified before the next:
 Done when a fresh clone can run the API, the web app and the database
 locally from README instructions, and CI is green.
 
+### Tests
+
+The testing approach is in `docs/TESTING.md`.
+- `GET /health` returns 200 (pytest, `TestClient`).
+- The migration test applies all of `db/` to an empty database and
+  checks that the `vector` extension exists.
+- The home page renders (Vitest), and `next build` succeeds.
+- `git check-ignore data/x .env` succeeds, so documents and secrets
+  cannot be committed by accident.
+- CI runs all of the above on every push. A deliberately failing test
+  is pushed once on a branch to confirm that CI catches it.
+
 ## Cross-cutting rules
 
 - **Citations:** every regulatory or technical answer cites a chunk
@@ -107,5 +119,5 @@ locally from README instructions, and CI is green.
 - **Disclaimers:** state on every page that Waypoint is an educational
   aid and not an operational authority.
 - **Secrets:** API keys live in `.env` files that are never committed.
-- **Tests:** pytest for Python, and a small set of end-to-end checks
-  for the main user flows once the web app exists.
+- **Tests:** see `docs/TESTING.md`. Each phase plan has a "Tests"
+  section.
