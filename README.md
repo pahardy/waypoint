@@ -36,6 +36,28 @@ from the project specification and tracked issues.
 - `docs/TESTING.md` -- testing approach (per-phase tests in each plan)
 - `docs/BRANDING.md` -- brand, look and feel
 
+## Running locally
+
+Requires Docker, [uv](https://docs.astral.sh/uv/) and Node.js 24.
+
+```
+docker compose up -d                       # PostgreSQL + pgvector on :5432
+
+cd api
+cp .env.example .env
+export $(cat .env)
+uv run migrate
+uv run fastapi dev src/waypoint_api/main.py   # http://localhost:8000
+
+cd web
+cp .env.example .env.local
+npm install
+npm run dev                                # http://localhost:3000
+```
+
+Tests: `uv run pytest` in `api/` (needs the database and `DATABASE_URL`),
+`npm test` in `web/`. CI runs these on every push.
+
 ## Status
 
-Early planning. No application code yet.
+Phase 0 (project skeleton) in place. See `docs/TECHNICAL_PLAN.md`.
