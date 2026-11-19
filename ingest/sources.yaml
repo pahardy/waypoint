@@ -13,6 +13,8 @@
   priority: 1
   exams: [PSTAR]
   licence: TC, non-commercial reproduction permitted
+  knowledge_base: false  # question bank without answers; ranks above real answers in retrieval (phase 4 practice questions)
+  section_prefix: TP 11919
 
 - id: tp11919-answers
   title: "PSTAR Answer Key (TP 11919E)"
@@ -26,6 +28,7 @@
   priority: 1
   exams: [PSTAR]
   licence: TC, non-commercial reproduction permitted
+  knowledge_base: false  # answer key only, no explanatory text
 
 - id: tp12880
   title: "Study and Reference Guide for Written Examinations for the Private Pilot Licence Aeroplane"
@@ -53,6 +56,7 @@
   priority: 1
   exams: [FLIGHT_TEST]
   licence: TC, non-commercial reproduction permitted
+  section_prefix: TP 13723
 
 - id: tc-aim
   title: "Transport Canada Aeronautical Information Manual (TC AIM)"
@@ -118,6 +122,7 @@
   priority: 2
   exams: [PPAER]
   licence: TC, non-commercial reproduction permitted
+  knowledge_base: false  # question style reference only (phase 1 decision)
 
 - id: tp975
   title: "Flight Instructor Guide: Aeroplane"
@@ -131,6 +136,7 @@
   priority: 2
   exams: [FLIGHT_TEST]
   licence: TC, non-commercial reproduction permitted
+  section_prefix: TP 975
 
 - id: tp14277
   title: "Pilot Examiner Manual"

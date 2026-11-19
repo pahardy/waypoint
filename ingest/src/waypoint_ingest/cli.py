@@ -92,6 +92,10 @@ def run_chunk(source: Source) -> None:
 
 def run_load(source: Source) -> None:
     """Embed new or changed chunks and write them to the database."""
+    if not source.knowledge_base:
+        raise SystemExit(
+            f"{source.id} is not part of the knowledge base (sources.yaml)"
+        )
     chunks = read_chunks(CHUNKS_DIR / f"{source.id}.jsonl")
     with psycopg.connect(os.environ["DATABASE_URL"]) as conn:
         result = load_source(conn, source, read_meta(RAW_DIR, source.id), chunks, embed)

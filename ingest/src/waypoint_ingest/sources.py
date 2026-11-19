@@ -27,6 +27,7 @@ class Source(BaseModel):
     exams: list[Literal["PSTAR", "PPAER", "FLIGHT_TEST"]]
     licence: str
     section_prefix: str | None = None
+    knowledge_base: bool = True
 
     @field_validator("publisher")
     @classmethod
