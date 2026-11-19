@@ -20,6 +20,7 @@ class Chunk(BaseModel):
     section_ref: str
     heading_path: list[str]
     page: int | None
+    subject: str | None = None
     text: str
     token_count: int
 

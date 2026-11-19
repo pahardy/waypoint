@@ -10,6 +10,8 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 SOURCES_FILE = REPO_ROOT / "ingest" / "sources.yaml"
 EXCLUDED_PUBLISHERS = {"nav canada"}
 
+Subject = Literal["air-law", "navigation", "meteorology", "aeronautics", "flight-test"]
+
 
 class Source(BaseModel):
     """One document listed in the manifest."""
@@ -29,6 +31,20 @@ class Source(BaseModel):
     section_prefix: str | None = None
     knowledge_base: bool = True
     columns: Literal[1, 2] = 1
+    subjects: dict[str, Subject] = {}
+
+    def subject_for(self, section_ref: str) -> Subject | None:
+        """The subject of a section: the longest `subjects` key that is the
+        section reference or a whole leading part of it (`COM 4` matches
+        `COM 4.5` but not `COM 10.1`), else the `*` default, else None."""
+        matches = [
+            key
+            for key in self.subjects
+            if section_ref == key or section_ref.startswith((f"{key} ", f"{key}."))
+        ]
+        if matches:
+            return self.subjects[max(matches, key=len)]
+        return self.subjects.get("*")
 
     @field_validator("publisher")
     @classmethod

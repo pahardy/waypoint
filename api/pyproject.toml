@@ -10,6 +10,7 @@ requires-python = ">=3.14"
 dependencies = [
     "fastapi[standard]>=0.164.0",
     "psycopg[binary]>=3.3.9",
+    "voyageai>=0.6.0",
 ]
 
 [build-system]
@@ -24,6 +25,8 @@ dev = [
 
 [tool.pytest]
 testpaths = ["tests"]
+# langsmith (via voyageai) warns on Python 3.14; not our code.
+filterwarnings = ["ignore:'asyncio.iscoroutinefunction' is deprecated:DeprecationWarning"]
 
 [tool.ruff]
 line-length = 88

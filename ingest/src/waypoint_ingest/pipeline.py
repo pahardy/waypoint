@@ -70,6 +70,7 @@ def build_chunks(
                     section_ref=section.ref,
                     heading_path=section.heading_path,
                     page=piece.page,
+                    subject=source.subject_for(section.ref),
                     text=piece.text,
                     token_count=token_count(piece.text),
                 )

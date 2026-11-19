@@ -71,8 +71,8 @@ Build phases:
 |---|---|---|
 | 0 | Project skeleton: API, web app, database, CI | Done |
 | 1 | Document acquisition and 650 curriculum objectives | Done |
-| 2 | Chunking, embeddings and hybrid search, with measured retrieval quality | In progress |
-| 3 | AI instructor with citations | Planned |
+| 2 | Knowledge base: chunking, embeddings, retrieval API, measured retrieval quality | Done |
+| 3 | AI instructor with citations | Next |
 | 4 | Practice quizzes and timed mock exams | Planned |
 | 5 | Oral questioning and scenario exercises | Planned |
 | 6 | Progress tracking and study recommendations | Planned |
