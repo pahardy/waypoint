@@ -1,0 +1,399 @@
+# Retrieval eval set: student questions and the sections that answer them.
+#
+# Written by hand from the TC AIM 2026-2 text. Each expected section was
+# confirmed by reading it, never by running a search. A question lists every
+# section that directly answers it; a hit on any of them counts.
+#
+# Excluded topics: icing reports, VFR cruising altitudes, wake turbulence,
+# mandatory frequency procedures, and METAR/SPECI. Their search results were
+# seen during the step 2 hand check, so questions on them would be biased.
+
+- id: pstar-01
+  exam: PSTAR
+  subject: pstar
+  question: My radio quits while I'm flying VFR inside a control zone. What am I supposed to do?
+  expected: ["tc-aim:RAC 4.4.8"]
+
+- id: pstar-02
+  exam: PSTAR
+  subject: pstar
+  question: Two aeroplanes are converging at roughly the same altitude. Which one has to give way?
+  expected: ["tc-aim:RAC 1.8"]
+
+- id: pstar-03
+  exam: PSTAR
+  subject: pstar
+  question: While I'm taxiing, the tower points a steady red light at me. What does it mean?
+  expected: ["tc-aim:RAC 4.2.11"]
+
+- id: pstar-04
+  exam: PSTAR
+  subject: pstar
+  question: I'm circling to land without a radio and the tower shows me a steady red light. What should I do?
+  expected: ["tc-aim:RAC 4.4.7"]
+
+- id: pstar-05
+  exam: PSTAR
+  subject: pstar
+  question: How high do I have to be when flying over a city?
+  expected: ["tc-aim:RAC 5.4"]
+
+- id: pstar-06
+  exam: PSTAR
+  subject: pstar
+  question: Can I fly low over an airport if I'm not landing or taking off there?
+  expected: ["tc-aim:RAC 5.5"]
+
+- id: pstar-07
+  exam: PSTAR
+  subject: pstar
+  question: What transponder code tells ATC I have an emergency?
+  expected: ["tc-aim:COM 8.6", "tc-aim:SAR 4.3", "tc-aim:RAC 6.3.1"]
+
+- id: pstar-08
+  exam: PSTAR
+  subject: pstar
+  question: What should my transponder be set to for a normal VFR flight at 6,500 feet?
+  expected: ["tc-aim:COM 8.4"]
+
+- id: pstar-09
+  exam: PSTAR
+  subject: pstar
+  question: What does it mean when ATC says the weather is CAVOK?
+  expected: ["tc-aim:RAC 1.4"]
+
+- id: pstar-10
+  exam: PSTAR
+  subject: pstar
+  question: How far from my departure airport can I go before I have to file a flight plan or itinerary?
+  expected: ["tc-aim:RAC 3.5.1"]
+
+- id: pstar-11
+  exam: PSTAR
+  subject: pstar
+  question: How much extra fuel do I need to carry on a daytime VFR cross-country?
+  expected: ["tc-aim:RAC 3.12.1"]
+
+- id: pstar-12
+  exam: PSTAR
+  subject: pstar
+  question: My ELT went off by accident after a hard landing. Who do I tell?
+  expected: ["tc-aim:SAR 3.7"]
+
+- id: pstar-13
+  exam: PSTAR
+  subject: pstar
+  question: A military jet pulls up beside me and rocks its wings. What am I expected to do?
+  expected: ["tc-aim:SAR 4.6"]
+
+- id: air-law-01
+  exam: PPAER
+  subject: air-law
+  question: What is the speed limit below 10,000 feet ASL?
+  expected: ["tc-aim:RAC 2.5.2"]
+
+- id: air-law-02
+  exam: PPAER
+  subject: air-law
+  question: What are the minimum altitude and visibility for doing aerobatics?
+  expected: ["tc-aim:RAC 1.9"]
+
+- id: air-law-03
+  exam: PPAER
+  subject: air-law
+  question: How far out does a control zone usually extend, and how high does it go?
+  expected: ["tc-aim:RAC 2.7.3"]
+
+- id: air-law-04
+  exam: PPAER
+  subject: air-law
+  question: As a VFR pilot, can I just fly into Class C airspace or do I need permission first?
+  expected: ["tc-aim:RAC 2.8.3", "tc-aim:RAC 5.8"]
+
+- id: air-law-05
+  exam: PPAER
+  subject: air-law
+  question: What do I have to do before entering Class D airspace?
+  expected: ["tc-aim:RAC 2.8.4"]
+
+- id: air-law-06
+  exam: PPAER
+  subject: air-law
+  question: Does ATC provide me any service at all in uncontrolled airspace?
+  expected: ["tc-aim:RAC 2.8.7"]
+
+- id: air-law-07
+  exam: PPAER
+  subject: air-law
+  question: When is my arrival report due after landing on a flight plan?
+  expected: ["tc-aim:RAC 3.11"]
+
+- id: air-law-08
+  exam: PPAER
+  subject: air-law
+  question: What information has to be in my arrival report?
+  expected: ["tc-aim:RAC 3.11.1"]
+
+- id: air-law-09
+  exam: PPAER
+  subject: air-law
+  question: Which frequency should I listen to and broadcast on when cruising VFR in uncontrolled airspace?
+  expected: ["tc-aim:RAC 5.1"]
+
+- id: air-law-10
+  exam: PPAER
+  subject: air-law
+  question: How high should I stay when flying over a national park?
+  expected: ["tc-aim:RAC 1.10.3"]
+
+- id: air-law-11
+  exam: PPAER
+  subject: air-law
+  question: What should my altimeter be set to before takeoff, below 18,000 feet?
+  expected: ["tc-aim:RAC 2.10"]
+
+- id: air-law-12
+  exam: PPAER
+  subject: air-law
+  question: What kind of information is on the recorded airport information broadcast?
+  expected: ["tc-aim:RAC 1.3"]
+
+- id: air-law-13
+  exam: PPAER
+  subject: air-law
+  question: How long is my medical certificate valid for a private pilot licence?
+  expected: ["tc-aim:LRA 1.9.1"]
+
+- id: air-law-14
+  exam: PPAER
+  subject: air-law
+  question: What do I need to do to stay current to carry passengers?
+  expected: ["tc-aim:LRA 1.12"]
+
+- id: air-law-15
+  exam: PPAER
+  subject: air-law
+  question: How long after drinking alcohol can I fly?
+  expected: ["tc-aim:AIR 3.9", "tc-aim:RAC 12.2"]
+
+- id: navigation-01
+  exam: PPAER
+  subject: navigation
+  question: Why are runways in the Far North given in degrees true instead of magnetic?
+  expected: ["tc-aim:RAC 2.2.1"]
+
+- id: navigation-02
+  exam: PPAER
+  subject: navigation
+  question: How can I check whether my VOR receiver is accurate?
+  expected: ["tc-aim:COM 4.5.1", "tc-aim:COM 4.5.2"]
+
+- id: navigation-03
+  exam: PPAER
+  subject: navigation
+  question: What frequencies do NDBs transmit on?
+  expected: ["tc-aim:COM 4.6"]
+
+- id: navigation-04
+  exam: PPAER
+  subject: navigation
+  question: Why does my DME show more distance than my actual ground distance when I'm high over the station?
+  expected: ["tc-aim:COM 4.7"]
+
+- id: navigation-05
+  exam: PPAER
+  subject: navigation
+  question: What is the scale of a VNC and what does it show?
+  expected: ["tc-aim:MAP 2.5.1"]
+
+- id: navigation-06
+  exam: PPAER
+  subject: navigation
+  question: Which cities have VFR terminal area charts?
+  expected: ["tc-aim:MAP 2.5.2"]
+
+- id: navigation-07
+  exam: PPAER
+  subject: navigation
+  question: Where do I find an airport's services, facilities and phone numbers?
+  expected: ["tc-aim:MAP 2.5.3"]
+
+- id: navigation-08
+  exam: PPAER
+  subject: navigation
+  question: What is a NOTAM and when is one issued?
+  expected: ["tc-aim:MAP 3.1"]
+
+- id: navigation-09
+  exam: PPAER
+  subject: navigation
+  question: What time standard is used in Canadian aviation?
+  expected: ["tc-aim:GEN 1.5"]
+
+- id: navigation-10
+  exam: PPAER
+  subject: navigation
+  question: How long after sunset does evening civil twilight last?
+  expected: ["tc-aim:GEN 1.5.2"]
+
+- id: navigation-11
+  exam: PPAER
+  subject: navigation
+  question: What precautions should I take when using a GPS for VFR navigation?
+  expected: ["tc-aim:COM 5.11"]
+
+- id: navigation-12
+  exam: PPAER
+  subject: navigation
+  question: Can GPS signals be jammed or interfered with?
+  expected: ["tc-aim:COM 5.10"]
+
+- id: meteorology-01
+  exam: PPAER
+  subject: meteorology
+  question: What is a PIREP and why are they useful?
+  expected: ["tc-aim:MET 2.1"]
+
+- id: meteorology-02
+  exam: PPAER
+  subject: meteorology
+  question: How should I describe turbulence that changes my altitude but leaves me in control?
+  expected: ["tc-aim:MET 2.2.2"]
+
+- id: meteorology-03
+  exam: PPAER
+  subject: meteorology
+  question: What does a TAF tell me?
+  expected: ["tc-aim:MET 7.2"]
+
+- id: meteorology-04
+  exam: PPAER
+  subject: meteorology
+  question: When are graphic area forecasts issued, and what times are they valid for?
+  expected: ["tc-aim:MET 4.2"]
+
+- id: meteorology-05
+  exam: PPAER
+  subject: meteorology
+  question: Which area forecast chart shows icing and the freezing level?
+  expected: ["tc-aim:MET 4.12"]
+
+- id: meteorology-06
+  exam: PPAER
+  subject: meteorology
+  question: Which part of the area forecast shows cloud layers and visibility?
+  expected: ["tc-aim:MET 4.11"]
+
+- id: meteorology-07
+  exam: PPAER
+  subject: meteorology
+  question: What is an AIRMET and what altitudes does it cover?
+  expected: ["tc-aim:MET 5.1"]
+
+- id: meteorology-08
+  exam: PPAER
+  subject: meteorology
+  question: What is a SIGMET?
+  expected: ["tc-aim:MET 6.1"]
+
+- id: meteorology-09
+  exam: PPAER
+  subject: meteorology
+  question: Are winds aloft forecasts given relative to true or magnetic north?
+  expected: ["tc-aim:MET 9.2"]
+
+- id: meteorology-10
+  exam: PPAER
+  subject: meteorology
+  question: There's no windsock at the strip. How can I estimate the wind?
+  expected: ["tc-aim:MET 2.6"]
+
+- id: meteorology-11
+  exam: PPAER
+  subject: meteorology
+  question: A thunderstorm is approaching the airport. Should I still take off?
+  expected: ["tc-aim:AIR 2.7.2"]
+
+- id: meteorology-12
+  exam: PPAER
+  subject: meteorology
+  question: What is a microburst and why is it dangerous when landing?
+  expected: ["tc-aim:AIR 2.8", "tc-aim:MET 2.3"]
+
+- id: aeronautics-01
+  exam: PPAER
+  subject: aeronautics
+  question: Can carburetor ice form at cruise power on a warm day?
+  expected: ["tc-aim:AIR 2.3"]
+
+- id: aeronautics-02
+  exam: PPAER
+  subject: aeronautics
+  question: What are the warning signs of hypoxia?
+  expected: ["tc-aim:AIR 3.2.1", "tc-aim:AIR 3.5"]
+
+- id: aeronautics-03
+  exam: PPAER
+  subject: aeronautics
+  question: Why is carbon monoxide in the cockpit so dangerous?
+  expected: ["tc-aim:AIR 3.2.2"]
+
+- id: aeronautics-04
+  exam: PPAER
+  subject: aeronautics
+  question: Why do I feel like I'm turning when I'm actually flying straight in cloud?
+  expected: ["tc-aim:AIR 3.7"]
+
+- id: aeronautics-05
+  exam: PPAER
+  subject: aeronautics
+  question: Is it safe to fly right after a scuba dive?
+  expected: ["tc-aim:AIR 3.4"]
+
+- id: aeronautics-06
+  exam: PPAER
+  subject: aeronautics
+  question: If I don't reset my altimeter while flying toward lower pressure, will I be higher or lower than it shows?
+  expected: ["tc-aim:AIR 1.5.3"]
+
+- id: aeronautics-07
+  exam: PPAER
+  subject: aeronautics
+  question: How does very cold air affect what my altimeter reads?
+  expected: ["tc-aim:AIR 1.5.4"]
+
+- id: aeronautics-08
+  exam: PPAER
+  subject: aeronautics
+  question: How can I tell aviation fuel grades apart?
+  expected: ["tc-aim:AIR 1.3.1"]
+
+- id: aeronautics-09
+  exam: PPAER
+  subject: aeronautics
+  question: How much crosswind can a typical light aircraft be landed in?
+  expected: ["tc-aim:AIR 2.2"]
+
+- id: aeronautics-10
+  exam: PPAER
+  subject: aeronautics
+  question: How do G-forces affect a pilot's body?
+  expected: ["tc-aim:AIR 3.15.2"]
+
+- id: aeronautics-11
+  exam: PPAER
+  subject: aeronautics
+  question: What do I have to do if there's frost on the wings before takeoff?
+  expected: ["tc-aim:AIR 2.12.2"]
+
+- id: aeronautics-12
+  exam: PPAER
+  subject: aeronautics
+  question: What is whiteout and why is it dangerous?
+  expected: ["tc-aim:AIR 2.12.7"]
+
+- id: aeronautics-13
+  exam: PPAER
+  subject: aeronautics
+  question: Why should I be careful taking over-the-counter medication before flying?
+  expected: ["tc-aim:AIR 3.10"]

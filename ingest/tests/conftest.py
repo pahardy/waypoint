@@ -1,5 +1,29 @@
+import os
+
+import psycopg
 import pymupdf
 import pytest
+
+from waypoint_ingest.sources import REPO_ROOT
+
+MIGRATIONS = sorted((REPO_ROOT / "db" / "migrations").glob("*.sql"))
+
+
+@pytest.fixture
+def conn():
+    """A fresh database with the migrations applied."""
+    admin_url = os.environ["DATABASE_URL"]
+    with psycopg.connect(admin_url, autocommit=True) as admin:
+        admin.execute("DROP DATABASE IF EXISTS waypoint_ingest_test")
+        admin.execute("CREATE DATABASE waypoint_ingest_test")
+    url = psycopg.conninfo.make_conninfo(admin_url, dbname="waypoint_ingest_test")
+    with psycopg.connect(url) as connection:
+        for path in MIGRATIONS:
+            connection.execute(path.read_text())
+        connection.commit()
+        yield connection
+    with psycopg.connect(admin_url, autocommit=True) as admin:
+        admin.execute("DROP DATABASE waypoint_ingest_test WITH (FORCE)")
 
 
 def text(page, x, y, value, size=10, bold=False):

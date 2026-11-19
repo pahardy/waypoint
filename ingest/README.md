@@ -10,6 +10,7 @@ uv run ingest objectives         # write db/seed/objectives.yaml from the study 
 uv run ingest chunk tc-aim       # write data/text/ and data/chunks/ for one source
 uv run ingest load tc-aim        # embed new or changed chunks into the database
 uv run ingest search "question"  # show the nearest chunks
+uv run ingest eval               # score retrieval; report to docs/evals/
 uv run pytest                    # needs DATABASE_URL
 ```
 
@@ -33,3 +34,7 @@ certificate.
 - `load` embeds each chunk with its heading path, and only embeds chunks
   that are new or changed (or were embedded with another model).
   Re-running it costs nothing and creates no duplicates.
+- `eval` runs the questions in `eval/retrieval.yaml` and reports recall@5
+  and MRR@10, overall and by subject, with every miss. Each question lists
+  the sections (`source:section`) that answer it, confirmed by reading the
+  source. Add a new source's sections to `expected` when it is loaded.
