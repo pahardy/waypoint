@@ -23,13 +23,23 @@ class Line:
     bullet: bool
 
 
-def page_lines(doc: pymupdf.Document, page_number: int, columns: int = 2) -> list[Line]:
-    """Return a page's lines in reading order: left column, then right."""
+def page_lines(
+    doc: pymupdf.Document,
+    page_number: int,
+    columns: int = 2,
+    max_size: float = float("inf"),
+) -> list[Line]:
+    """Return a page's lines in reading order: left column, then right.
+
+    Spans larger than `max_size` (such as side tabs) are dropped first.
+    """
     split_x = COLUMN_SPLIT_X if columns == 2 else float("inf")
     spans = []
     for block in doc[page_number - 1].get_text("dict")["blocks"]:
         for line in block.get("lines", []):
-            spans.extend(s for s in line["spans"] if s["text"].strip())
+            spans.extend(
+                s for s in line["spans"] if s["text"].strip() and s["size"] <= max_size
+            )
     spans.sort(key=lambda s: (column_of(s, split_x), s["bbox"][1]))
 
     groups: list[list[dict]] = []

@@ -88,6 +88,21 @@ Eval (on demand, real embeddings):
    improves the scores.
 6. Ingest the remaining sources.
 
+## Progress
+
+Step 1 (TC AIM 2026-2), done:
+- Sections come from the PDF bookmarks. All 1,452 numbered headings are
+  found on their bookmark page, and each matches its bookmark title.
+- 1,477 chunks from 1,275 sections with text (the other 177 are parent
+  headings with no text of their own). Median 206 tokens, max 800.
+- Many sections are short, so many chunks are under 300 tokens. They are
+  kept, because chunks never cross a section boundary.
+- Line-end hyphens in the AIM are real compound hyphens
+  (`radio-equipped`), so they are kept when lines are joined.
+- Known limits: tables come out as row text, and a table spanning both
+  columns is read column by column. Token counts are an estimate (words
+  and punctuation) until the embedding model is chosen in step 2.
+
 ## Done when
 
 - All acquired sources are ingested, and chunks link back to section
