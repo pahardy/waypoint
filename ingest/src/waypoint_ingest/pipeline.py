@@ -7,6 +7,7 @@ from pathlib import Path
 from waypoint_ingest.chunk import Chunk, pack, token_count
 from waypoint_ingest.extract import Heading, extract_sections
 from waypoint_ingest.fetch import RAW_DIR
+from waypoint_ingest.html_sections import html_sections
 from waypoint_ingest.justice_xml import regulation_sections
 from waypoint_ingest.normalize import TextSection, paragraphs
 from waypoint_ingest.pages import has_outline, page_sections
@@ -36,6 +37,8 @@ def source_sections(
         return page_sections(path, source.section_prefix, source.title), []
     if source.format == "xml":
         return regulation_sections(path, source.section_prefix), []
+    if source.format == "html":
+        return html_sections(path, source.section_prefix), []
     raise ValueError(f"{source.id}: chunking {source.format} is not supported yet")
 
 

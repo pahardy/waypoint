@@ -38,10 +38,10 @@ class Source(BaseModel):
         return value
 
     @model_validator(mode="after")
-    def xml_has_section_prefix(self) -> Source:
-        """Regulation sections are cited with a prefix, for example `CAR`."""
-        if self.format == "xml" and not self.section_prefix:
-            raise ValueError(f"{self.id}: xml sources need a section_prefix")
+    def has_section_prefix(self) -> Source:
+        """XML and HTML sections are cited with a prefix, for example `CAR`."""
+        if self.format in ("xml", "html") and not self.section_prefix:
+            raise ValueError(f"{self.id}: {self.format} sources need a section_prefix")
         return self
 
 
