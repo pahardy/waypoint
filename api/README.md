@@ -8,8 +8,17 @@ uv run pytest                                 # needs DATABASE_URL
 uv run ruff check . && uv run ruff format --check .
 ```
 
-Needs `DATABASE_URL` and, for `/retrieve`, `VOYAGE_API_KEY` (see
-`.env.example`).
+Needs `DATABASE_URL`, `VOYAGE_API_KEY` for `/retrieve`, and
+`ANTHROPIC_API_KEY` for the instructor (see `.env.example`).
+
+```
+uv run instructor "How long after drinking alcohol can I fly?" --level PSTAR
+```
+
+The instructor answers from retrieved passages and cites them as
+`[TC AIM AIR 3.9]` or `[CAR 602.03]`; references to passages it was not
+given are flagged. `WAYPOINT_LLM_MODEL` (default `claude-sonnet-5-5`) and
+`WAYPOINT_LLM_EFFORT` (default `low`) select the model.
 
 - `GET /health`: liveness check.
 - `POST /retrieve`: knowledge-base passages that best answer a question,

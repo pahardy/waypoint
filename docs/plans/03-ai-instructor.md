@@ -77,6 +77,28 @@ Eval (on demand, real model): see Evaluation below.
 4. Add the chat page in the web app (see plan 07).
 5. Compare models, and record the choice in this document.
 
+## Progress
+
+Step 1 (CLI), done (issue #14): `uv run instructor "question" --level PPAER`.
+- `instructor.py`: retrieves up to 6 Canadian passages for the student's
+  exam level and at most 2 FAA passages, labelled as background only.
+  Passages scoring under 0.35 are dropped: in-scope eval questions all
+  score 0.395 or more, off-topic questions 0.307 or less. If nothing is
+  left, the instructor says it cannot answer, without calling the model.
+- The system prompt is fixed (cacheable); the user turn carries the
+  level, the labelled passages and the question.
+- Citations are labels in brackets, parsed by code and matched to the
+  passages given; any other reference is flagged.
+- `llm.py`: Claude Sonnet 5.5 (`claude-sonnet-5-5`) at effort `low` by
+  default, set by `WAYPOINT_LLM_MODEL` and `WAYPOINT_LLM_EFFORT`.
+  Server-side refusal fallback is on. Refusals, truncation and API
+  failures raise an error, never a partial answer.
+- Hand check: alcohol (12-hour CAR and 24-hour AIM advice, all cited),
+  an off-topic question (not-found path), a go/no-go request (declined,
+  considerations given) and stall theory (FAA handbook named in the
+  text). One fix came from it: the model put "an FAA handbook" inside
+  the brackets; the prompt now says brackets hold only labels.
+
 ## Done when
 
 - The eval set passes the agreed thresholds.
