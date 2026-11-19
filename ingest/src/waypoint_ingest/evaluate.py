@@ -95,7 +95,15 @@ def scores(outcomes: list[Outcome]) -> tuple[float, float]:
     return recall_at(ranks, RECALL_K), mean_reciprocal_rank(ranks, MRR_K)
 
 
-def report(outcomes: list[Outcome], chunk_count: int, run_on: date) -> str:
+def report_path(sources: list[str], run_on: date) -> Path:
+    """`docs/evals/retrieval-<date>-<sources>.md`, so runs over different
+    sources on the same day do not overwrite each other."""
+    return EVALS_DIR / f"retrieval-{run_on.isoformat()}-{'-'.join(sources)}.md"
+
+
+def report(
+    outcomes: list[Outcome], sources: list[str], chunk_count: int, run_on: date
+) -> str:
     """A Markdown report: overall and per-subject scores, then every miss."""
     recall, mrr = scores(outcomes)
     lines = [
@@ -103,7 +111,7 @@ def report(outcomes: list[Outcome], chunk_count: int, run_on: date) -> str:
         "",
         f"- Model: `{MODEL}`, vector search only (cosine)",
         f"- Questions: {len(outcomes)} (`ingest/eval/retrieval.yaml`)",
-        f"- Chunks searched: {chunk_count}",
+        f"- Sources: {', '.join(sources)} ({chunk_count} chunks)",
         "",
         f"| Subject | Questions | Recall@{RECALL_K} | MRR@{MRR_K} |",
         "|---|---|---|---|",

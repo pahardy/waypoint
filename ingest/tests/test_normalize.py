@@ -53,3 +53,34 @@ def test_finished_sentence_ends_the_paragraph_at_a_column_break():
     lines = [line("Report the position.", 700), line("Next topic.", 48, page=2)]
     paragraph = paragraphs(lines)[1]
     assert (paragraph.text, paragraph.page) == ("Next topic.", 2)
+
+
+def test_a_larger_bold_heading_starts_and_ends_a_paragraph():
+    heading = Line(
+        page=1,
+        column=0,
+        x=62,
+        y=72,
+        text="Examinations",
+        size=20,
+        bold=True,
+        bullet=False,
+    )
+    lines = [heading, line("Applicants shall write", 100), line("an exam.", 112)]
+    assert texts(lines) == ["Examinations", "Applicants shall write an exam."]
+
+
+def test_a_larger_symbol_in_body_text_does_not_split_it():
+    symbol_line = Line(
+        page=1,
+        column=0,
+        x=62,
+        y=112,
+        text="symbol ‡ here",
+        size=13,
+        bold=False,
+        bullet=False,
+    )
+    assert texts([line("indicated with the", 100), symbol_line]) == [
+        "indicated with the symbol ‡ here"
+    ]

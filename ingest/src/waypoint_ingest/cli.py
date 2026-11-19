@@ -10,10 +10,10 @@ import psycopg
 from waypoint_ingest.curriculum import extract_all, write_objectives
 from waypoint_ingest.embeddings import embed
 from waypoint_ingest.evaluate import (
-    EVALS_DIR,
     evaluate,
     load_questions,
     report,
+    report_path,
     scores,
 )
 from waypoint_ingest.fetch import RAW_DIR, fetch_all
@@ -114,10 +114,11 @@ def run_eval() -> None:
     with psycopg.connect(os.environ["DATABASE_URL"]) as conn:
         outcomes = evaluate(conn, load_questions(), embed)
         chunk_count = conn.execute("SELECT count(*) FROM chunk").fetchone()[0]
+        sources = [r[0] for r in conn.execute("SELECT id FROM document ORDER BY id")]
     today = date.today()
-    path = EVALS_DIR / f"retrieval-{today.isoformat()}.md"
+    path = report_path(sources, today)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(report(outcomes, chunk_count, today))
+    path.write_text(report(outcomes, sources, chunk_count, today))
     recall, mrr = scores(outcomes)
     print(f"recall@5 {recall:.2f}, MRR@10 {mrr:.2f} over {len(outcomes)} questions")
     print(f"report: {path.relative_to(REPO_ROOT)}")

@@ -131,7 +131,7 @@ Step 3 (eval set and baseline), done (issue #10):
   reading the AIM text, not by searching. The five topics seen during
   the step 2 hand check are left out.
 - `uv run ingest eval` writes a report to `docs/evals/`.
-- Baseline (`docs/evals/retrieval-2026-11-19.md`), vector search only:
+- Baseline (`docs/evals/retrieval-2026-11-19-tc-aim.md`), vector search only:
   **recall@5 0.98, MRR@10 0.93**. The one miss (Class G services)
   ranked 7th.
 - The baseline is probably optimistic. Only the AIM is loaded; the
@@ -143,6 +143,31 @@ Step 3 (eval set and baseline), done (issue #10):
 - Suggested target change: keep recall@5 at or above 0.9 as sources are
   added, and add harder questions (numbers, two-part, scenario wording)
   before comparing search methods in step 5.
+
+Step 4 (CARs and PPAER guide), done (issue #11):
+- CARs: `justice_xml.py` reads the Justice Laws XML into one section per
+  numbered section (`CAR 602.14`), with the Part, Subpart, Division and
+  rule title as heading path. Repealed and reserved provisions, history
+  notes and the schedules are left out. 1,543 chunks from 1,496 sections.
+- TP 12880 has no bookmarks, so `pages.py` splits it by page
+  (`TP 12880 p.7`). 32 chunks.
+- Paragraph fixes found on the way: a bold line at least 2 points larger
+  than its neighbour now starts its own paragraph, and dot leaders are
+  shortened to "...". No word of the AIM changed; only paragraph breaks
+  and dot runs did.
+- Eval labels: 17 CAR sections were added to existing questions, found
+  by keyword search and read before re-running the eval. Seven exam
+  questions were written from TP 12880 pages 4 to 9.
+- Results (`docs/evals/retrieval-2026-11-19-cars-tc-aim-tp12880.md`):
+  **recall@5 0.97, MRR@10 0.92** over 72 questions. The original 65
+  scored as before. A CAR ranks first for 11 questions, and loading the
+  CARs moved AIM answers down a place but not out of the top 5 (AIM-only
+  MRR 0.87).
+- New miss: exam-02 ("failed the meteorology part") retrieves weather
+  sections instead of the guide's supplementary exam page.
+- The guide's topic-list pages (pages 10 to 27) appear in 7 of 325 top-5
+  slots for non-exam questions, never first. They add little and could
+  be excluded if the instructor finds them unhelpful.
 
 ## Done when
 

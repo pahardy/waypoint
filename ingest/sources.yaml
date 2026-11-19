@@ -39,6 +39,7 @@
   priority: 1
   exams: [PPAER]
   licence: TC, "may be reproduced as required"
+  section_prefix: TP 12880
 
 - id: tp13723
   title: "Flight Test Guide: Private Pilot Licence Aeroplane"
@@ -77,6 +78,7 @@
   priority: 1
   exams: [PSTAR, PPAER, FLIGHT_TEST]
   licence: Federal law; reproduction terms not checked (non-commercial use)
+  section_prefix: CAR
 
 # Priority 2
 

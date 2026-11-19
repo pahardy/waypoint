@@ -27,10 +27,14 @@ certificate.
   reported as `changed` for review.
 - `objectives` reports anything that needs checking, such as numbering gaps
   in the source guides.
-- `chunk` uses the PDF's bookmarks as the section list. Each chunk stays
-  within one section, is at most 800 tokens, and carries its section
-  reference (for example `RAC 4.5.8.3`), heading path, page and edition.
-  Bookmarks whose heading is not found in the text are reported.
+- `chunk` splits a source into sections, then into chunks that stay
+  within one section and are at most 800 tokens. Each carries its section
+  reference, heading path, page and edition.
+  - PDFs with bookmarks: one section per bookmark (`RAC 4.5.8.3`).
+    Bookmarks whose heading is not found are reported.
+  - PDFs without bookmarks: one section per page (`TP 12880 p.7`).
+  - Justice Laws XML: one section per numbered section (`CAR 602.14`).
+  The manifest's `section_prefix` names the prefix for the last two.
 - `load` embeds each chunk with its heading path, and only embeds chunks
   that are new or changed (or were embedded with another model).
   Re-running it costs nothing and creates no duplicates.
