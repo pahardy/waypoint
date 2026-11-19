@@ -4,7 +4,6 @@ import argparse
 import logging
 import os
 from datetime import date
-from typing import get_args
 
 import psycopg
 
@@ -18,9 +17,8 @@ from waypoint_ingest.evaluate import (
     scores,
 )
 from waypoint_ingest.fetch import RAW_DIR, fetch_all
-from waypoint_ingest.load import load_source, read_chunks, read_meta
+from waypoint_ingest.load import load_source, read_chunks, read_meta, search
 from waypoint_ingest.pipeline import CHUNKS_DIR, chunk_source
-from waypoint_ingest.retrieve import Method, search
 from waypoint_ingest.sources import REPO_ROOT, Source, load_sources
 
 
@@ -38,9 +36,7 @@ def main() -> None:
     find = commands.add_parser("search", help="show the chunks nearest a question")
     find.add_argument("query")
     find.add_argument("--limit", type=int, default=5)
-    find.add_argument("--method", choices=get_args(Method), default="vector")
-    score = commands.add_parser("eval", help="score retrieval on the eval set")
-    score.add_argument("--method", choices=get_args(Method), default="vector")
+    commands.add_parser("eval", help="score retrieval on the eval set")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
@@ -53,9 +49,9 @@ def main() -> None:
     elif args.command == "load":
         run_load(source_by_id(args.source_id))
     elif args.command == "search":
-        run_search(args.query, args.method, args.limit)
+        run_search(args.query, args.limit)
     elif args.command == "eval":
-        run_eval(args.method)
+        run_eval()
 
 
 def source_by_id(source_id: str) -> Source:
@@ -105,24 +101,24 @@ def run_load(source: Source) -> None:
     )
 
 
-def run_search(query: str, method: Method, limit: int) -> None:
-    """Print the chunks that best answer a question."""
+def run_search(query: str, limit: int) -> None:
+    """Print the chunks nearest a question."""
     with psycopg.connect(os.environ["DATABASE_URL"]) as conn:
-        for hit in search(conn, query, embed, method, limit):
-            print(f"{hit.score:.3f}  {hit.id}  (edition {hit.edition})")
-            print(f"       {hit.text[:160]!r}")
+        for chunk_id, edition, similarity, text in search(conn, query, embed, limit):
+            print(f"{similarity:.3f}  {chunk_id}  (edition {edition})")
+            print(f"       {text[:160]!r}")
 
 
-def run_eval(method: Method) -> None:
+def run_eval() -> None:
     """Score retrieval on the eval set and write a report to docs/evals/."""
     with psycopg.connect(os.environ["DATABASE_URL"]) as conn:
-        outcomes = evaluate(conn, load_questions(), embed, method)
+        outcomes = evaluate(conn, load_questions(), embed)
         chunk_count = conn.execute("SELECT count(*) FROM chunk").fetchone()[0]
         sources = [r[0] for r in conn.execute("SELECT id FROM document ORDER BY id")]
     today = date.today()
-    path = report_path(method, sources, today)
+    path = report_path(sources, today)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(report(outcomes, method, sources, chunk_count, today))
+    path.write_text(report(outcomes, sources, chunk_count, today))
     recall, mrr = scores(outcomes)
     print(f"recall@5 {recall:.2f}, MRR@10 {mrr:.2f} over {len(outcomes)} questions")
     print(f"report: {path.relative_to(REPO_ROOT)}")

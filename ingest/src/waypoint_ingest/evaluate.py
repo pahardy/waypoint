@@ -9,18 +9,12 @@ import yaml
 from pydantic import BaseModel
 
 from waypoint_ingest.embeddings import MODEL
-from waypoint_ingest.load import Embed
-from waypoint_ingest.retrieve import Hit, Method, retrieve
+from waypoint_ingest.load import Embed, Hit, nearest
 from waypoint_ingest.sources import REPO_ROOT
 
 QUESTIONS_FILE = REPO_ROOT / "ingest" / "eval" / "retrieval.yaml"
 EVALS_DIR = REPO_ROOT / "docs" / "evals"
 RECALL_K = 5
-METHOD_NAMES = {
-    "vector": "vector only (cosine)",
-    "keyword": "keyword only (PostgreSQL full text)",
-    "hybrid": "hybrid (vector and keyword, reciprocal rank fusion)",
-}
 MRR_K = 10
 
 
@@ -81,10 +75,7 @@ def unknown_sections(conn: psycopg.Connection, questions: list[Question]) -> set
 
 
 def evaluate(
-    conn: psycopg.Connection,
-    questions: list[Question],
-    embed: Embed,
-    method: Method = "vector",
+    conn: psycopg.Connection, questions: list[Question], embed: Embed
 ) -> list[Outcome]:
     """Retrieve the top chunks for every question and rank the first hit."""
     unknown = unknown_sections(conn, questions)
@@ -93,7 +84,7 @@ def evaluate(
     vectors = embed([q.question for q in questions], "query")
     outcomes = []
     for question, vector in zip(questions, vectors, strict=True):
-        hits = retrieve(conn, method, question.question, vector, MRR_K)
+        hits = nearest(conn, vector, MRR_K)
         outcomes.append(Outcome(question, first_rank(hits, question.expected), hits))
     return outcomes
 
@@ -104,26 +95,21 @@ def scores(outcomes: list[Outcome]) -> tuple[float, float]:
     return recall_at(ranks, RECALL_K), mean_reciprocal_rank(ranks, MRR_K)
 
 
-def report_path(method: Method, sources: list[str], run_on: date) -> Path:
-    """`docs/evals/retrieval-<date>-<method>-<sources>.md`, so runs with
-    other methods or sources on the same day do not overwrite each other."""
-    name = f"retrieval-{run_on.isoformat()}-{method}-{'-'.join(sources)}.md"
-    return EVALS_DIR / name
+def report_path(sources: list[str], run_on: date) -> Path:
+    """`docs/evals/retrieval-<date>-<sources>.md`, so runs over different
+    sources on the same day do not overwrite each other."""
+    return EVALS_DIR / f"retrieval-{run_on.isoformat()}-{'-'.join(sources)}.md"
 
 
 def report(
-    outcomes: list[Outcome],
-    method: Method,
-    sources: list[str],
-    chunk_count: int,
-    run_on: date,
+    outcomes: list[Outcome], sources: list[str], chunk_count: int, run_on: date
 ) -> str:
     """A Markdown report: overall and per-subject scores, then every miss."""
     recall, mrr = scores(outcomes)
     lines = [
         f"# Retrieval Eval: {run_on.isoformat()}",
         "",
-        f"- Model: `{MODEL}`; search: {METHOD_NAMES[method]}",
+        f"- Model: `{MODEL}`, vector search only (cosine)",
         f"- Questions: {len(outcomes)} (`ingest/eval/retrieval.yaml`)",
         f"- Sources: {', '.join(sources)} ({chunk_count} chunks)",
         "",
