@@ -49,7 +49,9 @@ def load_source(
     """Upsert the document and its chunks in one transaction.
 
     Only new or changed chunks are embedded, so re-running is cheap and
-    never creates duplicates. Chunks no longer produced are removed.
+    never creates duplicates. Unchanged chunks get their other fields
+    (such as page and subject) refreshed. Chunks no longer produced are
+    removed.
     """
     with conn.transaction():
         upsert_document(conn, source, meta)
@@ -67,6 +69,8 @@ def load_source(
         vectors = embed([embedding_text(c) for c in changed], "document")
         for chunk, vector in zip(changed, vectors, strict=True):
             upsert_chunk(conn, chunk, model, vector)
+        changed_ids = {c.id for c in changed}
+        refresh_metadata(conn, [c for c in chunks if c.id not in changed_ids])
         removed = conn.execute(
             "DELETE FROM chunk WHERE document_id = %s AND NOT (id = ANY(%s))",
             (source.id, [c.id for c in chunks]),
@@ -79,14 +83,14 @@ def upsert_document(conn: psycopg.Connection, source: Source, meta: dict) -> Non
     conn.execute(
         """
         INSERT INTO document (id, title, publisher, tp_number, edition, published,
-                              retrieved_on, jurisdiction, url, sha256)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                              retrieved_on, jurisdiction, url, sha256, exams)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         ON CONFLICT (id) DO UPDATE SET
             title = excluded.title, publisher = excluded.publisher,
             tp_number = excluded.tp_number, edition = excluded.edition,
             published = excluded.published, retrieved_on = excluded.retrieved_on,
             jurisdiction = excluded.jurisdiction, url = excluded.url,
-            sha256 = excluded.sha256
+            sha256 = excluded.sha256, exams = excluded.exams
         """,
         (
             source.id,
@@ -99,6 +103,7 @@ def upsert_document(conn: psycopg.Connection, source: Source, meta: dict) -> Non
             source.jurisdiction,
             str(source.url),
             meta["sha256"],
+            source.exams,
         ),
     )
 
@@ -110,12 +115,12 @@ def upsert_chunk(
     conn.execute(
         """
         INSERT INTO chunk (id, document_id, section_ref, heading_path, page, text,
-                           token_count, embedding_model, embedding)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s::vector)
+                           token_count, subject, embedding_model, embedding)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s::vector)
         ON CONFLICT (id) DO UPDATE SET
             section_ref = excluded.section_ref, heading_path = excluded.heading_path,
             page = excluded.page, text = excluded.text,
-            token_count = excluded.token_count,
+            token_count = excluded.token_count, subject = excluded.subject,
             embedding_model = excluded.embedding_model,
             embedding = excluded.embedding
         """,
@@ -127,10 +132,22 @@ def upsert_chunk(
             chunk.page,
             chunk.text,
             chunk.token_count,
+            chunk.subject,
             model,
             vector,
         ),
     )
+
+
+def refresh_metadata(conn: psycopg.Connection, chunks: list[Chunk]) -> None:
+    """Update the fields of already-embedded chunks that do not change their
+    embedding."""
+    with conn.cursor() as cursor:
+        cursor.executemany(
+            "UPDATE chunk SET section_ref = %s, page = %s, token_count = %s,"
+            " subject = %s WHERE id = %s",
+            [(c.section_ref, c.page, c.token_count, c.subject, c.id) for c in chunks],
+        )
 
 
 def search(

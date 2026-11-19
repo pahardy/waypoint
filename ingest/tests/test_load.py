@@ -148,3 +148,19 @@ def test_search_can_be_limited_to_one_jurisdiction(conn):
     vector = StubEmbed()([embedding_text(faa_chunk)], "query")[0]
     assert [h.document_id for h in nearest(conn, vector, 5)] == ["faa", "aim"]
     assert [h.document_id for h in nearest(conn, vector, 5, "CA")] == ["aim"]
+
+
+def test_documents_record_their_exams(conn):
+    load_source(conn, SOURCE, META, CHUNKS, StubEmbed(), model="stub")
+    assert conn.execute("SELECT exams FROM document").fetchone()[0] == ["PSTAR"]
+
+
+def test_metadata_of_unchanged_chunks_is_refreshed_without_embedding(conn):
+    load_source(conn, SOURCE, META, CHUNKS, StubEmbed(), model="stub")
+    tagged = [c.model_copy(update={"subject": "air-law", "page": 7}) for c in CHUNKS]
+    stub = StubEmbed()
+    result = load_source(conn, SOURCE, META, tagged, stub, model="stub")
+    assert result.embedded == 0
+    assert stub.calls == [([], "document")]
+    rows = conn.execute("SELECT DISTINCT subject, page FROM chunk").fetchall()
+    assert rows == [("air-law", 7)]

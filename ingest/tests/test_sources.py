@@ -2,7 +2,7 @@ import pytest
 import yaml
 from pydantic import ValidationError
 
-from waypoint_ingest.sources import load_sources
+from waypoint_ingest.sources import Source, load_sources
 
 VALID = {
     "id": "doc",
@@ -52,3 +52,27 @@ def test_nav_canada_is_rejected(tmp_path, publisher):
 def test_question_banks_are_kept_out_of_the_knowledge_base():
     excluded = {s.id for s in load_sources() if not s.knowledge_base}
     assert excluded == {"tp11919", "tp11919-answers", "tp13014"}
+
+
+def subject_source(subjects):
+    return Source(**VALID | {"subjects": subjects})
+
+
+def test_subject_uses_the_longest_matching_section_prefix():
+    source = subject_source(
+        {"*": "air-law", "COM": "air-law", "COM 4": "navigation", "MET": "meteorology"}
+    )
+    assert source.subject_for("COM 4.5.1") == "navigation"
+    assert source.subject_for("COM 4") == "navigation"
+    assert source.subject_for("COM 10.1") == "air-law"
+    assert source.subject_for("MET 2.4") == "meteorology"
+    assert source.subject_for("RAC 1.8") == "air-law"
+
+
+def test_subject_is_none_without_a_match_or_default():
+    assert subject_source({"MET": "meteorology"}).subject_for("RAC 1.8") is None
+
+
+def test_unknown_subjects_are_rejected():
+    with pytest.raises(ValidationError):
+        subject_source({"*": "weather"})

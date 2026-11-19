@@ -56,6 +56,8 @@
   priority: 1
   exams: [FLIGHT_TEST]
   licence: TC, non-commercial reproduction permitted
+  subjects:
+    "*": flight-test
   section_prefix: TP 13723
 
 - id: tc-aim
@@ -70,6 +72,15 @@
   priority: 1
   exams: [PSTAR, PPAER, FLIGHT_TEST]
   licence: TC, non-commercial reproduction permitted
+  subjects:
+    "*": air-law
+    MET: meteorology
+    AIR: aeronautics
+    MAP: navigation
+    "COM 4": navigation
+    "COM 5": navigation
+    "COM 6": navigation
+    "COM 10": navigation
 
 - id: cars
   title: "Canadian Aviation Regulations (SOR/96-433)"
@@ -82,6 +93,8 @@
   priority: 1
   exams: [PSTAR, PPAER, FLIGHT_TEST]
   licence: Federal law; reproduction terms not checked (non-commercial use)
+  subjects:
+    "*": air-law
   section_prefix: CAR
 
 # Priority 2
@@ -97,6 +110,8 @@
   priority: 2
   exams: [PSTAR, PPAER, FLIGHT_TEST]
   licence: TC, non-commercial reproduction permitted
+  subjects:
+    "*": air-law
   section_prefix: STD 421
 
 - id: std428
@@ -110,6 +125,8 @@
   priority: 2
   exams: [FLIGHT_TEST]
   licence: TC, non-commercial reproduction permitted
+  subjects:
+    "*": flight-test
   section_prefix: STD 428
 
 - id: tp13014
@@ -138,6 +155,8 @@
   priority: 2
   exams: [FLIGHT_TEST]
   licence: TC, non-commercial reproduction permitted
+  subjects:
+    "*": flight-test
   section_prefix: TP 975
 
 - id: tp14277
@@ -152,6 +171,8 @@
   priority: 2
   exams: [FLIGHT_TEST]
   licence: TC, non-commercial reproduction permitted
+  subjects:
+    "*": flight-test
   section_prefix: TP 14277
 
 - id: ric21
@@ -165,6 +186,8 @@
   priority: 2
   exams: [PSTAR, PPAER]
   licence: Crown copyright, non-commercial use
+  subjects:
+    "*": air-law
   section_prefix: RIC-21
 
 # Priority 3 (theory only; never cited for Canadian rules)
@@ -183,6 +206,8 @@
   priority: 3
   exams: [PPAER]
   licence: US federal work, public domain
+  subjects:
+    "*": aeronautics
   section_prefix: PHAK
   columns: 2
 
@@ -198,4 +223,6 @@
   priority: 3
   exams: [PPAER]
   licence: US federal work, public domain
+  subjects:
+    "*": meteorology
   section_prefix: AWH

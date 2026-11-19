@@ -228,7 +228,27 @@ Step 6 (remaining sources), done (issue #12):
 - exam-02 now ranks 6th: sections on failing a flight test outrank the
   guide's page on failing part of the written exam.
 
+`POST /retrieve`, done (issue #13):
+- The API embeds the question with `voyage-4-large` and searches only
+  chunks embedded with that model. Body: `question`, `limit` (1 to 20),
+  and optional `exam`, `subject` and `jurisdiction` filters. Each result
+  carries the document title, edition, jurisdiction, section reference,
+  heading path, page, subject, text and score. No match gives an empty
+  list.
+- Filters: `exam` uses the manifest's exams per document (migration
+  0004); `jurisdiction` is the document's; `subject` is set per chunk
+  from the manifest's `subjects` map (for the AIM by part, for example
+  MET is meteorology and COM 4 navigation; the CARs are air law).
+- Change from the data model above: subjects come from this source
+  mapping rather than an `objective`/`chunk_objective` link. Linking
+  chunks to the 650 learning objectives is left for progress tracking
+  (phase 6), where it is needed.
+- `ingest load` now refreshes metadata of unchanged chunks without
+  re-embedding them.
+
 ## Done when
+
+All three are met (2026-11-19).
 
 - All acquired sources are ingested, and chunks link back to section
   references.
