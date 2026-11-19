@@ -133,48 +133,6 @@ def upsert_chunk(
     )
 
 
-def search(
-    conn: psycopg.Connection, query: str, embed: Embed, limit: int = 5
-) -> list[tuple[str, str, float, str]]:
-    """Nearest chunks to a question: (id, edition, similarity, text)."""
-    return [
-        (hit.id, hit.edition, hit.similarity, hit.text)
-        for hit in nearest(conn, embed([query], "query")[0], limit)
-    ]
-
-
-@dataclass
-class Hit:
-    """One retrieved chunk."""
-
-    id: str
-    document_id: str
-    section_ref: str
-    edition: str
-    similarity: float
-    text: str
-
-    @property
-    def section_key(self) -> str:
-        """Source and section, for example `tc-aim:RAC 4.4.8`."""
-        return f"{self.document_id}:{self.section_ref}"
-
-
-def nearest(conn: psycopg.Connection, vector: list[float], limit: int) -> list[Hit]:
-    """Chunks nearest a query vector, most similar first (cosine)."""
-    rows = conn.execute(
-        """
-        SELECT c.id, c.document_id, c.section_ref, d.edition,
-               1 - (c.embedding <=> %s::vector) AS similarity, c.text
-        FROM chunk c JOIN document d ON d.id = c.document_id
-        ORDER BY c.embedding <=> %s::vector
-        LIMIT %s
-        """,
-        (vector, vector, limit),
-    ).fetchall()
-    return [Hit(*row) for row in rows]
-
-
 def read_meta(raw_dir: Path, source_id: str) -> dict:
     """The fetch record: retrieval date and SHA-256 of the downloaded file."""
     return json.loads((raw_dir / source_id / "meta.json").read_text())

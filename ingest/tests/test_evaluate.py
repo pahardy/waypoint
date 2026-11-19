@@ -15,7 +15,8 @@ from waypoint_ingest.evaluate import (
     report_path,
     scores,
 )
-from waypoint_ingest.load import Hit, embedding_text, load_source
+from waypoint_ingest.load import embedding_text, load_source
+from waypoint_ingest.retrieve import Hit
 
 
 def hit(section_ref, document_id="aim"):
@@ -109,7 +110,7 @@ def test_report_lists_scores_by_subject_and_every_miss(conn):
     missed = question("unrelated words", ["aim:RAC 1.1"], subject="air-law")
     outcomes = evaluate(conn, [found, missed], StubEmbed())
     outcomes[1].rank = None
-    text = report(outcomes, ["aim"], chunk_count=2, run_on=date(2026, 11, 19))
+    text = report(outcomes, "hybrid", ["aim"], chunk_count=2, run_on=date(2026, 11, 19))
     assert "- Sources: aim (2 chunks)" in text
     assert "| pstar | 1 | 1.00 | 1.00 |" in text
     assert "| air-law | 1 | 0.00 | 0.00 |" in text
@@ -117,5 +118,5 @@ def test_report_lists_scores_by_subject_and_every_miss(conn):
 
 
 def test_report_path_names_the_date_and_sources():
-    path = report_path(["cars", "tc-aim"], date(2026, 11, 19))
-    assert path.name == "retrieval-2026-11-19-cars-tc-aim.md"
+    path = report_path("hybrid", ["cars", "tc-aim"], date(2026, 11, 19))
+    assert path.name == "retrieval-2026-11-19-hybrid-cars-tc-aim.md"

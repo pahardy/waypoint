@@ -1,11 +1,9 @@
 import hashlib
 import random
 
-import pytest
-
 from waypoint_ingest.chunk import Chunk
 from waypoint_ingest.embeddings import DIMENSIONS
-from waypoint_ingest.load import embedding_text, load_source, read_chunks, search
+from waypoint_ingest.load import load_source, read_chunks
 from waypoint_ingest.pipeline import write_jsonl
 from waypoint_ingest.sources import Source
 
@@ -110,21 +108,6 @@ def test_chunks_no_longer_produced_are_removed(conn):
     result = load_source(conn, SOURCE, META, CHUNKS[:1], StubEmbed(), model="stub")
     assert result.removed == 1
     assert count(conn, "chunk") == 1
-
-
-def test_search_returns_the_nearest_chunk_with_its_edition(conn):
-    load_source(conn, SOURCE, META, CHUNKS, StubEmbed(), model="stub")
-    query = embedding_text(CHUNKS[1])
-    stub = StubEmbed()
-    results = search(conn, query, stub, limit=2)
-    chunk_id, edition, similarity, text = results[0]
-    assert (chunk_id, edition, text) == (
-        "aim:RAC 1.2:0",
-        "2026-2",
-        "Cruising altitudes.",
-    )
-    assert similarity == pytest.approx(1.0)
-    assert stub.calls[0][1] == "query"
 
 
 def test_chunks_with_unicode_line_separators_read_back_intact(tmp_path):

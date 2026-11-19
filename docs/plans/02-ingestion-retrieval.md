@@ -169,6 +169,34 @@ Step 4 (CARs and PPAER guide), done (issue #11):
   slots for non-exam questions, never first. They add little and could
   be excluded if the instructor finds them unhelpful.
 
+Step 5 (hybrid search), done (issue #12): **not kept**.
+- Tried: PostgreSQL full-text search on chunk text and heading path (any
+  word of the question may match), merged with vector search by
+  reciprocal rank fusion over the top 50 of each.
+- Results over the same 72 questions and data (reports in `docs/evals/`):
+
+  | Method | Recall@5 | MRR@10 |
+  |---|---|---|
+  | Vector only | **0.99** | **0.92** |
+  | Keyword only | 0.50 | 0.32 |
+  | Keyword only, length-normalized | 0.54 | 0.37 |
+  | Hybrid | 0.89 | 0.71 |
+  | Hybrid, length-normalized | 0.90 | 0.75 |
+
+- Why it lost: keyword matches favour long chunks that share common
+  words ("part", "aircraft", "operate"), and fusion lets them push good
+  vector results out of the top 5. Hybrid did find all seven exam
+  questions, but missed eight others that vector search finds.
+- The code is in the git history (commit "Phase 2 step 5: hybrid search
+  experiment") and was then removed. Revisit if the eval later shows
+  misses on exact terms such as regulation numbers or abbreviations.
+- Run-to-run check: query embeddings are identical across calls, and the
+  HNSW index returns the same top 10 as an exact search (checked against
+  numpy) for all 72 questions. The step 4 run's exam-02 miss could not be
+  reproduced; at about 3,000 chunks the planner now chooses exact search.
+  Approximate HNSW search is the likely cause; re-check index and exact
+  results as the corpus grows.
+
 ## Done when
 
 - All acquired sources are ingested, and chunks link back to section
