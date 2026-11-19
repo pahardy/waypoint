@@ -3,15 +3,23 @@
 import argparse
 import logging
 import os
+from datetime import date
 
 import psycopg
 
 from waypoint_ingest.curriculum import extract_all, write_objectives
 from waypoint_ingest.embeddings import embed
+from waypoint_ingest.evaluate import (
+    EVALS_DIR,
+    evaluate,
+    load_questions,
+    report,
+    scores,
+)
 from waypoint_ingest.fetch import RAW_DIR, fetch_all
 from waypoint_ingest.load import load_source, read_chunks, read_meta, search
 from waypoint_ingest.pipeline import CHUNKS_DIR, chunk_source
-from waypoint_ingest.sources import Source, load_sources
+from waypoint_ingest.sources import REPO_ROOT, Source, load_sources
 
 
 def main() -> None:
@@ -28,6 +36,7 @@ def main() -> None:
     find = commands.add_parser("search", help="show the chunks nearest a question")
     find.add_argument("query")
     find.add_argument("--limit", type=int, default=5)
+    commands.add_parser("eval", help="score retrieval on the eval set")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
@@ -41,6 +50,8 @@ def main() -> None:
         run_load(source_by_id(args.source_id))
     elif args.command == "search":
         run_search(args.query, args.limit)
+    elif args.command == "eval":
+        run_eval()
 
 
 def source_by_id(source_id: str) -> Source:
@@ -96,3 +107,17 @@ def run_search(query: str, limit: int) -> None:
         for chunk_id, edition, similarity, text in search(conn, query, embed, limit):
             print(f"{similarity:.3f}  {chunk_id}  (edition {edition})")
             print(f"       {text[:160]!r}")
+
+
+def run_eval() -> None:
+    """Score retrieval on the eval set and write a report to docs/evals/."""
+    with psycopg.connect(os.environ["DATABASE_URL"]) as conn:
+        outcomes = evaluate(conn, load_questions(), embed)
+        chunk_count = conn.execute("SELECT count(*) FROM chunk").fetchone()[0]
+    today = date.today()
+    path = EVALS_DIR / f"retrieval-{today.isoformat()}.md"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(report(outcomes, chunk_count, today))
+    recall, mrr = scores(outcomes)
+    print(f"recall@5 {recall:.2f}, MRR@10 {mrr:.2f} over {len(outcomes)} questions")
+    print(f"report: {path.relative_to(REPO_ROOT)}")

@@ -124,6 +124,26 @@ Step 2 (embeddings and database load), done:
   SPECI) each returned the matching AIM section first. The step 3 eval
   set will measure this properly.
 
+Step 3 (eval set and baseline), done (issue #10):
+- `ingest/eval/retrieval.yaml`: 65 questions, written in a student's
+  words, across PSTAR (13), air law (15), navigation (12), meteorology
+  (12) and aeronautics (13). Each expected section was confirmed by
+  reading the AIM text, not by searching. The five topics seen during
+  the step 2 hand check are left out.
+- `uv run ingest eval` writes a report to `docs/evals/`.
+- Baseline (`docs/evals/retrieval-2026-11-19.md`), vector search only:
+  **recall@5 0.98, MRR@10 0.93**. The one miss (Class G services)
+  ranked 7th.
+- The baseline is probably optimistic. Only the AIM is loaded; the
+  questions were written by someone who had read the sections; and with
+  65 questions, one miss moves recall by about 1.5 points. Expect lower
+  scores once the CARs and guides compete for the same questions. Their
+  sections must then be added to `expected`, or correct answers will
+  count as misses.
+- Suggested target change: keep recall@5 at or above 0.9 as sources are
+  added, and add harder questions (numbers, two-part, scenario wording)
+  before comparing search methods in step 5.
+
 ## Done when
 
 - All acquired sources are ingested, and chunks link back to section
