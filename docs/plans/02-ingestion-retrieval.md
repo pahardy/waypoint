@@ -197,6 +197,37 @@ Step 5 (hybrid search), done (issue #12): **not kept**.
   Approximate HNSW search is the likely cause; re-check index and exact
   results as the corpus grows.
 
+Step 6 (remaining sources), done (issue #12):
+- Loaded: TP 13723 and TP 975 (split by page); Standards 421 and 428,
+  TP 14277 and RIC-21 (`html_sections.py`, split at h2 to h4 and cited
+  by heading path); the FAA PHAK (two columns, read in the PDF's block
+  order) and Aviation Weather Handbook, tagged `non-CA`. 4,817 chunks in
+  all.
+- Kept out (`knowledge_base: false` in `sources.yaml`): TP 11919 is a
+  bank of PSTAR multiple-choice questions without answers; loading it
+  lowered MRR@10 from 0.92 to 0.88 because questions rank above real
+  answers. It belongs to phase 4 with its answer key. The answer key and
+  TP 13014 (question style only) are also kept out.
+- New sources were judged by pooling: unlabelled chunks that reached a
+  question's top 5 were read and added to `expected` only if they state
+  the answer. FAA pages count only for facts that are not Canada-specific.
+  18 FAA pages were added; US rules, products and publications were not.
+- Results (`docs/evals/`):
+
+  | Search | Recall@5 | MRR@10 |
+  |---|---|---|
+  | Canadian sources only | 0.97 | 0.92 |
+  | All sources, FAA included | 0.96 | 0.88 |
+
+- FAA pages rank above Canadian answers for many meteorology, navigation
+  and aeronautics questions, and for one (winds aloft, true or magnetic)
+  US forecast products push the Canadian answer out of the top 10.
+  Recommendation for phase 3: search Canadian sources first and use the
+  FAA handbooks only as labelled supplementary theory, never for rules.
+  `nearest` and `ingest eval` take a jurisdiction filter for this.
+- exam-02 now ranks 6th: sections on failing a flight test outrank the
+  guide's page on failing part of the written exam.
+
 ## Done when
 
 - All acquired sources are ingested, and chunks link back to section

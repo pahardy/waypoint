@@ -28,6 +28,7 @@ class Source(BaseModel):
     licence: str
     section_prefix: str | None = None
     knowledge_base: bool = True
+    columns: Literal[1, 2] = 1
 
     @field_validator("publisher")
     @classmethod

@@ -160,17 +160,24 @@ class Hit:
         return f"{self.document_id}:{self.section_ref}"
 
 
-def nearest(conn: psycopg.Connection, vector: list[float], limit: int) -> list[Hit]:
-    """Chunks nearest a query vector, most similar first (cosine)."""
+def nearest(
+    conn: psycopg.Connection,
+    vector: list[float],
+    limit: int,
+    jurisdiction: str | None = None,
+) -> list[Hit]:
+    """Chunks nearest a query vector, most similar first (cosine), optionally
+    only from sources of one jurisdiction (`CA` or `non-CA`)."""
     rows = conn.execute(
         """
         SELECT c.id, c.document_id, c.section_ref, d.edition,
                1 - (c.embedding <=> %s::vector) AS similarity, c.text
         FROM chunk c JOIN document d ON d.id = c.document_id
+        WHERE %s::text IS NULL OR d.jurisdiction = %s
         ORDER BY c.embedding <=> %s::vector
         LIMIT %s
         """,
-        (vector, vector, limit),
+        (vector, jurisdiction, jurisdiction, vector, limit),
     ).fetchall()
     return [Hit(*row) for row in rows]
 

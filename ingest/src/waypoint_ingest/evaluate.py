@@ -75,7 +75,10 @@ def unknown_sections(conn: psycopg.Connection, questions: list[Question]) -> set
 
 
 def evaluate(
-    conn: psycopg.Connection, questions: list[Question], embed: Embed
+    conn: psycopg.Connection,
+    questions: list[Question],
+    embed: Embed,
+    jurisdiction: str | None = None,
 ) -> list[Outcome]:
     """Retrieve the top chunks for every question and rank the first hit."""
     unknown = unknown_sections(conn, questions)
@@ -84,7 +87,7 @@ def evaluate(
     vectors = embed([q.question for q in questions], "query")
     outcomes = []
     for question, vector in zip(questions, vectors, strict=True):
-        hits = nearest(conn, vector, MRR_K)
+        hits = nearest(conn, vector, MRR_K, jurisdiction)
         outcomes.append(Outcome(question, first_rank(hits, question.expected), hits))
     return outcomes
 
@@ -95,14 +98,21 @@ def scores(outcomes: list[Outcome]) -> tuple[float, float]:
     return recall_at(ranks, RECALL_K), mean_reciprocal_rank(ranks, MRR_K)
 
 
-def report_path(sources: list[str], run_on: date) -> Path:
+def report_path(
+    sources: list[str], run_on: date, jurisdiction: str | None = None
+) -> Path:
     """`docs/evals/retrieval-<date>-<sources>.md`, so runs over different
     sources on the same day do not overwrite each other."""
-    return EVALS_DIR / f"retrieval-{run_on.isoformat()}-{'-'.join(sources)}.md"
+    only = f"-{jurisdiction}-only" if jurisdiction else ""
+    return EVALS_DIR / f"retrieval-{run_on.isoformat()}-{'-'.join(sources)}{only}.md"
 
 
 def report(
-    outcomes: list[Outcome], sources: list[str], chunk_count: int, run_on: date
+    outcomes: list[Outcome],
+    sources: list[str],
+    chunk_count: int,
+    run_on: date,
+    jurisdiction: str | None = None,
 ) -> str:
     """A Markdown report: overall and per-subject scores, then every miss."""
     recall, mrr = scores(outcomes)
@@ -111,7 +121,8 @@ def report(
         "",
         f"- Model: `{MODEL}`, vector search only (cosine)",
         f"- Questions: {len(outcomes)} (`ingest/eval/retrieval.yaml`)",
-        f"- Sources: {', '.join(sources)} ({chunk_count} chunks)",
+        f"- Sources: {', '.join(sources)} ({chunk_count} chunks)"
+        + (f", {jurisdiction} only" if jurisdiction else ""),
         "",
         f"| Subject | Questions | Recall@{RECALL_K} | MRR@{MRR_K} |",
         "|---|---|---|---|",

@@ -183,6 +183,8 @@
   priority: 3
   exams: [PPAER]
   licence: US federal work, public domain
+  section_prefix: PHAK
+  columns: 2
 
 - id: faa-awh
   title: "Aviation Weather Handbook"
@@ -196,3 +198,4 @@
   priority: 3
   exams: [PPAER]
   licence: US federal work, public domain
+  section_prefix: AWH

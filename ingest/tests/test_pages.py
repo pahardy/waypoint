@@ -2,7 +2,7 @@ import pymupdf
 import pytest
 from conftest import text
 
-from waypoint_ingest.pages import has_outline, page_sections
+from waypoint_ingest.pages import has_section_bookmarks, page_sections
 
 
 @pytest.fixture
@@ -42,6 +42,31 @@ def test_page_numbers_are_dropped(guide_pdf):
     assert [p.text for p in second.paragraphs] == ["A page with no heading."]
 
 
-def test_outline_detection(guide_pdf, outlined_pdf):
-    assert not has_outline(guide_pdf)
-    assert has_outline(outlined_pdf)
+def test_section_bookmark_detection(guide_pdf, outlined_pdf):
+    assert not has_section_bookmarks(guide_pdf)
+    assert has_section_bookmarks(outlined_pdf)
+
+
+@pytest.fixture
+def two_column_pdf(tmp_path):
+    """A handbook page whose right column starts higher than its left column
+    but comes later in the PDF, as in the FAA handbooks."""
+    doc = pymupdf.open()
+    page = doc.new_page(width=594, height=792)
+    text(page, 40, 40, "Aeromedical Factors", size=16, bold=True)
+    text(page, 40, 100, "Left column text comes first.")
+    text(page, 320, 70, "Right column text comes second.")
+    text(page, 36, 728, "2-22")
+    path = tmp_path / "handbook.pdf"
+    doc.save(path)
+    return path
+
+
+def test_two_column_pages_follow_the_pdf_block_order(two_column_pdf):
+    (section,) = page_sections(two_column_pdf, "PHAK", "Handbook", columns=2)
+    assert [p.text for p in section.paragraphs] == [
+        "Aeromedical Factors",
+        "Left column text comes first.",
+        "Right column text comes second.",
+    ]
+    assert section.heading_path == ["Handbook", "Aeromedical Factors", "PHAK p.1"]
