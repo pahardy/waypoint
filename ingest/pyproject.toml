@@ -9,9 +9,12 @@ authors = [
 requires-python = ">=3.14"
 dependencies = [
     "httpx>=0.28.1",
+    "pgvector>=0.5.1",
+    "psycopg[binary]>=3.3.9",
     "pydantic>=2.14.3",
     "pymupdf>=2.1",
     "pyyaml>=6.0.3",
+    "voyageai>=0.6.0",
 ]
 
 [project.scripts]
@@ -29,5 +32,9 @@ dev = [
 
 [tool.pytest]
 testpaths = ["tests"]
-# PyMuPDF's SWIG bindings warn on Python 3.14; not our code.
-filterwarnings = ["ignore:builtin type .* has no __module__ attribute:DeprecationWarning"]
+# PyMuPDF's SWIG bindings and langsmith (via voyageai) warn on Python 3.14;
+# not our code.
+filterwarnings = [
+    "ignore:builtin type .* has no __module__ attribute:DeprecationWarning",
+    "ignore:'asyncio.iscoroutinefunction' is deprecated:DeprecationWarning",
+]

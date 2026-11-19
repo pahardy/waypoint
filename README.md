@@ -124,5 +124,16 @@ uv run ingest fetch
 uv run ingest objectives
 ```
 
-Tests: `uv run pytest` in `api/` and `ingest/` (`api/` needs the database and `DATABASE_URL`),
+Knowledge base (needs the database and a Voyage AI key):
+
+```
+cd ingest
+cp .env.example .env                       # add VOYAGE_API_KEY
+export $(cat .env)
+uv run ingest chunk tc-aim
+uv run ingest load tc-aim
+uv run ingest search "What is the cruising altitude rule for VFR flight?"
+```
+
+Tests: `uv run pytest` in `api/` and `ingest/` (both need the database and `DATABASE_URL`),
 `npm test` in `web/`. CI runs these on every push.

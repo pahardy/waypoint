@@ -103,6 +103,27 @@ Step 1 (TC AIM 2026-2), done:
   columns is read column by column. Token counts are an estimate (words
   and punctuation) until the embedding model is chosen in step 2.
 
+Step 2 (embeddings and database load), done:
+- Model: `voyage-4-large`, 1,024 dimensions (issue #9,
+  `docs/EMBEDDINGS.md`). Documents use input type `document` and are
+  embedded with their heading path; questions use `query`.
+- Tables `document` and `chunk` (migration 0002) with an HNSW cosine
+  index. Each chunk records the model that embedded it.
+- `ingest load` embeds only new or changed chunks. `ingest search`
+  queries by hand.
+- Measured with Voyage's tokenizer: the TC AIM is about 0.50 million
+  tokens (about USD 0.06, inside the free allowance). The estimate
+  undercounts: the median real-to-estimate ratio is 1.35, and the
+  largest chunk is 1,796 real tokens. Embedding is unaffected (32,000
+  token context). Consider switching the chunker to the real tokenizer
+  after the baseline eval.
+- All 1,477 TC AIM chunks loaded in about 20 seconds. Re-running embeds
+  nothing.
+- Manual check: five student questions (icing reports, VFR cruising
+  altitudes, wake turbulence, mandatory frequency procedures, METAR and
+  SPECI) each returned the matching AIM section first. The step 3 eval
+  set will measure this properly.
+
 ## Done when
 
 - All acquired sources are ingested, and chunks link back to section
