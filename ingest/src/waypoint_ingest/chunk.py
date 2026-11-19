@@ -19,7 +19,7 @@ class Chunk(BaseModel):
     jurisdiction: str
     section_ref: str
     heading_path: list[str]
-    page: int
+    page: int | None
     text: str
     token_count: int
 

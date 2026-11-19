@@ -1,6 +1,6 @@
 from waypoint_ingest.chunk import pack, token_count
 from waypoint_ingest.normalize import Paragraph
-from waypoint_ingest.pipeline import build_chunks
+from waypoint_ingest.pipeline import build_chunks, pdf_sections
 from waypoint_ingest.sources import Source
 
 
@@ -41,7 +41,7 @@ def test_long_paragraph_is_split():
 
 
 def test_chunks_carry_citation_fields(outlined_pdf):
-    _, chunks, _ = build_chunks(source(), outlined_pdf)
+    _, chunks = build_chunks(source(), pdf_sections(outlined_pdf)[0])
     chunk = next(c for c in chunks if c.section_ref == "GEN 2.0")
     assert chunk.id == "aim:GEN 2.0:0"
     assert (chunk.source_id, chunk.edition, chunk.page) == ("aim", "2026-2", 2)
@@ -49,17 +49,17 @@ def test_chunks_carry_citation_fields(outlined_pdf):
 
 
 def test_chunks_never_cross_a_section_boundary(outlined_pdf):
-    _, chunks, _ = build_chunks(source(), outlined_pdf)
+    _, chunks = build_chunks(source(), pdf_sections(outlined_pdf)[0])
     texts = {c.section_ref: c.text for c in chunks}
     assert texts["GEN 1.1"].endswith("(a) A list item.")
     assert texts["GEN 1.2"] == "Units text in the right column."
 
 
 def test_empty_parent_sections_have_no_chunks(outlined_pdf):
-    _, chunks, _ = build_chunks(source(), outlined_pdf)
+    _, chunks = build_chunks(source(), pdf_sections(outlined_pdf)[0])
     assert "GEN 1.0" not in {c.section_ref for c in chunks}
 
 
 def test_non_canadian_sources_tag_their_chunks(outlined_pdf):
-    _, chunks, _ = build_chunks(source("non-CA"), outlined_pdf)
+    _, chunks = build_chunks(source("non-CA"), pdf_sections(outlined_pdf)[0])
     assert {c.jurisdiction for c in chunks} == {"non-CA"}

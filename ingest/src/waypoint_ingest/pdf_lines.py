@@ -67,9 +67,11 @@ def page_lines(
 
 
 def tidy(text: str) -> str:
-    """Remove spacing artifacts left by joining spans."""
+    """Remove spacing artifacts left by joining spans, and shorten dot
+    leaders (`Contents ........ 4`) to an ellipsis."""
     text = re.sub(r"\(\s+", "(", text)
     text = re.sub(r"\s+\)", ")", text)
+    text = re.sub(r"\s*\.{4,}\s*", " ... ", text).strip()
     return re.sub(r"(?<=\w)-\s+(?=[A-Z])", "-", text)
 
 

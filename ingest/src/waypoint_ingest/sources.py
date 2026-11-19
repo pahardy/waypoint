@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Literal
 
 import yaml
-from pydantic import BaseModel, HttpUrl, field_validator
+from pydantic import BaseModel, HttpUrl, field_validator, model_validator
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 SOURCES_FILE = REPO_ROOT / "ingest" / "sources.yaml"
@@ -26,6 +26,7 @@ class Source(BaseModel):
     priority: Literal[1, 2, 3]
     exams: list[Literal["PSTAR", "PPAER", "FLIGHT_TEST"]]
     licence: str
+    section_prefix: str | None = None
 
     @field_validator("publisher")
     @classmethod
@@ -34,6 +35,13 @@ class Source(BaseModel):
         if value.strip().lower() in EXCLUDED_PUBLISHERS:
             raise ValueError(f"{value} documents are excluded")
         return value
+
+    @model_validator(mode="after")
+    def xml_has_section_prefix(self) -> Source:
+        """Regulation sections are cited with a prefix, for example `CAR`."""
+        if self.format == "xml" and not self.section_prefix:
+            raise ValueError(f"{self.id}: xml sources need a section_prefix")
+        return self
 
 
 def load_sources(path: Path = SOURCES_FILE) -> list[Source]:

@@ -1,18 +1,20 @@
 # Retrieval Eval: 2026-11-19
 
 - Model: `voyage-4-large`, vector search only (cosine)
-- Questions: 65 (`ingest/eval/retrieval.yaml`)
-- Chunks searched: 1477
+- Questions: 72 (`ingest/eval/retrieval.yaml`)
+- Sources: cars, tc-aim, tp12880 (2983 chunks)
 
 | Subject | Questions | Recall@5 | MRR@10 |
 |---|---|---|---|
-| pstar | 13 | 1.00 | 0.96 |
-| air-law | 15 | 0.93 | 0.94 |
+| pstar | 13 | 1.00 | 1.00 |
+| air-law | 15 | 0.93 | 0.91 |
 | navigation | 12 | 1.00 | 0.96 |
 | meteorology | 12 | 1.00 | 0.89 |
 | aeronautics | 13 | 1.00 | 0.91 |
-| **all** | **65** | **0.98** | **0.93** |
+| exam | 7 | 0.86 | 0.79 |
+| **all** | **72** | **0.97** | **0.92** |
 
 ## Not in the top 5
 
 - **air-law-06** (rank 7): Does ATC provide me any service at all in uncontrolled airspace? Expected RAC 2.8.7; top 3 were RAC 1.5.8, RAC 5.7, RAC 1.1.1.
+- **exam-02** (not in top 10): I passed the written overall but failed the meteorology part. What happens now? Expected TP 12880 p.8; top 3 were MET 8.3.2, RAC 4.5.1, MET 5.4.
