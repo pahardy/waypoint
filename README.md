@@ -85,6 +85,7 @@ Build phases:
 - `docs/RESEARCH.md` -- source research results and decisions
 - `docs/TECHNICAL_PLAN.md` -- architecture and phased development plan
   (phase details in `docs/plans/`)
+- `docs/EMBEDDINGS.md` -- embedding model candidates for retrieval
 - `docs/TESTING.md` -- testing approach (per-phase tests in each plan)
 - `docs/BRANDING.md` -- brand, look and feel
 
