@@ -7,9 +7,10 @@ from pathlib import Path
 from waypoint_ingest.chunk import Chunk, pack, token_count
 from waypoint_ingest.extract import Heading, extract_sections
 from waypoint_ingest.fetch import RAW_DIR
+from waypoint_ingest.html_sections import html_sections
 from waypoint_ingest.justice_xml import regulation_sections
 from waypoint_ingest.normalize import TextSection, paragraphs
-from waypoint_ingest.pages import has_outline, page_sections
+from waypoint_ingest.pages import has_section_bookmarks, page_sections
 from waypoint_ingest.sources import REPO_ROOT, Source
 
 TEXT_DIR = REPO_ROOT / "data" / "text"
@@ -30,12 +31,17 @@ def source_sections(
 ) -> tuple[list[TextSection], list[Heading]]:
     """Read a downloaded source into sections, by its format."""
     path = raw_dir / source.id / f"{source.id}.{source.format}"
-    if source.format == "pdf" and has_outline(path):
+    if source.format == "pdf" and has_section_bookmarks(path):
         return pdf_sections(path)
     if source.format == "pdf":
-        return page_sections(path, source.section_prefix, source.title), []
+        sections = page_sections(
+            path, source.section_prefix, source.title, source.columns
+        )
+        return sections, []
     if source.format == "xml":
         return regulation_sections(path, source.section_prefix), []
+    if source.format == "html":
+        return html_sections(path, source.section_prefix), []
     raise ValueError(f"{source.id}: chunking {source.format} is not supported yet")
 
 

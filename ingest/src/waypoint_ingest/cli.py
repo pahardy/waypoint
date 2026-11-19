@@ -36,7 +36,8 @@ def main() -> None:
     find = commands.add_parser("search", help="show the chunks nearest a question")
     find.add_argument("query")
     find.add_argument("--limit", type=int, default=5)
-    commands.add_parser("eval", help="score retrieval on the eval set")
+    score = commands.add_parser("eval", help="score retrieval on the eval set")
+    score.add_argument("--jurisdiction", choices=["CA", "non-CA"], default=None)
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
@@ -51,7 +52,7 @@ def main() -> None:
     elif args.command == "search":
         run_search(args.query, args.limit)
     elif args.command == "eval":
-        run_eval()
+        run_eval(args.jurisdiction)
 
 
 def source_by_id(source_id: str) -> Source:
@@ -92,6 +93,10 @@ def run_chunk(source: Source) -> None:
 
 def run_load(source: Source) -> None:
     """Embed new or changed chunks and write them to the database."""
+    if not source.knowledge_base:
+        raise SystemExit(
+            f"{source.id} is not part of the knowledge base (sources.yaml)"
+        )
     chunks = read_chunks(CHUNKS_DIR / f"{source.id}.jsonl")
     with psycopg.connect(os.environ["DATABASE_URL"]) as conn:
         result = load_source(conn, source, read_meta(RAW_DIR, source.id), chunks, embed)
@@ -109,16 +114,28 @@ def run_search(query: str, limit: int) -> None:
             print(f"       {text[:160]!r}")
 
 
-def run_eval() -> None:
-    """Score retrieval on the eval set and write a report to docs/evals/."""
+def run_eval(jurisdiction: str | None) -> None:
+    """Score retrieval on the eval set and write a report to docs/evals/,
+    optionally searching only sources of one jurisdiction."""
     with psycopg.connect(os.environ["DATABASE_URL"]) as conn:
-        outcomes = evaluate(conn, load_questions(), embed)
-        chunk_count = conn.execute("SELECT count(*) FROM chunk").fetchone()[0]
-        sources = [r[0] for r in conn.execute("SELECT id FROM document ORDER BY id")]
+        outcomes = evaluate(conn, load_questions(), embed, jurisdiction)
+        sources, chunk_count = searched_sources(conn, jurisdiction)
     today = date.today()
-    path = report_path(sources, today)
+    path = report_path(sources, today, jurisdiction)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(report(outcomes, sources, chunk_count, today))
+    path.write_text(report(outcomes, sources, chunk_count, today, jurisdiction))
     recall, mrr = scores(outcomes)
     print(f"recall@5 {recall:.2f}, MRR@10 {mrr:.2f} over {len(outcomes)} questions")
     print(f"report: {path.relative_to(REPO_ROOT)}")
+
+
+def searched_sources(
+    conn: psycopg.Connection, jurisdiction: str | None
+) -> tuple[list[str], int]:
+    """The loaded sources a search covers, and their chunk count."""
+    rows = conn.execute(
+        "SELECT d.id, count(c.id) FROM document d JOIN chunk c ON c.document_id = d.id"
+        " WHERE %s::text IS NULL OR d.jurisdiction = %s GROUP BY d.id ORDER BY d.id",
+        (jurisdiction, jurisdiction),
+    ).fetchall()
+    return [r[0] for r in rows], sum(r[1] for r in rows)

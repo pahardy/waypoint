@@ -5,7 +5,13 @@ import pytest
 
 from waypoint_ingest.chunk import Chunk
 from waypoint_ingest.embeddings import DIMENSIONS
-from waypoint_ingest.load import embedding_text, load_source, read_chunks, search
+from waypoint_ingest.load import (
+    embedding_text,
+    load_source,
+    nearest,
+    read_chunks,
+    search,
+)
 from waypoint_ingest.pipeline import write_jsonl
 from waypoint_ingest.sources import Source
 
@@ -132,3 +138,13 @@ def test_chunks_with_unicode_line_separators_read_back_intact(tmp_path):
     path = tmp_path / "aim.jsonl"
     write_jsonl(path, [c.model_dump() for c in chunks])
     assert read_chunks(path) == chunks
+
+
+def test_search_can_be_limited_to_one_jurisdiction(conn):
+    faa = SOURCE.model_copy(update={"id": "faa", "jurisdiction": "non-CA"})
+    load_source(conn, SOURCE, META, CHUNKS[:1], StubEmbed(), model="stub")
+    faa_chunk = CHUNKS[1].model_copy(update={"id": "faa:RAC 1.2:0", "source_id": "faa"})
+    load_source(conn, faa, META, [faa_chunk], StubEmbed(), model="stub")
+    vector = StubEmbed()([embedding_text(faa_chunk)], "query")[0]
+    assert [h.document_id for h in nearest(conn, vector, 5)] == ["faa", "aim"]
+    assert [h.document_id for h in nearest(conn, vector, 5, "CA")] == ["aim"]

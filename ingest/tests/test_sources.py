@@ -47,3 +47,8 @@ def test_duplicate_ids_are_rejected(tmp_path):
 def test_nav_canada_is_rejected(tmp_path, publisher):
     with pytest.raises(ValidationError, match="excluded"):
         load_sources(write_manifest(tmp_path, [{**VALID, "publisher": publisher}]))
+
+
+def test_question_banks_are_kept_out_of_the_knowledge_base():
+    excluded = {s.id for s in load_sources() if not s.knowledge_base}
+    assert excluded == {"tp11919", "tp11919-answers", "tp13014"}

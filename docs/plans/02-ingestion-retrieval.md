@@ -169,6 +169,65 @@ Step 4 (CARs and PPAER guide), done (issue #11):
   slots for non-exam questions, never first. They add little and could
   be excluded if the instructor finds them unhelpful.
 
+Step 5 (hybrid search), done (issue #12): **not kept**.
+- Tried: PostgreSQL full-text search on chunk text and heading path (any
+  word of the question may match), merged with vector search by
+  reciprocal rank fusion over the top 50 of each.
+- Results over the same 72 questions and data (reports in `docs/evals/`):
+
+  | Method | Recall@5 | MRR@10 |
+  |---|---|---|
+  | Vector only | **0.99** | **0.92** |
+  | Keyword only | 0.50 | 0.32 |
+  | Keyword only, length-normalized | 0.54 | 0.37 |
+  | Hybrid | 0.89 | 0.71 |
+  | Hybrid, length-normalized | 0.90 | 0.75 |
+
+- Why it lost: keyword matches favour long chunks that share common
+  words ("part", "aircraft", "operate"), and fusion lets them push good
+  vector results out of the top 5. Hybrid did find all seven exam
+  questions, but missed eight others that vector search finds.
+- The code is in the git history (commit "Phase 2 step 5: hybrid search
+  experiment") and was then removed. Revisit if the eval later shows
+  misses on exact terms such as regulation numbers or abbreviations.
+- Run-to-run check: query embeddings are identical across calls, and the
+  HNSW index returns the same top 10 as an exact search (checked against
+  numpy) for all 72 questions. The step 4 run's exam-02 miss could not be
+  reproduced; at about 3,000 chunks the planner now chooses exact search.
+  Approximate HNSW search is the likely cause; re-check index and exact
+  results as the corpus grows.
+
+Step 6 (remaining sources), done (issue #12):
+- Loaded: TP 13723 and TP 975 (split by page); Standards 421 and 428,
+  TP 14277 and RIC-21 (`html_sections.py`, split at h2 to h4 and cited
+  by heading path); the FAA PHAK (two columns, read in the PDF's block
+  order) and Aviation Weather Handbook, tagged `non-CA`. 4,817 chunks in
+  all.
+- Kept out (`knowledge_base: false` in `sources.yaml`): TP 11919 is a
+  bank of PSTAR multiple-choice questions without answers; loading it
+  lowered MRR@10 from 0.92 to 0.88 because questions rank above real
+  answers. It belongs to phase 4 with its answer key. The answer key and
+  TP 13014 (question style only) are also kept out.
+- New sources were judged by pooling: unlabelled chunks that reached a
+  question's top 5 were read and added to `expected` only if they state
+  the answer. FAA pages count only for facts that are not Canada-specific.
+  18 FAA pages were added; US rules, products and publications were not.
+- Results (`docs/evals/`):
+
+  | Search | Recall@5 | MRR@10 |
+  |---|---|---|
+  | Canadian sources only | 0.97 | 0.92 |
+  | All sources, FAA included | 0.96 | 0.88 |
+
+- FAA pages rank above Canadian answers for many meteorology, navigation
+  and aeronautics questions, and for one (winds aloft, true or magnetic)
+  US forecast products push the Canadian answer out of the top 10.
+  Recommendation for phase 3: search Canadian sources first and use the
+  FAA handbooks only as labelled supplementary theory, never for rules.
+  `nearest` and `ingest eval` take a jurisdiction filter for this.
+- exam-02 now ranks 6th: sections on failing a flight test outrank the
+  guide's page on failing part of the written exam.
+
 ## Done when
 
 - All acquired sources are ingested, and chunks link back to section

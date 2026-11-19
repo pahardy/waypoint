@@ -8,6 +8,13 @@
 # mandatory frequency procedures, and METAR/SPECI. Their search results were
 # seen during the step 2 hand check, so questions on them would be biased.
 #
+# Sources loaded in step 6 (TP 13723, TP 975, Standards 421 and 428, TP 14277,
+# RIC-21 and the FAA handbooks) were judged by pooling: every unlabelled chunk
+# from them that ranked in a question's top 5, above its first correct
+# answer, was read and added only if it states the answer itself. FAA pages
+# count only for facts that are not Canada-specific (physiology, physics,
+# weather, instruments); never for rules, Canadian products or publications.
+#
 # CAR sections (cars:CAR x) were added when the CARs were loaded, found by
 # keyword search of the regulation text and confirmed by reading, before the
 # eval was re-run. A CAR section counts only if it states the answer itself;
@@ -203,7 +210,7 @@
   exam: PPAER
   subject: navigation
   question: Why does my DME show more distance than my actual ground distance when I'm high over the station?
-  expected: ["tc-aim:COM 4.7"]
+  expected: ["tc-aim:COM 4.7", "faa-phak:PHAK p.414"]
 
 - id: navigation-05
   exam: PPAER
@@ -245,7 +252,7 @@
   exam: PPAER
   subject: navigation
   question: What precautions should I take when using a GPS for VFR navigation?
-  expected: ["tc-aim:COM 5.11"]
+  expected: ["tc-aim:COM 5.11", "faa-phak:PHAK p.419", "faa-phak:PHAK p.420"]
 
 - id: navigation-12
   exam: PPAER
@@ -263,7 +270,7 @@
   exam: PPAER
   subject: meteorology
   question: How should I describe turbulence that changes my altitude but leaves me in control?
-  expected: ["tc-aim:MET 2.2.2"]
+  expected: ["tc-aim:MET 2.2.2", "faa-awh:AWH p.233"]
 
 - id: meteorology-03
   exam: PPAER
@@ -323,7 +330,7 @@
   exam: PPAER
   subject: meteorology
   question: What is a microburst and why is it dangerous when landing?
-  expected: ["tc-aim:AIR 2.8", "tc-aim:MET 2.3"]
+  expected: ["tc-aim:AIR 2.8", "tc-aim:MET 2.3", "faa-awh:AWH p.263", "faa-awh:AWH p.266"]
 
 - id: aeronautics-01
   exam: PPAER
@@ -335,7 +342,7 @@
   exam: PPAER
   subject: aeronautics
   question: What are the warning signs of hypoxia?
-  expected: ["tc-aim:AIR 3.2.1", "tc-aim:AIR 3.5"]
+  expected: ["tc-aim:AIR 3.2.1", "tc-aim:AIR 3.5", "faa-phak:PHAK p.426"]
 
 - id: aeronautics-03
   exam: PPAER
@@ -347,31 +354,31 @@
   exam: PPAER
   subject: aeronautics
   question: Why do I feel like I'm turning when I'm actually flying straight in cloud?
-  expected: ["tc-aim:AIR 3.7"]
+  expected: ["tc-aim:AIR 3.7", "faa-phak:PHAK p.429"]
 
 - id: aeronautics-05
   exam: PPAER
   subject: aeronautics
   question: Is it safe to fly right after a scuba dive?
-  expected: ["tc-aim:AIR 3.4"]
+  expected: ["tc-aim:AIR 3.4", "faa-phak:PHAK p.440"]
 
 - id: aeronautics-06
   exam: PPAER
   subject: aeronautics
   question: If I don't reset my altimeter while flying toward lower pressure, will I be higher or lower than it shows?
-  expected: ["tc-aim:AIR 1.5.3"]
+  expected: ["tc-aim:AIR 1.5.3", "faa-awh:AWH p.106", "faa-phak:PHAK p.208"]
 
 - id: aeronautics-07
   exam: PPAER
   subject: aeronautics
   question: How does very cold air affect what my altimeter reads?
-  expected: ["tc-aim:AIR 1.5.4"]
+  expected: ["tc-aim:AIR 1.5.4", "faa-phak:PHAK p.207", "faa-awh:AWH p.107"]
 
 - id: aeronautics-08
   exam: PPAER
   subject: aeronautics
   question: How can I tell aviation fuel grades apart?
-  expected: ["tc-aim:AIR 1.3.1"]
+  expected: ["tc-aim:AIR 1.3.1", "faa-phak:PHAK p.187"]
 
 - id: aeronautics-09
   exam: PPAER
@@ -395,13 +402,13 @@
   exam: PPAER
   subject: aeronautics
   question: What is whiteout and why is it dangerous?
-  expected: ["tc-aim:AIR 2.12.7"]
+  expected: ["tc-aim:AIR 2.12.7", "faa-awh:AWH p.255"]
 
 - id: aeronautics-13
   exam: PPAER
   subject: aeronautics
   question: Why should I be careful taking over-the-counter medication before flying?
-  expected: ["tc-aim:AIR 3.10", "cars:CAR 602.03"]
+  expected: ["tc-aim:AIR 3.10", "cars:CAR 602.03", "faa-phak:PHAK p.427", "faa-phak:PHAK p.438", "faa-phak:PHAK p.440"]
 
 # Exam questions, added with TP 12880 (PPAER guide) and written from its
 # pages 4 to 9 before the guide was loaded.

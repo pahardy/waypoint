@@ -13,6 +13,8 @@
   priority: 1
   exams: [PSTAR]
   licence: TC, non-commercial reproduction permitted
+  knowledge_base: false  # question bank without answers; ranks above real answers in retrieval (phase 4 practice questions)
+  section_prefix: TP 11919
 
 - id: tp11919-answers
   title: "PSTAR Answer Key (TP 11919E)"
@@ -26,6 +28,7 @@
   priority: 1
   exams: [PSTAR]
   licence: TC, non-commercial reproduction permitted
+  knowledge_base: false  # answer key only, no explanatory text
 
 - id: tp12880
   title: "Study and Reference Guide for Written Examinations for the Private Pilot Licence Aeroplane"
@@ -53,6 +56,7 @@
   priority: 1
   exams: [FLIGHT_TEST]
   licence: TC, non-commercial reproduction permitted
+  section_prefix: TP 13723
 
 - id: tc-aim
   title: "Transport Canada Aeronautical Information Manual (TC AIM)"
@@ -93,6 +97,7 @@
   priority: 2
   exams: [PSTAR, PPAER, FLIGHT_TEST]
   licence: TC, non-commercial reproduction permitted
+  section_prefix: STD 421
 
 - id: std428
   title: "Standard 428: Conduct of Flight Tests"
@@ -105,6 +110,7 @@
   priority: 2
   exams: [FLIGHT_TEST]
   licence: TC, non-commercial reproduction permitted
+  section_prefix: STD 428
 
 - id: tp13014
   title: "Sample Examination: Recreational Pilot Permit and Private Pilot Licence, Aeroplane"
@@ -118,6 +124,7 @@
   priority: 2
   exams: [PPAER]
   licence: TC, non-commercial reproduction permitted
+  knowledge_base: false  # question style reference only (phase 1 decision)
 
 - id: tp975
   title: "Flight Instructor Guide: Aeroplane"
@@ -131,6 +138,7 @@
   priority: 2
   exams: [FLIGHT_TEST]
   licence: TC, non-commercial reproduction permitted
+  section_prefix: TP 975
 
 - id: tp14277
   title: "Pilot Examiner Manual"
@@ -144,6 +152,7 @@
   priority: 2
   exams: [FLIGHT_TEST]
   licence: TC, non-commercial reproduction permitted
+  section_prefix: TP 14277
 
 - id: ric21
   title: "RIC-21: Study Guide for the Restricted Operator Certificate with Aeronautical Qualification"
@@ -156,6 +165,7 @@
   priority: 2
   exams: [PSTAR, PPAER]
   licence: Crown copyright, non-commercial use
+  section_prefix: RIC-21
 
 # Priority 3 (theory only; never cited for Canadian rules)
 # Deferred: MANOBS (multi-page web manual), Aviation Safety Letter issues and
@@ -173,6 +183,8 @@
   priority: 3
   exams: [PPAER]
   licence: US federal work, public domain
+  section_prefix: PHAK
+  columns: 2
 
 - id: faa-awh
   title: "Aviation Weather Handbook"
@@ -186,3 +198,4 @@
   priority: 3
   exams: [PPAER]
   licence: US federal work, public domain
+  section_prefix: AWH
