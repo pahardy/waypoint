@@ -36,5 +36,29 @@
     "latency_s",
     "cost_usd",
     "top_score"
+  ],
+  "goal": {
+    "target": "pass",
+    "direction": "higher",
+    "hold": [
+      "cost_usd",
+      "latency_s"
+    ]
+  },
+  "reps": 3,
+  "split": "none: the outer session read every baseline failure before the loop, so results are directional",
+  "approve_each_round": false,
+  "current_round": 0,
+  "best": {
+    "round": 0
+  },
+  "off_limits": [
+    "safety rules in the system prompt: no go/no-go decisions, educational-aid framing, Canadian vs FAA separation"
+  ],
+  "plan": [
+    "v1 shorter citation labels",
+    "v2 prompt: no unsupported exam or advice claims",
+    "v3 effort medium",
+    "v4 retrieval across page splits"
   ]
 }

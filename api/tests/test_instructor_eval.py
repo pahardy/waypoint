@@ -150,3 +150,16 @@ def test_repository_cases_are_valid():
             assert case["key_facts"] and case["expected_sections"]
         else:
             assert case["expectation"]
+
+
+def test_harness_gate_blocks_changed_grading_files(tmp_path, monkeypatch):
+    from waypoint_api import instructor_eval
+
+    (tmp_path / "judge.py").write_text("v1")
+    monkeypatch.setattr(instructor_eval, "REPO", tmp_path)
+    state = {"harness_paths": ["judge.py"]}
+    instructor_eval.check_harness(state, approve=True)
+    instructor_eval.check_harness(state, approve=False)
+    (tmp_path / "judge.py").write_text("v2")
+    with pytest.raises(SystemExit, match="approve-harness"):
+        instructor_eval.check_harness(state, approve=False)

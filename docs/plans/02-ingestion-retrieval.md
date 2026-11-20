@@ -190,6 +190,11 @@ Step 5 (hybrid search), done (issue #12): **not kept**.
 - The code is in the git history (commit "Phase 2 step 5: hybrid search
   experiment") and was then removed. Revisit if the eval later shows
   misses on exact terms such as regulation numbers or abbreviations.
+- Correction (2026-11-19, phase 3): Voyage query embeddings are not
+  exactly identical across calls (a difference of up to about 0.004 was
+  measured), which can swap near-tied passages at the bottom of a result
+  list. The earlier check below compared one batch call repeated within
+  seconds. This is run-to-run noise, not an index effect.
 - Run-to-run check: query embeddings are identical across calls, and the
   HNSW index returns the same top 10 as an exact search (checked against
   numpy) for all 72 questions. The step 4 run's exam-02 miss could not be

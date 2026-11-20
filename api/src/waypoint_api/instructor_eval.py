@@ -7,6 +7,7 @@ errors.jsonl). Re-running skips (case, rep) pairs already written.
 """
 
 import argparse
+import hashlib
 import json
 import math
 import os
@@ -28,7 +29,11 @@ CASES_FILE = REPO / "api" / "eval" / "instructor.yaml"
 FLOW_DIR = REPO / ".claude" / "hillclimb" / "instructor"
 
 # USD per million tokens: (input, output). Cache reads 0.1x, writes 1.25x input.
-PRICES = {"claude-sonnet-5-5": (2.0, 10.0), "claude-opus-5-5": (4.0, 20.0)}
+PRICES = {
+    "claude-sonnet-5-5": (2.0, 10.0),
+    "claude-opus-5-5": (4.0, 20.0),
+    "claude-haiku-5-5": (0.10, 0.50),
+}
 
 METRICS = [
     {"id": "pass", "label": "Pass", "kind": "binary"},
@@ -39,6 +44,11 @@ METRICS = [
     {"id": "cites_expected", "label": "Expected cite", "kind": "binary"},
 ]
 PERF_FIELDS = ["latency_s", "cost_usd", "top_score"]
+HARNESS_PATHS = [
+    "api/src/waypoint_api/instructor_eval.py",
+    "api/src/waypoint_api/judge.py",
+    "api/eval/instructor.yaml",
+]
 
 
 def load_cases(path: Path = CASES_FILE) -> list[dict]:
@@ -109,7 +119,9 @@ def grade(case: dict, answer: Answer, judgement: Judgement | None) -> tuple[dict
     return {m["id"]: scores[m["id"]] for m in METRICS}, reasons
 
 
-def run_case(case: dict, rep: int) -> tuple[dict, list[dict]]:
+def run_case(
+    case: dict, rep: int, judge_model: str = JUDGE_MODEL
+) -> tuple[dict, list[dict]]:
     """Answer and grade one case; return the result row and its trace."""
     with psycopg.connect(os.environ["DATABASE_URL"]) as conn:
         start = time.monotonic()
@@ -125,7 +137,11 @@ def run_case(case: dict, rep: int) -> tuple[dict, list[dict]]:
         "status": "ok",
         "latency_s": round(latency, 2),
         "top_score": round(max((p.score for p in answer.passages), default=0.0), 3),
-        "meta": {"citations": [p.chunk_id for p in answer.citations]},
+        "meta": {
+            "passages": [p.chunk_id for p in answer.passages],
+            "citations": [p.chunk_id for p in answer.citations],
+            "effort": llm.EFFORT,
+        },
     }
     trace = [{"role": "system", "content": SYSTEM_PROMPT}]
     judgement = None
@@ -133,8 +149,8 @@ def run_case(case: dict, rep: int) -> tuple[dict, list[dict]]:
         reply = answer.reply
         if not reply.model.startswith(llm.MODEL):
             raise ServedModelError(f"asked for {llm.MODEL}, served {reply.model}")
-        judgement = judge(case, answer.passages, answer.text)
-        if not judgement.model.startswith(JUDGE_MODEL):
+        judgement = judge(case, answer.passages, answer.text, judge_model)
+        if not judgement.model.startswith(judge_model):
             raise ServedModelError(f"judge served {judgement.model}")
         usage = {
             "input_tokens": reply.input_tokens,
@@ -153,7 +169,7 @@ def run_case(case: dict, rep: int) -> tuple[dict, list[dict]]:
             "judge_model": judgement.model,
             "judge_usage": judge_usage,
             "cost_usd": round(
-                cost(llm.MODEL, usage) + cost(JUDGE_MODEL, judge_usage), 5
+                cost(llm.MODEL, usage) + cost(judge_model, judge_usage), 5
             ),
         }
         trace.append(
@@ -195,11 +211,39 @@ def done_keys(variant_dir: Path) -> set[tuple[str, int]]:
     return {(r["prompt_id"], r["rep"]) for r in rows}
 
 
-def write_state() -> None:
-    """Metric and perf declarations for the report builder."""
+def read_state() -> dict:
+    """Loop state (goal, harness fingerprint, ...) kept across runs."""
+    path = FLOW_DIR / "_state.json"
+    return json.loads(path.read_text()) if path.exists() else {}
+
+
+def write_state(state: dict) -> None:
+    """Save loop state, always with the current metric declarations."""
     FLOW_DIR.mkdir(parents=True, exist_ok=True)
-    state = {"metrics": METRICS, "perf_fields": PERF_FIELDS}
+    state |= {"metrics": METRICS, "perf_fields": PERF_FIELDS}
     (FLOW_DIR / "_state.json").write_text(json.dumps(state, indent=2) + "\n")
+
+
+def harness_sha(paths: list[str]) -> str:
+    """Fingerprint of the grading files: the runner, judge and cases."""
+    digest = hashlib.sha256()
+    for path in sorted(paths):
+        digest.update(path.encode())
+        digest.update(hashlib.sha256((REPO / path).read_bytes()).digest())
+    return digest.hexdigest()
+
+
+def check_harness(state: dict, approve: bool) -> None:
+    """Refuse to run if a grading file changed since the user approved it."""
+    current = harness_sha(state.setdefault("harness_paths", HARNESS_PATHS))
+    if approve:
+        state["harness_sha"] = current
+    elif state.get("harness_sha") != current:
+        raise SystemExit(
+            "Grading files changed since last approval "
+            f"({', '.join(state['harness_paths'])}). Review the diff, then "
+            "re-run with --approve-harness."
+        )
 
 
 def append(path: Path, record: dict) -> None:
@@ -238,7 +282,16 @@ def main() -> None:
     parser.add_argument("--cases", help="comma-separated case ids (default: all)")
     parser.add_argument("--reps", type=int, default=1)
     parser.add_argument("--workers", type=int, default=4)
+    parser.add_argument("--judge-model", default=JUDGE_MODEL)
+    parser.add_argument(
+        "--approve-harness",
+        action="store_true",
+        help="record the current grading files as approved (the user's call)",
+    )
     args = parser.parse_args()
+    state = read_state()
+    check_harness(state, args.approve_harness)
+    write_state(state)
 
     cases = load_cases()
     if args.cases:
@@ -246,13 +299,14 @@ def main() -> None:
         cases = [c for c in cases if c["id"] in wanted]
     variant_dir = FLOW_DIR / args.variant
     (variant_dir / "traces").mkdir(parents=True, exist_ok=True)
-    write_state()
     done = done_keys(variant_dir)
     todo = [(c, r) for c in cases for r in range(args.reps) if (c["id"], r) not in done]
     print(f"{len(todo)} case-reps to run ({len(done)} already done)")
 
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
-        futures = {pool.submit(run_case, c, r): (c, r) for c, r in todo}
+        futures = {
+            pool.submit(run_case, c, r, args.judge_model): (c, r) for c, r in todo
+        }
         for future in as_completed(futures):
             case, rep = futures[future]
             try:

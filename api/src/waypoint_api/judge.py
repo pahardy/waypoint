@@ -104,10 +104,12 @@ def judge_prompt(case: dict, passages: list[Passage], answer: str) -> str:
     )
 
 
-def judge(case: dict, passages: list[Passage], answer: str) -> Judgement:
+def judge(
+    case: dict, passages: list[Passage], answer: str, model: str = JUDGE_MODEL
+) -> Judgement:
     """Ask the judge model for a structured verdict on one answer."""
     response = anthropic.Anthropic(timeout=JUDGE_TIMEOUT_S).messages.parse(
-        model=JUDGE_MODEL,
+        model=model,
         max_tokens=16000,
         system=JUDGE_SYSTEM,
         messages=[{"role": "user", "content": judge_prompt(case, passages, answer)}],
