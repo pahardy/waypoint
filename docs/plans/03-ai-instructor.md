@@ -140,6 +140,11 @@ Steps 3 and 4 (chat endpoint and page), done (issue #16):
   document, edition, section, page and passage, NON-CANADIAN badge on FAA
   sources, disclaimer. Playwright checks it on desktop and phone, with an
   axe WCAG 2.2 AA scan in both themes.
+- Eval after the refactor (variant `chat-refactor`): pass 0.74 (95% CI
+  0.62 to 0.86), key facts 0.99, $2.89, the same as the re-graded
+  baseline. Eight failing cases are shared; six differ each way, which is
+  run-to-run variation at one rep, since the single-question prompt is
+  unchanged.
 
 ## Done when
 
