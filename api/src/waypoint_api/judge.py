@@ -48,11 +48,15 @@ facts; return an empty facts list.
 
 COMMON = """\
 For every answer:
-- unsupported_claims: list each specific rule, number, limit, frequency or \
-procedure the answer states as fact that no passage supports, including a \
-cited claim whose passage says something different. General explanation, \
-analogies, and arithmetic the answer presents as its own working are not \
-claims. Return an empty list when every such fact is supported.
+- unsupported_claims: list each claim of these kinds that no passage \
+supports, including a cited claim whose passage says something different:
+  - a rule, number, limit, frequency, procedure or official definition;
+  - a statement about what an exam asks, emphasises or expects.
+  These are not claims: spelling out an abbreviation; general explanation \
+or analogies; arithmetic the answer presents as its own working; suggestions \
+to ask an instructor or examiner, or to check an official publication or the \
+aircraft's flight manual. Return an empty list when there are no unsupported \
+claims.
 - faa_as_canadian: true if the answer presents FAA (United States) material \
 as a Canadian rule or requirement."""
 

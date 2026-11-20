@@ -23,6 +23,7 @@ from waypoint_api import llm
 from waypoint_api.ask import database_search
 from waypoint_api.instructor import NOT_FOUND, SYSTEM_PROMPT, Answer, ask, prompt
 from waypoint_api.judge import JUDGE_MODEL, JudgeError, Judgement, judge
+from waypoint_api.regrade import regrade_variant
 
 REPO = Path(__file__).resolve().parents[3]
 CASES_FILE = REPO / "api" / "eval" / "instructor.yaml"
@@ -48,6 +49,7 @@ HARNESS_PATHS = [
     "api/src/waypoint_api/instructor_eval.py",
     "api/src/waypoint_api/judge.py",
     "api/eval/instructor.yaml",
+    "api/src/waypoint_api/regrade.py",
 ]
 
 
@@ -284,6 +286,12 @@ def main() -> None:
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--judge-model", default=JUDGE_MODEL)
     parser.add_argument(
+        "--regrade",
+        action="store_true",
+        help="re-judge the variant's stored answers instead of running cases",
+    )
+    parser.add_argument("--into", help="variant directory for --regrade output")
+    parser.add_argument(
         "--approve-harness",
         action="store_true",
         help="record the current grading files as approved (the user's call)",
@@ -298,6 +306,12 @@ def main() -> None:
         wanted = args.cases.split(",")
         cases = [c for c in cases if c["id"] in wanted]
     variant_dir = FLOW_DIR / args.variant
+    if args.regrade:
+        out_dir = FLOW_DIR / (args.into or args.variant)
+        by_id = {c["id"]: c for c in load_cases()}
+        regrade_variant(variant_dir, out_dir, by_id, args.judge_model, grade, cost)
+        print(summarize(out_dir))
+        return
     (variant_dir / "traces").mkdir(parents=True, exist_ok=True)
     done = done_keys(variant_dir)
     todo = [(c, r) for c in cases for r in range(args.reps) if (c["id"], r) not in done]

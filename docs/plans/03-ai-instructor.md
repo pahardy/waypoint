@@ -112,6 +112,17 @@ Step 2 (eval set and baseline), done (issue #14):
 - Baseline: pass 0.81 (95% CI 0.71 to 0.92), key facts 0.99, $2.89 per
   run. See `docs/evals/instructor-2026-11-19-baseline.md`.
 
+Improvement loop (issue #15), stopped before round 1:
+- Calibrating Claude Haiku 5.5 as a cheaper judge failed (65 to 69%
+  agreement with Opus), but exposed that the rubric left claims about
+  exams undefined. The clarified rubric re-grades the baseline to 0.74.
+- `uv run instructor-eval --regrade` re-judges stored answers against the
+  exact passages they saw; a harness gate stops the runner when grading
+  files change until the owner approves them.
+- Planned changes still to try: shorter web-page citation labels, prompt
+  rules on exam claims and advice, effort medium, retrieval across page
+  splits. Details: `docs/evals/instructor-2026-11-19-baseline.md`.
+
 ## Done when
 
 - The eval set passes the agreed thresholds.

@@ -52,3 +52,48 @@ The system prompt (about 450 tokens) is below the 512-token minimum for
 prompt caching, so no cache reads occurred. Pass rate noise at 54 cases
 and one rep is about plus or minus 12 points; compare variants over
 several reps.
+
+## Update: judge calibration and rubric fix (issue #15)
+
+**Haiku 5.5 as a cheaper judge.** Re-grading the 52 stored answers with
+Claude Haiku 5.5 (same rubric, same passages) agreed with Opus on only
+69% of pass verdicts. All disagreement was in the grounding check: Haiku
+missed real errors Opus caught (twilight, CAR 602.77(4), winds aloft) and
+flagged trivia (spelling out "VNC", "ask your instructor").
+
+**What it revealed about Opus.** Haiku flagged claims about exams that
+Opus had passed ("For your PPAER exam, the pilot answer is 12 hours";
+"a common exam question") while Opus failed the same kind of claim
+elsewhere. Cause: the rubric did not name exam claims, and did not say
+what clearly is not a claim.
+
+**Rubric fix** (`judge.py`): unsupported claims now explicitly include
+official definitions and statements about what an exam asks, emphasises
+or expects; spelling out abbreviations, general explanation, the answer's
+own arithmetic, and suggestions to ask an instructor or check an official
+publication or flight manual are explicitly not claims.
+
+**Re-graded baseline (Opus, new rubric): pass 0.74** (95% CI 0.62 to
+0.86), down from 0.81. Six verdicts moved, all as the rubric intended:
+four exam claims now fail (alcohol, speed limit, Class C, Vne), one
+unsupported definition fails (overfly aerodrome), and the advice-only ELT
+answer now passes. Previous grades: `baseline/results.before-regrade.jsonl`.
+
+**Haiku with the new rubric: 65% agreement**, worse. It failed 30 answers
+to Opus's 14, reading the rules too literally (for example treating
+"for the exam, can you name..." quiz prompts as exam claims). Haiku is not
+a usable judge for this eval. Results: `calibration-haiku/results.jsonl`.
+
+**Open:** whether a study tip ("For the exam, remember the pairing:
+2,000 ft and 3 miles") counts as a claim about what an exam emphasises is
+still ambiguous; Opus passes it, Haiku fails it.
+
+The hill-climb loop was stopped before round 1 on cost: with Opus as the
+only trustworthy judge, a full run is $2.89, about two-thirds of it the
+judge. The four planned changes (shorter web-page citation labels, prompt
+rules on exam claims and advice, effort medium, retrieval across page
+splits) remain to do.
+
+Another finding: Voyage query embeddings vary slightly between calls, so
+near-tied passages can swap between runs. The runner now records each
+case's passage ids so re-grading uses exactly what the instructor saw.

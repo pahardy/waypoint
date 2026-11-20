@@ -60,5 +60,13 @@
     "v2 prompt: no unsupported exam or advice claims",
     "v3 effort medium",
     "v4 retrieval across page splits"
-  ]
+  ],
+  "harness_paths": [
+    "api/src/waypoint_api/instructor_eval.py",
+    "api/src/waypoint_api/judge.py",
+    "api/eval/instructor.yaml",
+    "api/src/waypoint_api/regrade.py"
+  ],
+  "harness_sha": "5fbaabea95d8cc145ab17272223354fa54e86505e05221ed86ad089d230adb8d",
+  "status": "stopped before round 1 (owner, cost); baseline re-graded with clarified rubric: pass 0.74"
 }
