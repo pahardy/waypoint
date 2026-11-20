@@ -77,6 +77,75 @@ Eval (on demand, real model): see Evaluation below.
 4. Add the chat page in the web app (see plan 07).
 5. Compare models, and record the choice in this document.
 
+## Progress
+
+Step 1 (CLI), done (issue #14): `uv run instructor "question" --level PPAER`.
+- `instructor.py`: retrieves up to 6 Canadian passages for the student's
+  exam level and at most 2 FAA passages, labelled as background only.
+  Passages scoring under 0.35 are dropped: in-scope eval questions all
+  score 0.395 or more, off-topic questions 0.307 or less. If nothing is
+  left, the instructor says it cannot answer, without calling the model.
+- The system prompt is fixed (cacheable); the user turn carries the
+  level, the labelled passages and the question.
+- Citations are labels in brackets, parsed by code and matched to the
+  passages given; any other reference is flagged.
+- `llm.py`: Claude Sonnet 5.5 (`claude-sonnet-5-5`) at effort `low` by
+  default, set by `WAYPOINT_LLM_MODEL` and `WAYPOINT_LLM_EFFORT`.
+  Server-side refusal fallback is on. Refusals, truncation and API
+  failures raise an error, never a partial answer.
+- Hand check: alcohol (12-hour CAR and 24-hour AIM advice, all cited),
+  an off-topic question (not-found path), a go/no-go request (declined,
+  considerations given) and stall theory (FAA handbook named in the
+  text). One fix came from it: the model put "an FAA handbook" inside
+  the brackets; the prompt now says brackets hold only labels.
+
+Step 2 (eval set and baseline), done (issue #14):
+- 54 cases in `api/eval/instructor.yaml`: 45 to answer, with key facts
+  confirmed by reading the sources; 5 to decline (go/no-go, medication,
+  evading the rules); 2 not covered by the sources; 2 off-topic. Reviewed
+  and approved by the project owner.
+- `uv run instructor-eval` runs the real instructor on every case, then
+  grades it with code checks (citation validity, expected section, the
+  not-found path) and a Claude Opus 5.5 judge (key facts, unsupported
+  claims, FAA presented as Canadian, expected behaviour). A case passes
+  only if every check does. Results go to `.claude/hillclimb/instructor/`.
+- Baseline: pass 0.81 (95% CI 0.71 to 0.92), key facts 0.99, $2.89 per
+  run. See `docs/evals/instructor-2026-11-19-baseline.md`.
+
+Improvement loop (issue #15), stopped before round 1:
+- Calibrating Claude Haiku 5.5 as a cheaper judge failed (65 to 69%
+  agreement with Opus), but exposed that the rubric left claims about
+  exams undefined. The clarified rubric re-grades the baseline to 0.74.
+- `uv run instructor-eval --regrade` re-judges stored answers against the
+  exact passages they saw; a harness gate stops the runner when grading
+  files change until the owner approves them.
+- Planned changes still to try: shorter web-page citation labels, prompt
+  rules on exam claims and advice, effort medium, retrieval across page
+  splits. Details: `docs/evals/instructor-2026-11-19-baseline.md`.
+
+Steps 3 and 4 (chat endpoint and page), done (issue #16):
+- `POST /chat` takes the conversation and the level. A follow-up is
+  rewritten into a standalone search query by the model (a first question
+  is used as is), then retrieval, the prompt and citation checks run as in
+  the CLI, now through one `respond` generator shared with `ask`. Earlier
+  turns go to the model as they were; only the latest carries passages.
+- The answer streams as JSON Lines (`delta`, then `done` with citations).
+  Citations follow the answer, since the check needs its full text. Errors
+  end the stream with `error`; the page then drops the partial text.
+- Conversations are saved in the `conversation` table (messages as JSON,
+  assistant turns with their cited chunk ids), readable at
+  `GET /conversations/{id}`. No accounts yet.
+- `/learn` page: level choice, streamed answer, CitationChip per valid
+  citation (unmatched references stay plain text), source detail with
+  document, edition, section, page and passage, NON-CANADIAN badge on FAA
+  sources, disclaimer. Playwright checks it on desktop and phone, with an
+  axe WCAG 2.2 AA scan in both themes.
+- Eval after the refactor (variant `chat-refactor`): pass 0.74 (95% CI
+  0.62 to 0.86), key facts 0.99, $2.89, the same as the re-graded
+  baseline. Eight failing cases are shared; six differ each way, which is
+  run-to-run variation at one rep, since the single-question prompt is
+  unchanged.
+
 ## Done when
 
 - The eval set passes the agreed thresholds.

@@ -1,0 +1,72 @@
+{
+  "metrics": [
+    {
+      "id": "pass",
+      "label": "Pass",
+      "kind": "binary"
+    },
+    {
+      "id": "key_facts",
+      "label": "Key facts",
+      "kind": "float",
+      "scale": 1
+    },
+    {
+      "id": "grounded",
+      "label": "Grounded",
+      "kind": "binary"
+    },
+    {
+      "id": "behaviour",
+      "label": "Behaviour",
+      "kind": "binary"
+    },
+    {
+      "id": "citations_valid",
+      "label": "Valid cites",
+      "kind": "binary"
+    },
+    {
+      "id": "cites_expected",
+      "label": "Expected cite",
+      "kind": "binary"
+    }
+  ],
+  "perf_fields": [
+    "latency_s",
+    "cost_usd",
+    "top_score"
+  ],
+  "goal": {
+    "target": "pass",
+    "direction": "higher",
+    "hold": [
+      "cost_usd",
+      "latency_s"
+    ]
+  },
+  "reps": 3,
+  "split": "none: the outer session read every baseline failure before the loop, so results are directional",
+  "approve_each_round": false,
+  "current_round": 0,
+  "best": {
+    "round": 0
+  },
+  "off_limits": [
+    "safety rules in the system prompt: no go/no-go decisions, educational-aid framing, Canadian vs FAA separation"
+  ],
+  "plan": [
+    "v1 shorter citation labels",
+    "v2 prompt: no unsupported exam or advice claims",
+    "v3 effort medium",
+    "v4 retrieval across page splits"
+  ],
+  "harness_paths": [
+    "api/src/waypoint_api/instructor_eval.py",
+    "api/src/waypoint_api/judge.py",
+    "api/eval/instructor.yaml",
+    "api/src/waypoint_api/regrade.py"
+  ],
+  "harness_sha": "5fbaabea95d8cc145ab17272223354fa54e86505e05221ed86ad089d230adb8d",
+  "status": "stopped before round 1 (owner, cost); baseline re-graded with clarified rubric: pass 0.74"
+}

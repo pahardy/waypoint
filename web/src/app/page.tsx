@@ -1,4 +1,6 @@
+import Link from "next/link";
 import ApiStatus from "@/components/ApiStatus";
+import Disclaimer from "@/components/Disclaimer";
 
 export default function Home() {
   return (
@@ -8,11 +10,10 @@ export default function Home() {
         Canadian pilot training and exam preparation.
       </p>
       <ApiStatus />
-      <p className="text-sm opacity-70">
-        Waypoint is an educational aid. It does not replace flight
-        instruction, an authorized examiner or current Transport Canada
-        publications.
-      </p>
+      <Link href="/learn" className="text-sky underline">
+        Ask the instructor
+      </Link>
+      <Disclaimer />
     </main>
   );
 }

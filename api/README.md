@@ -8,8 +8,27 @@ uv run pytest                                 # needs DATABASE_URL
 uv run ruff check . && uv run ruff format --check .
 ```
 
-Needs `DATABASE_URL` and, for `/retrieve`, `VOYAGE_API_KEY` (see
-`.env.example`).
+Needs `DATABASE_URL`, `VOYAGE_API_KEY` for `/retrieve`, and
+`ANTHROPIC_API_KEY` for the instructor (see `.env.example`).
+
+```
+uv run instructor "How long after drinking alcohol can I fly?" --level PSTAR
+```
+
+The instructor answers from retrieved passages and cites them as
+`[TC AIM AIR 3.9]` or `[CAR 602.03]`; references to passages it was not
+given are flagged. `WAYPOINT_LLM_MODEL` (default `claude-sonnet-5-5`) and
+`WAYPOINT_LLM_EFFORT` (default `low`) select the model.
+
+```
+uv run instructor-eval                      # all cases; resumes if interrupted
+uv run instructor-eval --cases id1,id2      # a subset
+uv run instructor-eval --variant v1 --reps 3
+```
+
+The eval (`eval/instructor.yaml`) grades each answer with code checks and
+a Claude Opus 5.5 judge, and writes results to
+`.claude/hillclimb/instructor/<variant>/`. One full run costs about $3.
 
 - `GET /health`: liveness check.
 - `POST /retrieve`: knowledge-base passages that best answer a question,
@@ -23,3 +42,21 @@ Needs `DATABASE_URL` and, for `/retrieve`, `VOYAGE_API_KEY` (see
 curl -X POST localhost:8000/retrieve -H 'Content-Type: application/json' \
   -d '{"question": "What are the VFR fuel requirements?", "jurisdiction": "CA"}'
 ```
+
+- `POST /chat`: the instructor. Body: `level` (`PSTAR`, `PPAER`,
+  `FLIGHT_TEST`), `messages` (the conversation so far, `{role, content}`,
+  ending with the student's) and optional `conversation_id`. A follow-up is
+  rewritten into a standalone search query using the conversation. Streams
+  JSON Lines: `delta` events with the answer text, then `done` with the
+  citations (document, edition, section, page, passage text) and the
+  `conversation_id`. A model error, timeout or refusal ends the stream with
+  `error` instead; text already sent is then incomplete and nothing is saved.
+- `GET /conversations/{id}`: a saved conversation.
+
+```
+curl -N -X POST localhost:8000/chat -H 'Content-Type: application/json' \
+  -d '{"level": "PSTAR", "messages": [{"role": "user", "content": "How long after drinking can I fly?"}]}'
+```
+
+`uv run python tests/stub_server.py` serves the API with a stub model and
+stub retrieval, for the web end-to-end tests.

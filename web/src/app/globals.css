@@ -1,26 +1,58 @@
 @import "tailwindcss";
 
+/* Brand tokens from docs/BRANDING.md. Dark ("Night") is the default. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #0b1426;
+  --surface: #13213a;
+  --text: #e8eef7;
+  --muted: #9aa8bd;
+  --accent: #f5a524;
+  --sky: #38bdf8;
+  --airway: #f062a8;
+  --pass: #34d399;
+  --fail: #f87171;
+  --night: #0b1426;
+  color-scheme: dark;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --bg: #f6f8fb;
+    --surface: #ffffff;
+    --text: #0e1a2e;
+    --muted: #4a5970;
+    --accent: #a15c00;
+    --sky: #0369a1;
+    --airway: #b0206e;
+    --pass: #047857;
+    --fail: #b91c1c;
+    color-scheme: light;
   }
 }
 
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-sky: var(--sky);
+  --color-airway: var(--airway);
+  --color-pass: var(--pass);
+  --color-fail: var(--fail);
+  --color-night: var(--night);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-barlow);
+  --font-mono: var(--font-jetbrains);
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
