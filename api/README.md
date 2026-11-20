@@ -42,3 +42,21 @@ a Claude Opus 5.5 judge, and writes results to
 curl -X POST localhost:8000/retrieve -H 'Content-Type: application/json' \
   -d '{"question": "What are the VFR fuel requirements?", "jurisdiction": "CA"}'
 ```
+
+- `POST /chat`: the instructor. Body: `level` (`PSTAR`, `PPAER`,
+  `FLIGHT_TEST`), `messages` (the conversation so far, `{role, content}`,
+  ending with the student's) and optional `conversation_id`. A follow-up is
+  rewritten into a standalone search query using the conversation. Streams
+  JSON Lines: `delta` events with the answer text, then `done` with the
+  citations (document, edition, section, page, passage text) and the
+  `conversation_id`. A model error, timeout or refusal ends the stream with
+  `error` instead; text already sent is then incomplete and nothing is saved.
+- `GET /conversations/{id}`: a saved conversation.
+
+```
+curl -N -X POST localhost:8000/chat -H 'Content-Type: application/json' \
+  -d '{"level": "PSTAR", "messages": [{"role": "user", "content": "How long after drinking can I fly?"}]}'
+```
+
+`uv run python tests/stub_server.py` serves the API with a stub model and
+stub retrieval, for the web end-to-end tests.

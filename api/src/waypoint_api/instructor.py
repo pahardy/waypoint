@@ -2,15 +2,17 @@
 citations. Facts come only from the passages; see docs/plans/03."""
 
 import re
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from dataclasses import dataclass, field
 from typing import Literal
 
-from waypoint_api.llm import Complete, Reply
+from waypoint_api.llm import Complete, Reply, Stream
 from waypoint_api.retrieval import Jurisdiction, Passage
 
 Level = Literal["PSTAR", "PPAER", "FLIGHT_TEST"]
 Search = Callable[[str, Level, Jurisdiction, int], list[Passage]]
+# {"role": "user" | "assistant", "content": str}; the last turn is the student's.
+Turn = dict[str, str]
 
 # Top retrieval scores: in-scope eval questions are all 0.395 or more,
 # off-topic questions 0.307 or less (measured 2026-11-19).
@@ -58,6 +60,13 @@ and official sources.
 - Use plain language and short paragraphs, and define abbreviations the first \
 time you use them. You may end with one short question that checks the \
 student's understanding."""
+
+REWRITE_PROMPT = """\
+You turn a student pilot's latest message into a search query for a \
+library of Canadian aviation publications. Use the conversation to make the \
+query stand on its own: replace words like "it" or "that" with what they \
+refer to. Keep the student's meaning; do not answer. Reply with the query \
+only."""
 
 
 @dataclass
@@ -132,12 +141,64 @@ def cited(text: str, passages: list[Passage]) -> tuple[list[Passage], list[str]]
     return citations, unknown
 
 
-def ask(question: str, level: Level, search: Search, complete: Complete) -> Answer:
-    """Answer one question. When nothing relevant is retrieved, say so
-    without asking the model."""
-    passages = gather(search, question, level)
+def search_query(conversation: list[Turn], complete: Complete) -> str:
+    """The latest message as a search query. A follow-up is rewritten with
+    the conversation so it stands on its own; a first question is used as is."""
+    question = conversation[-1]["content"]
+    if len(conversation) == 1:
+        return question
+    transcript = "\n\n".join(
+        f"{turn['role']}: {turn['content']}" for turn in conversation[:-1]
+    )
+    text = (
+        f"<conversation>\n{transcript}\n</conversation>\n\n"
+        f"<latest_message>\n{question}\n</latest_message>"
+    )
+    return complete(REWRITE_PROMPT, [{"role": "user", "content": text}]).text.strip()
+
+
+def messages(conversation: list[Turn], level: Level, passages: list[Passage]):
+    """The earlier turns as they were, then the latest question with its
+    level and passages."""
+    return conversation[:-1] + prompt(conversation[-1]["content"], level, passages)
+
+
+def respond(
+    conversation: list[Turn],
+    level: Level,
+    search: Search,
+    stream: Stream,
+    complete: Complete,
+) -> Iterator[str | Answer]:
+    """Answer the latest message: yield the text as it is generated, then the
+    finished Answer. When nothing relevant is retrieved, say so without
+    asking the model. Model errors raise LLMError and no Answer follows."""
+    passages = gather(search, search_query(conversation, complete), level)
     if not passages:
-        return Answer(NOT_FOUND, [], found=False)
-    reply = complete(SYSTEM_PROMPT, prompt(question, level, passages))
-    citations, unknown = cited(reply.text, passages)
-    return Answer(reply.text, passages, citations, unknown, reply=reply)
+        yield NOT_FOUND
+        yield Answer(NOT_FOUND, [], found=False)
+        return
+    for item in stream(SYSTEM_PROMPT, messages(conversation, level, passages)):
+        if isinstance(item, Reply):
+            citations, unknown = cited(item.text, passages)
+            yield Answer(item.text, passages, citations, unknown, reply=item)
+        else:
+            yield item
+
+
+def streamed(complete: Complete) -> Stream:
+    """A Stream that sends a complete answer in one piece."""
+
+    def stream(system: str, turns: list[dict]) -> Iterator[str | Reply]:
+        reply = complete(system, turns)
+        yield reply.text
+        yield reply
+
+    return stream
+
+
+def ask(question: str, level: Level, search: Search, complete: Complete) -> Answer:
+    """Answer one question, without streaming (the CLI and the eval)."""
+    conversation = [{"role": "user", "content": question}]
+    *_, answer = respond(conversation, level, search, streamed(complete), complete)
+    return answer

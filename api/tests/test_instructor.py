@@ -7,11 +7,13 @@ import pytest
 from waypoint_api import llm
 from waypoint_api.instructor import (
     NOT_FOUND,
+    REWRITE_PROMPT,
     SYSTEM_PROMPT,
     ask,
     cited,
     label,
     prompt,
+    respond,
 )
 from waypoint_api.llm import LLMError, Reply, reply_from
 from waypoint_api.retrieval import Passage
@@ -160,6 +162,92 @@ def test_answer_reports_citations_and_unknown_references():
     assert answer.unknown_references == ["CAR 999.99"]
 
 
+# Conversations and streaming
+
+
+def stub_stream(*pieces):
+    """A Stream that sends the pieces, then their joined Reply."""
+
+    def stream(system, messages):
+        stream.calls.append((system, messages))
+        yield from pieces
+        yield Reply("".join(pieces), "stub", 10, 5)
+
+    stream.calls = []
+    return stream
+
+
+FOLLOW_UP = [
+    {"role": "user", "content": "How long after drinking can I fly?"},
+    {"role": "assistant", "content": "Twelve hours [CAR 602.03]."},
+    {"role": "user", "content": "Does that apply to passengers?"},
+]
+
+
+def test_a_first_question_is_searched_as_is_without_a_rewrite():
+    search, rewriter = StubSearch([CAR]), StubModel("unused")
+    list(respond(FOLLOW_UP[:1], "PSTAR", search, stub_stream("x"), rewriter))
+    assert rewriter.calls == []
+    assert search.calls[0][0] == "How long after drinking can I fly?"
+
+
+def test_a_follow_up_is_searched_with_the_earlier_conversation():
+    search = StubSearch([CAR])
+    rewriter = StubModel("Does the alcohol rule apply to passengers?")
+    list(respond(FOLLOW_UP, "PSTAR", search, stub_stream("x"), rewriter))
+    system, [turn] = rewriter.calls[0]
+    assert system == REWRITE_PROMPT
+    assert "How long after drinking can I fly?" in turn["content"]
+    assert "Twelve hours [CAR 602.03]." in turn["content"]
+    assert "<latest_message>\nDoes that apply to passengers?" in turn["content"]
+    assert {c[0] for c in search.calls} == {
+        "Does the alcohol rule apply to passengers?"
+    }
+
+
+def test_the_model_gets_earlier_turns_then_the_question_with_passages():
+    stream = stub_stream("x")
+    list(respond(FOLLOW_UP, "PSTAR", StubSearch([CAR]), stream, StubModel("q")))
+    system, sent = stream.calls[0]
+    assert system == SYSTEM_PROMPT
+    assert sent[:2] == FOLLOW_UP[:2]
+    assert sent[2]["role"] == "user"
+    assert 'label="CAR 602.03"' in sent[2]["content"]
+    assert sent[2]["content"].endswith(
+        "<question>\nDoes that apply to passengers?\n</question>"
+    )
+
+
+def test_respond_streams_the_text_then_the_answer_with_citations():
+    stream = stub_stream("Twelve hours ", "[CAR 602.03].")
+    *pieces, answer = respond(
+        FOLLOW_UP[:1], "PSTAR", StubSearch([CAR]), stream, StubModel()
+    )
+    assert pieces == ["Twelve hours ", "[CAR 602.03]."]
+    assert answer.text == "Twelve hours [CAR 602.03]."
+    assert answer.citations == [CAR]
+
+
+def test_respond_sends_not_found_without_streaming_from_the_model():
+    stream = stub_stream("x")
+    weak = passage("tc-aim", "GEN 1.1", score=0.2)
+    items = list(respond(FOLLOW_UP[:1], "PSTAR", StubSearch([weak]), stream, None))
+    assert items[0] == NOT_FOUND
+    assert not items[1].found
+    assert stream.calls == []
+
+
+def test_a_stream_error_ends_with_no_answer():
+    def failing(system, messages):
+        yield "Partial"
+        raise LLMError("The language model timed out.")
+
+    items = []
+    with pytest.raises(LLMError):
+        items.extend(respond(FOLLOW_UP[:1], "PSTAR", StubSearch([CAR]), failing, None))
+    assert items == ["Partial"]
+
+
 # Model errors
 
 
@@ -207,6 +295,58 @@ def test_api_failures_raise_a_clear_error(monkeypatch, error):
     monkeypatch.setattr(llm.anthropic, "Anthropic", lambda **options: client)
     with pytest.raises(LLMError, match="language model"):
         llm.complete("system", [{"role": "user", "content": "q"}])
+
+
+class FakeStream:
+    """Stands in for the SDK's message stream: text pieces, then either the
+    final message or an error."""
+
+    def __init__(self, pieces, final=None, error=None):
+        self.pieces, self.final, self.error = pieces, final, error
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        return False
+
+    @property
+    def text_stream(self):
+        yield from self.pieces
+        if self.error:
+            raise self.error
+
+    def get_final_message(self):
+        return self.final
+
+
+def stub_stream_client(monkeypatch, fake):
+    client = SimpleNamespace(
+        beta=SimpleNamespace(messages=SimpleNamespace(stream=lambda **kw: fake))
+    )
+    monkeypatch.setattr(llm.anthropic, "Anthropic", lambda **options: client)
+
+
+def test_stream_yields_text_then_the_finished_reply(monkeypatch):
+    stub_stream_client(monkeypatch, FakeStream(["Do", "ne."], response("end_turn")))
+    *pieces, reply = llm.stream("system", [{"role": "user", "content": "q"}])
+    assert pieces == ["Do", "ne."]
+    assert reply.text == "Done."
+
+
+def test_stream_timeout_after_some_text_raises_with_no_reply(monkeypatch):
+    timeout = anthropic.APITimeoutError(request=httpx2.Request("POST", "https://api"))
+    stub_stream_client(monkeypatch, FakeStream(["Partial"], error=timeout))
+    received = []
+    with pytest.raises(LLMError, match="timed out"):
+        received.extend(llm.stream("system", [{"role": "user", "content": "q"}]))
+    assert received == ["Partial"]
+
+
+def test_stream_refusal_raises_after_the_text(monkeypatch):
+    stub_stream_client(monkeypatch, FakeStream(["Par"], response("refusal")))
+    with pytest.raises(LLMError, match="declined"):
+        list(llm.stream("system", [{"role": "user", "content": "q"}]))
 
 
 def test_model_errors_reach_the_caller_with_no_answer():

@@ -5,7 +5,8 @@ so candidates can be compared without code changes (see plan 03).
 """
 
 import os
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
+from contextlib import contextmanager
 from dataclasses import dataclass
 
 import anthropic
@@ -34,27 +35,32 @@ class Reply:
 
 
 Complete = Callable[[str, list[dict]], Reply]
+# Yields the answer's text as it is generated, then the finished Reply.
+Stream = Callable[[str, list[dict]], Iterator[str | Reply]]
 
 
-def complete(system: str, messages: list[dict]) -> Reply:
-    """Ask the model for one complete answer.
+def request(system: str, messages: list[dict]) -> dict:
+    """The request options shared by complete and stream. The system prompt
+    is marked for caching; server-side fallback retries declines it can serve
+    on another model."""
+    return {
+        "model": MODEL,
+        "max_tokens": MAX_TOKENS,
+        "system": [
+            {"type": "text", "text": system, "cache_control": {"type": "ephemeral"}}
+        ],
+        "messages": messages,
+        "output_config": {"effort": EFFORT},
+        "betas": [FALLBACK_BETA],
+        "fallbacks": "default",
+    }
 
-    The system prompt is marked for caching. Server-side fallback retries
-    declines it can serve on another model. Refusals, truncated answers and
-    API failures raise LLMError, so no partial answer is passed off as whole.
-    """
+
+@contextmanager
+def api_errors() -> Iterator[None]:
+    """Turn API failures into LLMError with a message fit for a student."""
     try:
-        response = anthropic.Anthropic(timeout=TIMEOUT_S).beta.messages.create(
-            model=MODEL,
-            max_tokens=MAX_TOKENS,
-            system=[
-                {"type": "text", "text": system, "cache_control": {"type": "ephemeral"}}
-            ],
-            messages=messages,
-            output_config={"effort": EFFORT},
-            betas=[FALLBACK_BETA],
-            fallbacks="default",
-        )
+        yield
     except anthropic.RateLimitError as error:
         raise LLMError("The language model is busy. Try again shortly.") from error
     except anthropic.APITimeoutError as error:
@@ -63,7 +69,32 @@ def complete(system: str, messages: list[dict]) -> Reply:
         raise LLMError("Could not reach the language model.") from error
     except anthropic.APIStatusError as error:
         raise LLMError(f"The language model failed ({error.status_code}).") from error
+
+
+def client() -> anthropic.Anthropic:
+    """An API client with the instructor's timeout."""
+    return anthropic.Anthropic(timeout=TIMEOUT_S)
+
+
+def complete(system: str, messages: list[dict]) -> Reply:
+    """Ask the model for one complete answer. Refusals, truncated answers and
+    API failures raise LLMError, so no partial answer is passed off as whole."""
+    with api_errors():
+        response = client().beta.messages.create(**request(system, messages))
     return reply_from(response)
+
+
+def stream(system: str, messages: list[dict]) -> Iterator[str | Reply]:
+    """Yield the answer's text as it arrives, then the finished Reply.
+
+    Errors raise LLMError, even after some text was sent: the caller must
+    treat text without a final Reply as incomplete. After a server-side
+    fallback the new model continues the text already sent.
+    """
+    with api_errors(), client().beta.messages.stream(**request(system, messages)) as s:
+        yield from s.text_stream
+        final = s.get_final_message()
+    yield reply_from(final)
 
 
 def reply_from(response) -> Reply:

@@ -123,6 +123,24 @@ Improvement loop (issue #15), stopped before round 1:
   rules on exam claims and advice, effort medium, retrieval across page
   splits. Details: `docs/evals/instructor-2026-11-19-baseline.md`.
 
+Steps 3 and 4 (chat endpoint and page), done (issue #16):
+- `POST /chat` takes the conversation and the level. A follow-up is
+  rewritten into a standalone search query by the model (a first question
+  is used as is), then retrieval, the prompt and citation checks run as in
+  the CLI, now through one `respond` generator shared with `ask`. Earlier
+  turns go to the model as they were; only the latest carries passages.
+- The answer streams as JSON Lines (`delta`, then `done` with citations).
+  Citations follow the answer, since the check needs its full text. Errors
+  end the stream with `error`; the page then drops the partial text.
+- Conversations are saved in the `conversation` table (messages as JSON,
+  assistant turns with their cited chunk ids), readable at
+  `GET /conversations/{id}`. No accounts yet.
+- `/learn` page: level choice, streamed answer, CitationChip per valid
+  citation (unmatched references stay plain text), source detail with
+  document, edition, section, page and passage, NON-CANADIAN badge on FAA
+  sources, disclaimer. Playwright checks it on desktop and phone, with an
+  axe WCAG 2.2 AA scan in both themes.
+
 ## Done when
 
 - The eval set passes the agreed thresholds.

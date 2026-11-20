@@ -8,16 +8,18 @@ import psycopg
 
 from waypoint_api.instructor import Answer, Level, Search, ask, label
 from waypoint_api.llm import LLMError, complete
-from waypoint_api.retrieval import RetrieveRequest, embed_query, retrieve
+from waypoint_api.retrieval import EmbedQuery, RetrieveRequest, embed_query, retrieve
 
 
-def database_search(conn: psycopg.Connection) -> Search:
+def database_search(
+    conn: psycopg.Connection, embed: EmbedQuery = embed_query
+) -> Search:
     """Search the knowledge base in `conn`, embedding each question once."""
     vectors: dict[str, list[float]] = {}
 
     def search(question, level, jurisdiction, limit):
         if question not in vectors:
-            vectors[question] = embed_query(question)
+            vectors[question] = embed(question)
         request = RetrieveRequest(
             question=question, exam=level, jurisdiction=jurisdiction, limit=limit
         )
