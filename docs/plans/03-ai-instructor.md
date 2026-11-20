@@ -99,6 +99,19 @@ Step 1 (CLI), done (issue #14): `uv run instructor "question" --level PPAER`.
   text). One fix came from it: the model put "an FAA handbook" inside
   the brackets; the prompt now says brackets hold only labels.
 
+Step 2 (eval set and baseline), done (issue #14):
+- 54 cases in `api/eval/instructor.yaml`: 45 to answer, with key facts
+  confirmed by reading the sources; 5 to decline (go/no-go, medication,
+  evading the rules); 2 not covered by the sources; 2 off-topic. Reviewed
+  and approved by the project owner.
+- `uv run instructor-eval` runs the real instructor on every case, then
+  grades it with code checks (citation validity, expected section, the
+  not-found path) and a Claude Opus 5.5 judge (key facts, unsupported
+  claims, FAA presented as Canadian, expected behaviour). A case passes
+  only if every check does. Results go to `.claude/hillclimb/instructor/`.
+- Baseline: pass 0.81 (95% CI 0.71 to 0.92), key facts 0.99, $2.89 per
+  run. See `docs/evals/instructor-2026-11-19-baseline.md`.
+
 ## Done when
 
 - The eval set passes the agreed thresholds.

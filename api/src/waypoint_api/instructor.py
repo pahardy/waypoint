@@ -6,7 +6,7 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Literal
 
-from waypoint_api.llm import Complete
+from waypoint_api.llm import Complete, Reply
 from waypoint_api.retrieval import Jurisdiction, Passage
 
 Level = Literal["PSTAR", "PPAER", "FLIGHT_TEST"]
@@ -70,6 +70,7 @@ class Answer:
     citations: list[Passage] = field(default_factory=list)
     unknown_references: list[str] = field(default_factory=list)
     found: bool = True
+    reply: Reply | None = None
 
 
 def label(passage: Passage) -> str:
@@ -139,4 +140,4 @@ def ask(question: str, level: Level, search: Search, complete: Complete) -> Answ
         return Answer(NOT_FOUND, [], found=False)
     reply = complete(SYSTEM_PROMPT, prompt(question, level, passages))
     citations, unknown = cited(reply.text, passages)
-    return Answer(reply.text, passages, citations, unknown)
+    return Answer(reply.text, passages, citations, unknown, reply=reply)

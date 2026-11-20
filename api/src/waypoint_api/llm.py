@@ -13,6 +13,7 @@ import anthropic
 MODEL = os.environ.get("WAYPOINT_LLM_MODEL", "claude-sonnet-5-5")
 EFFORT = os.environ.get("WAYPOINT_LLM_EFFORT", "low")
 MAX_TOKENS = 8000
+TIMEOUT_S = 120.0
 FALLBACK_BETA = "server-side-fallback-2026-07-01"
 
 
@@ -28,6 +29,8 @@ class Reply:
     model: str
     input_tokens: int
     output_tokens: int
+    cache_read_tokens: int = 0
+    cache_creation_tokens: int = 0
 
 
 Complete = Callable[[str, list[dict]], Reply]
@@ -41,7 +44,7 @@ def complete(system: str, messages: list[dict]) -> Reply:
     API failures raise LLMError, so no partial answer is passed off as whole.
     """
     try:
-        response = anthropic.Anthropic().beta.messages.create(
+        response = anthropic.Anthropic(timeout=TIMEOUT_S).beta.messages.create(
             model=MODEL,
             max_tokens=MAX_TOKENS,
             system=[
@@ -70,6 +73,12 @@ def reply_from(response) -> Reply:
     if response.stop_reason != "end_turn":
         raise LLMError(f"The answer was incomplete ({response.stop_reason}).")
     text = "".join(block.text for block in response.content if block.type == "text")
+    usage = response.usage
     return Reply(
-        text, response.model, response.usage.input_tokens, response.usage.output_tokens
+        text,
+        response.model,
+        usage.input_tokens,
+        usage.output_tokens,
+        usage.cache_read_input_tokens or 0,
+        usage.cache_creation_input_tokens or 0,
     )

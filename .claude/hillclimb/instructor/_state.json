@@ -1,0 +1,40 @@
+{
+  "metrics": [
+    {
+      "id": "pass",
+      "label": "Pass",
+      "kind": "binary"
+    },
+    {
+      "id": "key_facts",
+      "label": "Key facts",
+      "kind": "float",
+      "scale": 1
+    },
+    {
+      "id": "grounded",
+      "label": "Grounded",
+      "kind": "binary"
+    },
+    {
+      "id": "behaviour",
+      "label": "Behaviour",
+      "kind": "binary"
+    },
+    {
+      "id": "citations_valid",
+      "label": "Valid cites",
+      "kind": "binary"
+    },
+    {
+      "id": "cites_expected",
+      "label": "Expected cite",
+      "kind": "binary"
+    }
+  ],
+  "perf_fields": [
+    "latency_s",
+    "cost_usd",
+    "top_score"
+  ]
+}

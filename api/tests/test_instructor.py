@@ -168,12 +168,20 @@ def response(stop_reason, text="Done."):
         stop_reason=stop_reason,
         content=[SimpleNamespace(type="text", text=text)],
         model="claude-sonnet-5-5",
-        usage=SimpleNamespace(input_tokens=10, output_tokens=2),
+        usage=SimpleNamespace(
+            input_tokens=10,
+            output_tokens=2,
+            cache_read_input_tokens=None,
+            cache_creation_input_tokens=5,
+        ),
     )
 
 
-def test_a_finished_answer_is_accepted():
-    assert reply_from(response("end_turn")).text == "Done."
+def test_a_finished_answer_is_accepted_with_its_usage():
+    reply = reply_from(response("end_turn"))
+    assert (reply.text, reply.model) == ("Done.", "claude-sonnet-5-5")
+    assert (reply.input_tokens, reply.output_tokens) == (10, 2)
+    assert (reply.cache_read_tokens, reply.cache_creation_tokens) == (0, 5)
 
 
 @pytest.mark.parametrize("stop_reason", ["refusal", "max_tokens", "pause_turn"])
@@ -196,7 +204,7 @@ def test_api_failures_raise_a_clear_error(monkeypatch, error):
     client = SimpleNamespace(
         beta=SimpleNamespace(messages=SimpleNamespace(create=fail))
     )
-    monkeypatch.setattr(llm.anthropic, "Anthropic", lambda: client)
+    monkeypatch.setattr(llm.anthropic, "Anthropic", lambda **options: client)
     with pytest.raises(LLMError, match="language model"):
         llm.complete("system", [{"role": "user", "content": "q"}])
 
