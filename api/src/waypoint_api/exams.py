@@ -3,6 +3,9 @@
 import random
 from dataclasses import dataclass
 from datetime import datetime, timedelta
+from typing import Literal
+
+Outcome = Literal["pass", "partial", "fail"]
 
 
 @dataclass(frozen=True)
@@ -16,6 +19,8 @@ class ExamRules:
     source: str
     unverified: tuple[str, ...]
     mock_available: bool
+    mock_mix: Literal["by_section", "by_subject"]
+    subject_pass: bool
 
 
 PSTAR = ExamRules(
@@ -26,9 +31,9 @@ PSTAR = ExamRules(
     source="TP 11919 (7th ed.), introduction",
     unverified=("time_limit_s",),
     mock_available=True,
+    mock_mix="by_section",
+    subject_pass=False,
 )
-# The 60% pass mark also applies to each subject; that matters for the mock
-# exam (plan 04 step 4), not for single-subject quizzes.
 PPAER = ExamRules(
     exam="PPAER",
     question_count=100,
@@ -36,19 +41,20 @@ PPAER = ExamRules(
     pass_percent=60,
     source="TP 12880 (6th ed.), p. 4",
     unverified=(),
-    mock_available=False,
+    mock_available=True,
+    mock_mix="by_subject",
+    subject_pass=True,
 )
 RULES = {"PSTAR": PSTAR, "PPAER": PPAER}
 QUIZ_LENGTH = 10
-
-
-@dataclass(frozen=True)
-class Score:
-    """The result of a submitted attempt."""
-
-    correct: int
-    total: int
-    passed: bool
+# The supplementary exam for each subject below 60% on a PPAER partial pass
+# (TP 12880, p. 5).
+SUPPLEMENTARY = {
+    "air-law": "PALAW",
+    "navigation": "PANAV",
+    "meteorology": "PAMET",
+    "aeronautics": "PAGEN",
+}
 
 
 def section_counts(sizes: dict[str, int], total: int) -> dict[str, int]:
@@ -68,11 +74,23 @@ def section_counts(sizes: dict[str, int], total: int) -> dict[str, int]:
     return counts
 
 
+def equal_counts(keys: list[str], total: int) -> dict[str, int]:
+    """The same number of questions from each group (PPAER: 25 per subject).
+    Waypoint's rule; Transport Canada does not publish the split."""
+    return {key: total // len(keys) for key in keys}
+
+
+def mock_counts(rules: ExamRules, sizes: dict[str, int]) -> dict[str, int]:
+    """How many mock-exam questions to draw from each group of the pool."""
+    if rules.mock_mix == "by_subject":
+        return equal_counts(sorted(sizes), rules.question_count)
+    return section_counts(sizes, rules.question_count)
+
+
 def assemble_mock(
-    pool: dict[str, list[str]], count: int, rng: random.Random
+    pool: dict[str, list[str]], counts: dict[str, int], rng: random.Random
 ) -> list[str]:
-    """Question ids for a mock exam, drawn from each section in proportion."""
-    counts = section_counts({k: len(v) for k, v in pool.items()}, count)
+    """Question ids for a mock exam: `counts[key]` drawn from each group."""
     chosen = [q for key, ids in pool.items() for q in rng.sample(ids, counts[key])]
     rng.shuffle(chosen)
     return chosen
@@ -98,8 +116,24 @@ def accepts_answer(
     return end is None or now <= end
 
 
-def score(chosen: list[int | None], answers: list[int], pass_percent: int) -> Score:
-    """Count correct answers; unanswered questions are wrong."""
-    correct = sum(c == a for c, a in zip(chosen, answers, strict=True))
-    total = len(answers)
-    return Score(correct, total, correct * 100 >= pass_percent * total)
+def meets(correct: int, total: int, pass_percent: int) -> bool:
+    """At or above the pass mark."""
+    return correct * 100 >= pass_percent * total
+
+
+def outcome(
+    subjects: dict[str, tuple[int, int]], pass_percent: int, per_subject: bool
+) -> Outcome:
+    """Pass, partial pass or fail from (correct, total) per subject.
+
+    Under the pass mark overall is a fail. With `per_subject` (the PPAER mock
+    exam, TP 12880), passing overall with any subject under the mark is a
+    partial pass.
+    """
+    correct = sum(c for c, _ in subjects.values())
+    total = sum(t for _, t in subjects.values())
+    if not meets(correct, total, pass_percent):
+        return "fail"
+    if per_subject and not all(meets(c, t, pass_percent) for c, t in subjects.values()):
+        return "partial"
+    return "pass"

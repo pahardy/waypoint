@@ -2,44 +2,40 @@ import random
 from datetime import UTC, datetime, timedelta
 
 from waypoint_api.exams import (
+    PPAER,
     PSTAR,
     accepts_answer,
     assemble_mock,
     assemble_quiz,
-    score,
+    mock_counts,
+    outcome,
     section_counts,
 )
 
 START = datetime(2026, 11, 23, 12, 0, tzinfo=UTC)
 
 
-# Scoring
+# Scoring (PSTAR: one subject, 90% pass mark)
+
+
+def pstar(correct, total=50):
+    return outcome({"regulations": (correct, total)}, 90, per_subject=False)
 
 
 def test_all_correct_passes():
-    assert score([0, 1, 2], [0, 1, 2], 90).passed
+    assert pstar(50) == "pass"
 
 
 def test_none_correct_fails():
-    result = score([1, 2, 3], [0, 1, 2], 90)
-    assert (result.correct, result.passed) == (0, False)
+    assert pstar(0) == "fail"
 
 
 def test_exactly_the_pass_mark_passes():
-    answers = [0] * 50
-    chosen = [0] * 45 + [1] * 5
-    assert score(chosen, answers, 90).passed
+    assert pstar(45) == "pass"
 
 
 def test_just_below_the_pass_mark_fails():
-    answers = [0] * 50
-    chosen = [0] * 44 + [1] * 6
-    assert not score(chosen, answers, 90).passed
-
-
-def test_an_empty_attempt_scores_zero():
-    result = score([None] * 50, [0] * 50, 90)
-    assert (result.correct, result.total, result.passed) == (0, 50, False)
+    assert pstar(44) == "fail"
 
 
 # Timing
@@ -73,9 +69,10 @@ def test_mock_has_the_right_count_and_mix_without_duplicates():
         f"s{n}": [f"s{n}-{i}" for i in range(size)]
         for n, size in enumerate([10, 8, 29, 8, 11, 23, 14, 13, 11, 6, 14, 21, 12, 5])
     }
-    chosen = assemble_mock(pool, PSTAR.question_count, random.Random(1))
+    expected = mock_counts(PSTAR, {k: len(v) for k, v in pool.items()})
+    chosen = assemble_mock(pool, expected, random.Random(1))
     assert len(chosen) == len(set(chosen)) == 50
-    expected = section_counts({k: len(v) for k, v in pool.items()}, 50)
+    assert expected == section_counts({k: len(v) for k, v in pool.items()}, 50)
     for key, count in expected.items():
         assert sum(q.startswith(f"{key}-") for q in chosen) == count
 
@@ -84,3 +81,49 @@ def test_quiz_takes_ten_or_the_whole_pool():
     pool = [str(i) for i in range(29)]
     assert len(set(assemble_quiz(pool, 10, random.Random(1)))) == 10
     assert sorted(assemble_quiz(pool[:5], 10, random.Random(1))) == pool[:5]
+
+
+def test_ppaer_mock_takes_25_from_each_subject():
+    pool = {
+        subject: [f"{subject}-{i}" for i in range(size)]
+        for subject, size in [
+            ("air-law", 25),
+            ("navigation", 30),
+            ("meteorology", 25),
+            ("aeronautics", 40),
+        ]
+    }
+    counts = mock_counts(PPAER, {k: len(v) for k, v in pool.items()})
+    assert counts == dict.fromkeys(pool, 25)
+    chosen = assemble_mock(pool, counts, random.Random(1))
+    assert len(chosen) == len(set(chosen)) == 100
+    for subject in pool:
+        assert sum(q.startswith(f"{subject}-") for q in chosen) == 25
+
+
+# PPAER outcome (TP 12880)
+
+
+def subjects(*correct):
+    names = ["air-law", "navigation", "meteorology", "aeronautics"]
+    return {name: (c, 25) for name, c in zip(names, correct)}
+
+
+def test_ppaer_pass_with_every_subject_at_60_percent():
+    assert outcome(subjects(15, 15, 15, 15), 60, per_subject=True) == "pass"
+
+
+def test_ppaer_partial_pass_when_one_subject_is_under_60_percent():
+    assert outcome(subjects(25, 25, 14, 25), 60, per_subject=True) == "partial"
+
+
+def test_ppaer_fail_when_under_60_percent_overall():
+    assert outcome(subjects(15, 15, 15, 14), 60, per_subject=True) == "fail"
+
+
+def test_ppaer_fail_overrides_a_subject_shortfall():
+    assert outcome(subjects(25, 20, 0, 14), 60, per_subject=True) == "fail"
+
+
+def test_without_per_subject_marks_a_weak_subject_still_passes():
+    assert outcome(subjects(25, 25, 0, 25), 60, per_subject=False) == "pass"
