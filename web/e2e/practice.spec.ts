@@ -23,7 +23,7 @@ test("completing a 10-question quiz shows the score and topic breakdown", async 
   page,
 }) => {
   await page.goto("/practice");
-  await page.getByRole("button", { name: "Start quiz" }).click();
+  await page.getByRole("region", { name: "PSTAR topic quiz" }).getByRole("button", { name: "Start quiz" }).click();
   await expect(page).toHaveURL(/\/practice\/[0-9a-f-]{36}$/);
   await expect(page.getByText("OFFICIAL").first()).toBeVisible();
   await answerAll(page, 10);
@@ -39,8 +39,9 @@ test("completing a 10-question quiz shows the score and topic breakdown", async 
 
 test("a topic quiz draws only from that topic", async ({ page }) => {
   await page.goto("/practice");
-  await page.getByLabel("Topic", { exact: true }).selectOption({ label: "Aviation Occurrences (5)" });
-  await page.getByRole("button", { name: "Start quiz" }).click();
+  const quiz = page.getByRole("region", { name: "PSTAR topic quiz" });
+  await quiz.getByLabel("Topic").selectOption({ label: "Aviation Occurrences (5)" });
+  await quiz.getByRole("button", { name: "Start quiz" }).click();
   await answerAll(page, 5);
   await page.getByRole("button", { name: "Submit answers" }).click();
   const breakdown = page.getByRole("table");
@@ -50,7 +51,7 @@ test("a topic quiz draws only from that topic", async ({ page }) => {
 
 test("the mock exam shows the unverified time limit and a timer", async ({ page }) => {
   await page.goto("/practice");
-  const mock = page.getByRole("region", { name: "Mock exam" });
+  const mock = page.getByRole("region", { name: "PSTAR mock exam" });
   await expect(mock).toContainText("Time limit 90 minutes");
   await expect(mock.getByText("UNVERIFIED")).toBeVisible();
   await mock.getByRole("button", { name: "Start mock exam" }).click();
@@ -64,9 +65,10 @@ for (const colorScheme of ["dark", "light"] as const) {
   }) => {
     await page.emulateMedia({ colorScheme });
     await page.goto("/practice");
-    await expect(page.getByRole("button", { name: "Start quiz" })).toBeVisible();
+    const quiz = page.getByRole("region", { name: "PSTAR topic quiz" });
+    await expect(quiz.getByRole("button", { name: "Start quiz" })).toBeVisible();
     await expectNoSeriousIssues(page);
-    await page.getByRole("button", { name: "Start quiz" }).click();
+    await quiz.getByRole("button", { name: "Start quiz" }).click();
     await answerAll(page, 10);
     await expectNoSeriousIssues(page);
     await page.getByRole("button", { name: "Submit answers" }).click();

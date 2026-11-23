@@ -36,5 +36,6 @@ line-length = 88
 [project.scripts]
 migrate = "waypoint_api.migrate:main"
 seed = "waypoint_api.seed:main"
+draft-questions = "waypoint_api.draft_questions:main"
 instructor = "waypoint_api.ask:main"
 instructor-eval = "waypoint_api.instructor_eval:main"

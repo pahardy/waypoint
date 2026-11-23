@@ -102,6 +102,8 @@ def start(
 ) -> UUID:
     """Choose the questions and record a new attempt."""
     rules = exams.RULES[exam]
+    if kind == "mock" and not rules.mock_available:
+        raise AttemptError(f"There is no {exam} mock exam yet.")
     pool = question_pool(conn, exam, objective_id)
     if kind == "mock":
         chosen = exams.assemble_mock(pool, rules.question_count, rng)
@@ -128,7 +130,7 @@ def start(
 
 
 ITEMS = """
-    SELECT i.position, q.id AS question_id, q.number, q.objective_id, o.topic,
+    SELECT i.position, q.id AS question_id, q.number, q.objective_id, o.text AS topic,
            q.stem, q.choices, q.origin, i.chosen_index, q.answer_index
     FROM attempt_item i
     JOIN question q ON q.id = i.question_id
@@ -270,10 +272,10 @@ class Topic(BaseModel):
 def topics(conn: psycopg.Connection, exam: str) -> list[Topic]:
     """Topics with reviewed questions for an exam, in objective order."""
     rows = conn.execute(
-        "SELECT o.id, o.topic, count(*) FROM question q"
+        "SELECT o.id, o.text, count(*) FROM question q"
         " JOIN objective o ON o.id = q.objective_id"
         " WHERE q.exam = %s AND q.status = 'reviewed'"
-        " GROUP BY o.id, o.topic ORDER BY o.id",
+        " GROUP BY o.id, o.text ORDER BY o.id",
         (exam,),
     ).fetchall()
     return [Topic(objective_id=r[0], topic=r[1], question_count=r[2]) for r in rows]

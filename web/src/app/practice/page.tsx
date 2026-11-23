@@ -8,13 +8,10 @@ export default function Practice() {
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-4 py-8">
       <h1 className="font-display text-4xl font-bold uppercase tracking-wide">
-        PSTAR practice
+        Practice
       </h1>
-      <p className="text-muted">
-        Official questions from the Transport Canada PSTAR study guide (TP 11919,
-        7th edition), scored against its answer key.
-      </p>
-      <PracticeMenu />
+      <PracticeMenu exam="PSTAR" />
+      <PracticeMenu exam="PPAER" />
       <footer className="mt-auto border-t border-surface pt-4">
         <Disclaimer />
       </footer>

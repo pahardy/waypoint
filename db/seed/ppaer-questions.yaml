@@ -1,0 +1,498 @@
+# Practice questions drafted by `uv run draft-questions`. Not official
+# Transport Canada questions. Review each one: set status to reviewed
+# (edit the text if needed) or retired. Only reviewed questions are used.
+- id: ppaer.air-law.015.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.015
+  stem: An aerodrome operator must place closed markings on a runway that is 1 000 m long
+    and has been closed for several days. Which requirement applies to the placement of the
+    markings?
+  choices:
+  - A full-size closed marking at each end only, with no additional markings
+  - Full-size closed markings at each end and additional markings at intervals not exceeding
+    300 m
+  - A single closed marking of at least one-half the Schedule I dimensions at the centre of
+    the runway only
+  - A closed marking of at least one-half the Schedule I dimensions at each end, plus one
+    more of the same size equidistant between them
+  answer_index: 3
+  explanation: For a runway greater than 450 m but not greater than 1 220 m, CAR 301.04(4)(b)
+    requires a closed marking of not less than one-half the Schedule I dimensions at each
+    end and an additional marking of the same size equidistant from the two. The 300 m interval
+    rule applies only to runways longer than 1 220 m.
+  source_chunk_id: cars:CAR 301.04:0
+  status: draft
+  check:
+    answer_index: 3
+    reason: The runway is closed for several days, which is more than 24 hours, so the exemption
+      in subsection (3) does not apply. A 1 000 m runway is longer than 450 m but not longer
+      than 1 220 m. Under 301.04(4)(b), the operator must place closed markings of at least
+      one-half the Schedule I dimensions at each end, plus one more marking of the same size
+      equidistant between them.
+- id: ppaer.air-law.025.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.025
+  stem: A private pilot with a valid aeroplane licence plans a daytime flight carrying a passenger
+    in a single-engine land aeroplane. Under CAR 401.05(2)(b), within what period before the
+    flight must the pilot have completed at least five take-offs and five landings in the
+    same category and class of aircraft (or in a Level B, C or D full-flight simulator of
+    that category and class)?
+  choices:
+  - The preceding 12 months
+  - The preceding 24 months
+  - The preceding 6 months
+  - The preceding 5 years
+  answer_index: 2
+  explanation: CAR 401.05(2)(b) requires that, where a passenger is carried, the pilot has
+    completed at least five take-offs and five landings in the same category and class within
+    the six months preceding the flight. The 12-month, 24-month and 5-year periods apply to
+    other requirements in the section (flight review, recurrent training, and acting as pilot-in-command
+    or co-pilot).
+  source_chunk_id: cars:CAR 401.05:0
+  status: draft
+  check:
+    answer_index: 2
+    reason: 'CAR 401.05(2)(b)(i)(A) requires, when a passenger is carried, at least five take-offs
+      and five landings in the same category and class (or a Level B, C or D full-flight simulator)
+      within the six months before the flight, for flights conducted wholly by day. The other
+      periods belong to different requirements: 12 months for a flight review, 24 months for
+      recurrent training, and 5 years for having acted as PIC or co-pilot.'
+- id: ppaer.air-law.038.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.038
+  stem: According to CAR 601.03, which of the following airspace is always transponder airspace,
+    as specified in the Designated Airspace Handbook?
+  choices:
+  - All Class A, B and C airspace
+  - All Class E airspace
+  - Only Class A and B airspace
+  - All Class D airspace
+  answer_index: 0
+  explanation: CAR 601.03(a) states that transponder airspace includes all Class A, B and
+    C airspace as specified in the Designated Airspace Handbook. Class D and E airspace is
+    transponder airspace only where the Handbook specifies it (CAR 601.03(b)).
+  source_chunk_id: cars:CAR 601.03:0
+  status: draft
+  check:
+    answer_index: 0
+    reason: Under CAR 601.03(a), transponder airspace includes all Class A, B and C airspace
+      as specified in the Designated Airspace Handbook. Class D and E airspace counts only
+      where the Handbook specifically designates it, so choices 1 and 3 are wrong. Choice
+      2 leaves out Class C.
+- id: ppaer.air-law.043.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.043
+  stem: A VFR aircraft is not equipped with radiocommunication equipment capable of two-way
+    communication. Under which conditions may its pilot-in-command enter Class D airspace?
+  choices:
+  - At any time in VMC, provided the pilot-in-command remains clear of cloud and watches for
+    other traffic
+  - Only at night in VMC, provided the aircraft displays its navigation lights and the pilot-in-command
+    has authorization from air traffic control
+  - During daylight in VMC, after receiving authorization to enter from the appropriate air
+    traffic control unit before entering the airspace
+  - During daylight in VMC, provided the pilot-in-command contacts the air traffic control
+    unit by radio within five minutes after entering
+  answer_index: 2
+  explanation: CAR 601.09(2) allows a VFR aircraft without two-way radio to enter Class D
+    airspace only during daylight in VMC and only after the pilot-in-command receives authorization
+    from the appropriate air traffic control unit before entering.
+  source_chunk_id: cars:CAR 601.09:0
+  status: draft
+  check:
+    answer_index: 2
+    reason: Subsection (2) says the pilot-in-command of a VFR aircraft without two-way radio
+      may enter Class D airspace during daylight in VMC if authorization to enter is received
+      from the appropriate ATC unit before entering. That matches choice 2. Choice 0 leaves
+      out both daylight and authorization. Choice 1 says night, but the rule says daylight.
+      Choice 3 has contact after entry, which the rule does not provide for, and the aircraft
+      has no two-way radio.
+- id: ppaer.air-law.059.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.059
+  stem: For the purposes of CAR 602.12, an aeroplane (not a helicopter or balloon) is deemed
+    to be operated over a built-up area if the built-up area is within what horizontal distance
+    of the aircraft?
+  choices:
+  - 5,000 feet
+  - 1,000 feet
+  - 2,000 feet
+  - 500 feet
+  answer_index: 2
+  explanation: CAR 602.12(1)(b) deems an aircraft other than a helicopter or balloon to be
+    operated over a built-up area or open-air assembly of persons if it is within a horizontal
+    distance of 2,000 feet. The 500 feet figure applies only to helicopters and balloons.
+  source_chunk_id: cars:CAR 602.12:0
+  status: draft
+  check:
+    answer_index: 2
+    reason: CAR 602.12(1)(b) sets the distance at 2,000 feet for an aircraft other than a
+      helicopter or balloon. The 500-foot figure in (1)(a) applies only to helicopters and
+      balloons.
+- id: ppaer.air-law.063.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.063
+  stem: Two power-driven aeroplanes are converging at approximately the same altitude, and
+    neither is towing anything or in an emergency. According to CAR 602.19, which pilot must
+    give way?
+  choices:
+  - The pilot of the aircraft that is flying at the higher airspeed
+  - The pilot of the aircraft that has the other aircraft on its left
+  - Both pilots must alter heading to the right
+  - The pilot of the aircraft that has the other aircraft on its right
+  answer_index: 3
+  explanation: CAR 602.19(2) states that when two aircraft are converging at approximately
+    the same altitude, the pilot-in-command of the aircraft that has the other on its right
+    shall give way, and none of the listed exceptions apply here.
+  source_chunk_id: cars:CAR 602.19:0
+  status: draft
+  check:
+    answer_index: 3
+    reason: Subsection (2) says that when two aircraft converge at about the same altitude,
+      the pilot whose aircraft has the other on its right must give way. None of the exceptions
+      in (2)(a) to (d) apply, because both are power-driven aeroplanes, neither is towing,
+      and neither is in an emergency. Choice 2 describes the head-on rule in (5), not converging
+      traffic.
+- id: ppaer.air-law.071.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.071
+  stem: A pilot plans to perform aerobatic manoeuvres in an aeroplane and does not hold a
+    special flight operations certificate. Under CAR 602.27, which of the following is a condition
+    that prohibits the manoeuvres?
+  choices:
+  - The manoeuvres would be conducted below 3,000 feet AGL
+  - The manoeuvres would be conducted in uncontrolled airspace
+  - Flight visibility is less than three miles
+  - Flight visibility is less than five miles
+  answer_index: 2
+  explanation: CAR 602.27(c) prohibits aerobatic manoeuvres when flight visibility is less
+    than three miles. The minimum altitude in the passage is 2,000 feet AGL, not 3,000 feet,
+    and nothing in the passage prohibits aerobatics in uncontrolled airspace.
+  source_chunk_id: cars:CAR 602.27:0
+  status: draft
+  check:
+    answer_index: 2
+    reason: CAR 602.27(c) prohibits aerobatic manoeuvres when flight visibility is less than
+      three miles. The altitude limit is 2,000 ft AGL, not 3,000. Uncontrolled airspace is
+      not listed as a prohibition. Five miles is not the stated visibility threshold.
+- id: ppaer.air-law.076.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.076
+  stem: A pilot is about to take off from an aerodrome in the altimeter-setting region, and
+    the aerodrome's altimeter setting cannot be obtained. According to CAR 602.35, to what
+    should the pilot set the altimeter immediately before take-off?
+  choices:
+  - The elevation of the aerodrome
+  - The altimeter setting of the nearest station along the route of flight
+  - Zero feet, so that the altimeter reads height above the runway
+  - 29.92 inches of mercury
+  answer_index: 0
+  explanation: CAR 602.35(a) requires the altimeter to be set immediately before take-off
+    to the aerodrome's altimeter setting or, if that setting is not obtainable, to the elevation
+    of the aerodrome.
+  source_chunk_id: cars:CAR 602.35:0
+  status: draft
+  check:
+    answer_index: 0
+    reason: Paragraph 602.35(a) says that immediately before take-off the altimeter is set
+      to the aerodrome's altimeter setting. If that setting cannot be obtained, it is set
+      to the elevation of the aerodrome. Choice 1 is the in-flight rule from paragraph (b),
+      not the take-off rule. Choices 2 and 3 do not appear in the passage.
+- id: ppaer.air-law.084.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.084
+  stem: A pilot is planning to operate a land aeroplane over water. Under CAR 602.62, beyond
+    what distance from shore must a life preserver (specifically, not merely an individual
+    or personal flotation device) be carried for each person on board?
+  choices:
+  - More than 2 nautical miles from shore
+  - More than 100 nautical miles from shore
+  - More than 50 nautical miles from shore
+  - More than 25 nautical miles from shore
+  answer_index: 2
+  explanation: CAR 602.62(2) prohibits operating a land aeroplane, gyroplane, helicopter or
+    airship at more than 50 nautical miles from shore unless a life preserver is carried for
+    each person on board. The 2 nautical mile figure applies only to balloons.
+  source_chunk_id: cars:CAR 602.62:0
+  status: draft
+  check:
+    answer_index: 2
+    reason: Subsection (2) says no person shall operate a land aeroplane more than 50 nautical
+      miles from shore unless a life preserver is carried for each person on board. The 2
+      NM figure in subsection (3) applies only to balloons.
+- id: ppaer.air-law.089.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.089
+  stem: A pilot-in-command plans a VFR flight in an aeroplane. Under CAR 602.73, in which
+    situation is the pilot NOT required to file a VFR flight plan or VFR flight itinerary?
+  choices:
+  - The flight is conducted between Canada and a foreign state
+  - The flight is conducted within 25 nautical miles of the departure aerodrome
+  - The flight is conducted more than 10 nautical miles from the departure aerodrome
+  - The flight is conducted entirely outside controlled airspace
+  answer_index: 1
+  explanation: CAR 602.73(2) requires a VFR flight plan or flight itinerary to be filed except
+    where the flight is conducted within 25 nautical miles of the departure aerodrome. Flights
+    between Canada and a foreign state always require a flight plan under CAR 602.73(4).
+  source_chunk_id: cars:CAR 602.73:0
+  status: draft
+  check:
+    answer_index: 1
+    reason: 'Subsection (2) requires a VFR flight plan or itinerary for VFR flight, with one
+      exception: a flight conducted within 25 nautical miles of the departure aerodrome. That
+      matches choice 1. Choice 0 is wrong because subsection (4) requires a flight plan for
+      flights between Canada and a foreign state. Choice 2 is wrong because a flight more
+      than 10 NM out could go beyond 25 NM, so the exception does not necessarily apply. Choice
+      3 is wrong because the ''outside controlled airspace'' condition in (3)(a) only lets
+      an IFR flight file an itinerary instead of a plan; it does not exempt VFR flights.'
+- id: ppaer.air-law.097.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.097
+  stem: A pilot is planning a night VFR flight in a single-engine propeller-driven aeroplane.
+    Under CAR 602.88, what is the minimum fuel the aircraft must carry to meet the reserve
+    requirement for the flight itself, before considering the additional factors in subsection
+    (5)?
+  choices:
+  - Enough fuel to fly to the destination aerodrome and then for 30 minutes at normal cruising
+    speed
+  - Enough fuel to fly to the destination aerodrome, to an alternate aerodrome, and then for
+    30 minutes
+  - Enough fuel to fly to the destination aerodrome and then for 20 minutes at normal cruising
+    speed
+  - Enough fuel to fly to the destination aerodrome and then for 45 minutes at normal cruising
+    speed
+  answer_index: 3
+  explanation: CAR 602.88(3)(a)(ii) requires an aeroplane operated in VFR flight at night
+    to carry enough fuel to fly to the destination aerodrome and then for 45 minutes at normal
+    cruising speed. The 30-minute figure applies to day VFR, and 20 minutes applies only to
+    helicopters.
+  source_chunk_id: cars:CAR 602.88:0
+  status: draft
+  check:
+    answer_index: 3
+    reason: 'Subsection (3)(a)(ii) says an aircraft other than a helicopter in VFR flight
+      at night must carry enough fuel to fly to the destination aerodrome and then fly for
+      45 minutes at normal cruising speed. The other choices are wrong: 30 minutes is the
+      day VFR figure, 20 minutes applies to helicopters, and the alternate-aerodrome requirement
+      is an IFR provision.'
+- id: ppaer.air-law.101.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.101
+  stem: A pilot is operating in an MF area and must make a report required under the Division
+    on operations in the vicinity of an aerodrome. The aerodrome's ground station is not in
+    operation. How must the report be made?
+  choices:
+  - Broadcast on 121.5 MHz so that all aircraft can hear it
+  - Directed to the nearest air traffic control unit on the en route frequency
+  - Broadcast on the mandatory frequency specified for the MF area
+  - Made on the aerodrome's ground station frequency only once the ground station resumes
+    operation
+  answer_index: 2
+  explanation: Under CAR 602.98(1), every report must be made on the mandatory frequency specified
+    for the MF area. Under 602.98(2)(b), the report is broadcast if the ground station does
+    not exist or is not in operation.
+  source_chunk_id: cars:CAR 602.98:0
+  status: draft
+  check:
+    answer_index: 2
+    reason: Under 602.98(1), every report must be made on the mandatory frequency specified
+      for the MF area. Under 602.98(2)(b), if a ground station does not exist or is not in
+      operation, the report is broadcast. So the report is broadcast on the MF area's mandatory
+      frequency, which is choice 2. Choice 0 names 121.5 MHz, which is not the mandatory frequency.
+      Choice 1 directs the report to an ATC unit on the en route frequency, which the passage
+      does not provide for. Choice 3 has the pilot wait for the ground station to resume,
+      which contradicts (2)(b).
+- id: ppaer.air-law.104.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.104
+  stem: A VFR aircraft is arriving at an uncontrolled aerodrome that lies within a mandatory
+    frequency (MF) area. According to CAR 602.101, when must the pilot-in-command make the
+    first report, and what must it include?
+  choices:
+  - At least ten minutes before entering the MF area, giving only the estimated time of landing
+    and fuel remaining
+  - Upon entering the MF area, giving only the aircraft's position and altitude
+  - Before entering the MF area, and where circumstances permit at least five minutes before,
+    giving position, altitude, estimated time of landing and arrival procedure intentions
+  - When joining the aerodrome traffic circuit, giving the aircraft's position in the circuit
+    and the estimated time of landing
+  answer_index: 2
+  explanation: CAR 602.101(a) requires the first report before entering the MF area, where
+    circumstances permit at least five minutes before, giving position, altitude, estimated
+    time of landing and arrival procedure intentions.
+  source_chunk_id: cars:CAR 602.101:0
+  status: draft
+  check:
+    answer_index: 2
+    reason: CAR 602.101(a) says the first report is made before entering the MF area, at least
+      five minutes before where circumstances permit. It must give position, altitude, estimated
+      time of landing and arrival procedure intentions. Choice 0 has the wrong timing and
+      contents, choice 1 has the wrong timing and incomplete contents, and choice 3 describes
+      the later report under paragraph (b).
+- id: ppaer.air-law.108.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.108
+  stem: An aircraft is being operated in VFR flight within controlled airspace but outside
+    a control zone. According to CAR 602.114, what is the minimum distance from cloud that
+    must be maintained?
+  choices:
+  - 500 feet vertically and three miles horizontally
+  - 1,000 feet vertically and three miles horizontally
+  - 1,000 feet vertically and one mile horizontally
+  - 500 feet vertically and one mile horizontally
+  answer_index: 3
+  explanation: CAR 602.114(c) requires that, in VFR flight within controlled airspace, the
+    aircraft be not less than 500 feet vertically and one mile horizontally from cloud. The
+    other choices state distances that do not appear in the regulation.
+  source_chunk_id: cars:CAR 602.114:0
+  status: draft
+  check:
+    answer_index: 3
+    reason: CAR 602.114(c) applies to all VFR flight in controlled airspace, whether or not
+      the aircraft is in a control zone. It requires at least 500 feet vertically and one
+      mile horizontally from cloud, which matches choice 3. The other choices use 1,000 feet
+      vertically or three miles horizontally; three miles is the flight-visibility minimum
+      in (b), not a cloud distance.
+- id: ppaer.air-law.111.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.111
+  stem: An aeroplane (not a helicopter) is to be operated in special VFR flight within a control
+    zone because weather prevents compliance with the normal VFR requirements. Which set of
+    conditions must be met under CAR 602.117(1)?
+  choices:
+  - Flight visibility of at least one mile, operation clear of cloud with visual reference
+    to the surface at all times, and authorization requested and obtained from the appropriate
+    ATC unit
+  - Flight visibility of at least one mile, operation at least 500 feet below cloud, and authorization
+    obtained from the appropriate ATC unit
+  - Flight visibility of at least one-half mile, operation clear of cloud with visual reference
+    to the surface, and authorization obtained from the appropriate ATC unit
+  - Flight visibility of at least one mile and operation clear of cloud, with ATC authorization
+    needed only if the flight is conducted at night
+  answer_index: 0
+  explanation: CAR 602.117(1) requires flight visibility of not less than one mile for aircraft
+    other than helicopters, operation clear of cloud with visual reference to the surface
+    at all times, and authorization requested and obtained from the appropriate ATC unit.
+    The one-half mile minimum applies only to helicopters.
+  source_chunk_id: cars:CAR 602.117:0
+  status: draft
+  check:
+    answer_index: 0
+    reason: Under 602.117(1)(b)-(d), an aeroplane needs flight visibility of at least one
+      mile, must stay clear of cloud with visual reference to the surface at all times, and
+      must request and obtain ATC authorization. Choice 1 adds an unsupported 500 ft below-cloud
+      distance. Choice 2 uses the one-half mile helicopter value. Choice 3 wrongly limits
+      the ATC authorization requirement to night flights.
+- id: ppaer.air-law.131.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.131
+  stem: Under CAR 605.25, during which of the following phases must the pilot-in-command direct
+    all persons on board to fasten their safety belts, including any shoulder harness?
+  choices:
+  - Only when the aircraft is in flight and turbulence is expected to exceed light
+  - Only during take-off and landing
+  - Only during take-off, landing, and the cruise portion of flight
+  - During movement of the aircraft on the surface, and during take-off and landing
+  answer_index: 3
+  explanation: CAR 605.25(1) requires the pilot-in-command to direct all persons on board
+    to fasten safety belts, including any shoulder harness, during movement on the surface
+    and during take-off and landing, as well as any time in flight the pilot-in-command considers
+    it necessary.
+  source_chunk_id: cars:CAR 605.25:0
+  status: draft
+  check:
+    answer_index: 3
+    reason: CAR 605.25(1)(a) and (b) require the PIC to direct all persons on board to fasten
+      safety belts, including any shoulder harness, during movement of the aircraft on the
+      surface and during take-off and landing. Choice 1 leaves out surface movement. Choice
+      2 adds the cruise portion, which is required only when the PIC considers it necessary
+      under (1)(c). Choice 0 confuses this with subsection (3), which covers directions to
+      flight attendants when turbulence is expected to exceed light.
+- id: ppaer.air-law.137.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.137
+  stem: A privately operated, Canadian-registered single-engine aeroplane is flown over land
+    only. According to CAR 605.38, what is the minimum ELT equipment required for this flight?
+  choices:
+  - One ELT of Type S that transmits on 243 MHz only
+  - One ELT of type AD, AF or AP that transmits simultaneously on 406 MHz and 121.5 MHz
+  - Two ELTs of Type S that transmit on 121.5 MHz only
+  - No ELT is required because the aircraft is a single-engine aeroplane
+  answer_index: 1
+  explanation: CAR 605.38(1) requires ELTs that transmit simultaneously on 406 MHz and 121.5
+    MHz, and item 1 of the table in 605.38(2) requires one ELT of type AD, AF or AP for all
+    aircraft operating over land. Single-engine aeroplanes are not among the exemptions in
+    605.38(3).
+  source_chunk_id: cars:CAR 605.38:0
+  status: draft
+  check:
+    answer_index: 1
+    reason: Item 1 of the table in subsection (2) requires all aircraft operating over land
+      to carry one ELT of type AD, AF or AP. Subsection (1) requires the ELT to transmit simultaneously
+      on 406 MHz and 121.5 MHz. The aircraft is a single-engine aeroplane, which is not on
+      the exemption list in 605.38(3)(a), so choice 3 is wrong. Type S ELTs (choices 0 and
+      2) apply only to over-water operations, and their stated frequencies do not meet subsection
+      (1).
+- id: ppaer.air-law.145.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.145
+  stem: Under CAR 605.94, what is the minimum period for which the owner of an aircraft must
+    retain every entry in the aircraft's journey log?
+  choices:
+  - Two years
+  - Five years
+  - One year
+  - Six months
+  answer_index: 2
+  explanation: CAR 605.94(3) requires the owner of an aircraft to retain every journey log
+    entry for a period of not less than one year.
+  source_chunk_id: cars:CAR 605.94:0
+  status: draft
+  check:
+    answer_index: 2
+    reason: Subsection (3) of CAR 605.94 requires the owner of an aircraft to retain every
+      entry in a journey log for a period of not less than one year. This makes choice 2 correct.
+- id: ppaer.air-law.151.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.151
+  stem: A pilot has possession of wreckage from a transportation occurrence and must move
+    part of it to protect people from danger. According to the TC AIM, what must the pilot
+    do, to the extent possible in the circumstances, before taking those safety measures?
+  choices:
+  - Mark the evidence in a clearly identifiable manner and hand it to the nearest police detachment
+  - Wait 90 days for the Board to return the evidence to the owner
+  - Obtain written permission from the Minister before touching any evidence
+  - Record the evidence by the best means available and advise the Board of their actions
+  answer_index: 3
+  explanation: TC AIM GEN 3.4 says a person who takes necessary safety measures must, where
+    possible and before taking them, record the evidence by the best means available and advise
+    the Board of their actions. The other options are not requirements in that passage.
+  source_chunk_id: tc-aim:GEN 3.4:0
+  status: draft
+  check:
+    answer_index: 3
+    reason: The passage says that anyone taking safety measures must, to the extent possible
+      and before acting, record the evidence by the best means available and advise the Board
+      of their actions. That matches choice 3. The passage says nothing that supports choices
+      0, 1 or 2.
+- id: ppaer.air-law.154.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.154
+  stem: When an ATS unit uses the clock position system to give a pilot traffic information,
+    what is the 12 o'clock position based on?
+  choices:
+  - The observed surveillance track of the aircraft
+  - The runway heading of the departure aerodrome
+  - Magnetic north
+  - The actual nose heading of the aircraft
+  answer_index: 0
+  explanation: TC AIM RAC 1.5.3 states that the 12 o'clock position is based on the observed
+    surveillance track rather than the actual nose of the aircraft, which can cause a discrepancy
+    in strong crosswinds.
+  source_chunk_id: tc-aim:RAC 1.5.3:0
+  status: draft
+  check:
+    answer_index: 0
+    reason: The passage says that in the clock position system, the 12 o'clock position is
+      based on the observed surveillance track rather than the actual nose of the aircraft.
+      That makes choice 0 correct and rules out choice 3.

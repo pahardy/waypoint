@@ -34,8 +34,8 @@ export default function ResultsView({ attemptId }: { attemptId: string }) {
           {results.correct} / {results.total} ({percent(results.correct, results.total)}%)
         </p>
         <p className={results.passed ? "text-pass" : "text-fail"}>
-          {results.passed ? "At or above" : "Below"} the {results.pass_percent}% PSTAR
-          pass mark.
+          {results.passed ? "At or above" : "Below"} the {results.pass_percent}%{" "}
+          {results.exam} pass mark.
         </p>
         <p className="text-sm text-muted">
           A practice result only. It does not predict your result on the

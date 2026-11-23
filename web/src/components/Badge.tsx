@@ -1,6 +1,6 @@
 const STYLES = {
   official: { label: "OFFICIAL", className: "bg-accent text-on-accent" },
-  practice: { label: "PRACTICE", className: "bg-sky text-night" },
+  practice: { label: "PRACTICE", className: "bg-sky text-on-sky" },
   "non-CA": { label: "NON-CANADIAN", className: "border border-muted text-muted" },
   unverified: { label: "UNVERIFIED", className: "border border-accent text-accent" },
 } as const;

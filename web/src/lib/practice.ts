@@ -11,6 +11,7 @@ export type ExamInfo = {
   pass_percent: number;
   source: string;
   unverified: string[];
+  mock_available: boolean;
   quiz_length: number;
   topics: Topic[];
 };

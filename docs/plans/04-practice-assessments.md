@@ -105,6 +105,25 @@ Steps 1 and 2 (PSTAR quiz and mock exam), done (issue #18):
 - The light theme's amber failed contrast with Night text (3.5:1).
   Buttons and the OFFICIAL badge now use `--on-accent` (white in light).
 
+Step 3 (drafting and review), issue #20:
+- `uv run draft-questions` drafts with Claude Sonnet 5.5 from the CAR
+  section an objective names (or the nearest TC AIM passages) and checks
+  each draft with Claude Opus 5.5, which answers it from the cited
+  section alone. Validation (objective, source chunk, explanation, four
+  distinct choices) is in `GeneratedQuestion`, used by drafting and seed.
+- Review is a YAML file: `db/seed/ppaer-questions.yaml`, reviewed in the
+  PR. The 20 Air Law questions come from every third essential objective.
+  Owner decision, 2026-11-23: choose the simplest option.
+- First run found two problems, both fixed in code: a long CAR section is
+  split into chunks with one label, so the check saw the wrong chunk (CAR
+  401.05); and the model put 10 of 20 answers first and none last, so
+  choices are now shuffled, seeded by question id.
+- After the fixes the judge agrees with all 20 answers. For the reviewer:
+  089 has a negative stem ("NOT required"), and the correct choice is the
+  longest in 8 of 20.
+- PPAER quizzes are available (Air Law only). The PPAER mock exam waits
+  for step 4. Generated questions show the PRACTICE badge.
+
 ## Done when
 
 - Scoring and timing are covered by unit tests.

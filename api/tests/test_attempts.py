@@ -192,3 +192,37 @@ def test_unknown_attempt_is_not_found(client):
     unknown = "00000000-0000-0000-0000-000000000000"
     assert client.get(f"/attempts/{unknown}").status_code == 404
     assert client.post(f"/attempts/{unknown}/submit").status_code == 404
+
+
+# PPAER practice questions (generated)
+
+
+def review_all_generated(db_url):
+    with psycopg.connect(db_url) as conn:
+        conn.execute("UPDATE question SET status = 'reviewed' WHERE exam = 'PPAER'")
+
+
+def test_drafts_are_not_used_until_reviewed(client, db_url):
+    with psycopg.connect(db_url) as conn:
+        conn.execute("UPDATE question SET status = 'draft' WHERE exam = 'PPAER'")
+    assert client.get("/exams/PPAER").json()["topics"] == []
+    body = {"exam": "PPAER", "kind": "quiz"}
+    assert client.post("/attempts", json=body).status_code == 422
+
+
+def test_generated_questions_come_back_as_generated(client, db_url):
+    review_all_generated(db_url)
+    response = client.post("/attempts", json={"exam": "PPAER", "kind": "quiz"})
+    attempt = response.json()
+    assert len(attempt["questions"]) == 10
+    assert {q["origin"] for q in attempt["questions"]} == {"generated"}
+    assert "answer_index" not in response.text
+    results = client.post(f"/attempts/{attempt['id']}/submit").json()
+    assert {item["origin"] for item in results["review"]} == {"generated"}
+
+
+def test_ppaer_has_no_mock_exam_yet(client, db_url):
+    review_all_generated(db_url)
+    assert client.get("/exams/PPAER").json()["mock_available"] is False
+    body = {"exam": "PPAER", "kind": "mock"}
+    assert client.post("/attempts", json=body).status_code == 422
