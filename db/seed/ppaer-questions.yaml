@@ -21,7 +21,7 @@
     end and an additional marking of the same size equidistant from the two. The 300 m interval
     rule applies only to runways longer than 1 220 m.
   source_chunk_id: cars:CAR 301.04:0
-  status: draft
+  status: reviewed
   check:
     answer_index: 3
     reason: The runway is closed for several days, which is more than 24 hours, so the exemption
@@ -49,7 +49,7 @@
     other requirements in the section (flight review, recurrent training, and acting as pilot-in-command
     or co-pilot).
   source_chunk_id: cars:CAR 401.05:0
-  status: draft
+  status: reviewed
   check:
     answer_index: 2
     reason: 'CAR 401.05(2)(b)(i)(A) requires, when a passenger is carried, at least five take-offs
@@ -72,7 +72,7 @@
     C airspace as specified in the Designated Airspace Handbook. Class D and E airspace is
     transponder airspace only where the Handbook specifies it (CAR 601.03(b)).
   source_chunk_id: cars:CAR 601.03:0
-  status: draft
+  status: reviewed
   check:
     answer_index: 0
     reason: Under CAR 601.03(a), transponder airspace includes all Class A, B and C airspace
@@ -98,7 +98,7 @@
     airspace only during daylight in VMC and only after the pilot-in-command receives authorization
     from the appropriate air traffic control unit before entering.
   source_chunk_id: cars:CAR 601.09:0
-  status: draft
+  status: reviewed
   check:
     answer_index: 2
     reason: Subsection (2) says the pilot-in-command of a VFR aircraft without two-way radio
@@ -123,7 +123,7 @@
     operated over a built-up area or open-air assembly of persons if it is within a horizontal
     distance of 2,000 feet. The 500 feet figure applies only to helicopters and balloons.
   source_chunk_id: cars:CAR 602.12:0
-  status: draft
+  status: reviewed
   check:
     answer_index: 2
     reason: CAR 602.12(1)(b) sets the distance at 2,000 feet for an aircraft other than a
@@ -145,7 +145,7 @@
     the same altitude, the pilot-in-command of the aircraft that has the other on its right
     shall give way, and none of the listed exceptions apply here.
   source_chunk_id: cars:CAR 602.19:0
-  status: draft
+  status: reviewed
   check:
     answer_index: 3
     reason: Subsection (2) says that when two aircraft converge at about the same altitude,
@@ -169,7 +169,7 @@
     than three miles. The minimum altitude in the passage is 2,000 feet AGL, not 3,000 feet,
     and nothing in the passage prohibits aerobatics in uncontrolled airspace.
   source_chunk_id: cars:CAR 602.27:0
-  status: draft
+  status: reviewed
   check:
     answer_index: 2
     reason: CAR 602.27(c) prohibits aerobatic manoeuvres when flight visibility is less than
@@ -191,7 +191,7 @@
     to the aerodrome's altimeter setting or, if that setting is not obtainable, to the elevation
     of the aerodrome.
   source_chunk_id: cars:CAR 602.35:0
-  status: draft
+  status: reviewed
   check:
     answer_index: 0
     reason: Paragraph 602.35(a) says that immediately before take-off the altimeter is set
@@ -214,7 +214,7 @@
     airship at more than 50 nautical miles from shore unless a life preserver is carried for
     each person on board. The 2 nautical mile figure applies only to balloons.
   source_chunk_id: cars:CAR 602.62:0
-  status: draft
+  status: reviewed
   check:
     answer_index: 2
     reason: Subsection (2) says no person shall operate a land aeroplane more than 50 nautical
@@ -235,7 +235,7 @@
     where the flight is conducted within 25 nautical miles of the departure aerodrome. Flights
     between Canada and a foreign state always require a flight plan under CAR 602.73(4).
   source_chunk_id: cars:CAR 602.73:0
-  status: draft
+  status: reviewed
   check:
     answer_index: 1
     reason: 'Subsection (2) requires a VFR flight plan or itinerary for VFR flight, with one
@@ -267,7 +267,7 @@
     cruising speed. The 30-minute figure applies to day VFR, and 20 minutes applies only to
     helicopters.
   source_chunk_id: cars:CAR 602.88:0
-  status: draft
+  status: reviewed
   check:
     answer_index: 3
     reason: 'Subsection (3)(a)(ii) says an aircraft other than a helicopter in VFR flight
@@ -292,7 +292,7 @@
     for the MF area. Under 602.98(2)(b), the report is broadcast if the ground station does
     not exist or is not in operation.
   source_chunk_id: cars:CAR 602.98:0
-  status: draft
+  status: reviewed
   check:
     answer_index: 2
     reason: Under 602.98(1), every report must be made on the mandatory frequency specified
@@ -321,7 +321,7 @@
     circumstances permit at least five minutes before, giving position, altitude, estimated
     time of landing and arrival procedure intentions.
   source_chunk_id: cars:CAR 602.101:0
-  status: draft
+  status: reviewed
   check:
     answer_index: 2
     reason: CAR 602.101(a) says the first report is made before entering the MF area, at least
@@ -345,7 +345,7 @@
     aircraft be not less than 500 feet vertically and one mile horizontally from cloud. The
     other choices state distances that do not appear in the regulation.
   source_chunk_id: cars:CAR 602.114:0
-  status: draft
+  status: reviewed
   check:
     answer_index: 3
     reason: CAR 602.114(c) applies to all VFR flight in controlled airspace, whether or not
@@ -375,7 +375,7 @@
     at all times, and authorization requested and obtained from the appropriate ATC unit.
     The one-half mile minimum applies only to helicopters.
   source_chunk_id: cars:CAR 602.117:0
-  status: draft
+  status: reviewed
   check:
     answer_index: 0
     reason: Under 602.117(1)(b)-(d), an aeroplane needs flight visibility of at least one
@@ -399,7 +399,7 @@
     and during take-off and landing, as well as any time in flight the pilot-in-command considers
     it necessary.
   source_chunk_id: cars:CAR 605.25:0
-  status: draft
+  status: reviewed
   check:
     answer_index: 3
     reason: CAR 605.25(1)(a) and (b) require the PIC to direct all persons on board to fasten
@@ -424,7 +424,7 @@
     aircraft operating over land. Single-engine aeroplanes are not among the exemptions in
     605.38(3).
   source_chunk_id: cars:CAR 605.38:0
-  status: draft
+  status: reviewed
   check:
     answer_index: 1
     reason: Item 1 of the table in subsection (2) requires all aircraft operating over land
@@ -447,7 +447,7 @@
   explanation: CAR 605.94(3) requires the owner of an aircraft to retain every journey log
     entry for a period of not less than one year.
   source_chunk_id: cars:CAR 605.94:0
-  status: draft
+  status: reviewed
   check:
     answer_index: 2
     reason: Subsection (3) of CAR 605.94 requires the owner of an aircraft to retain every
@@ -468,7 +468,7 @@
     possible and before taking them, record the evidence by the best means available and advise
     the Board of their actions. The other options are not requirements in that passage.
   source_chunk_id: tc-aim:GEN 3.4:0
-  status: draft
+  status: reviewed
   check:
     answer_index: 3
     reason: The passage says that anyone taking safety measures must, to the extent possible
@@ -490,7 +490,7 @@
     surveillance track rather than the actual nose of the aircraft, which can cause a discrepancy
     in strong crosswinds.
   source_chunk_id: tc-aim:RAC 1.5.3:0
-  status: draft
+  status: reviewed
   check:
     answer_index: 0
     reason: The passage says that in the clock position system, the 12 o'clock position is

@@ -121,6 +121,9 @@ Step 3 (drafting and review), issue #20:
 - After the fixes the judge agrees with all 20 answers. For the reviewer:
   089 has a negative stem ("NOT required"), and the correct choice is the
   longest in 8 of 20.
+- All 20 marked `reviewed` without a question-by-question read: owner
+  decision, 2026-11-23, since Waypoint is a test app. They still need the
+  flight-instructor review gate below.
 - PPAER quizzes are available (Air Law only). The PPAER mock exam waits
   for step 4. Generated questions show the PRACTICE badge.
 
