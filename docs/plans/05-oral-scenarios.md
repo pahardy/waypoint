@@ -66,6 +66,36 @@ Eval (on demand, real model):
 4. Add the web pages.
 5. Write 5 oral questions and 3 scenarios per pathway.
 
+## Progress
+
+Step 1 (one oral question in the CLI), issue #26:
+- `content/exercises/static-port.yaml`: a blocked static port, three
+  criteria (altimeter 1, VSI 1, airspeed 2), key points from the cited
+  passage (FAA PHAK p.213; instrument behaviour is not Canada-specific).
+- `exercises.py` validates the format and checks that sources are in the
+  knowledge base; the score is calculated in code (met full weight, partly
+  met half, not met none; halves rounded up).
+- `grading.py`: one structured call (Claude Sonnet 5.5, server-side
+  fallback). Code rejects a response with a missing or repeated criterion,
+  a met or partly met mark without a quote, or a quote not in the answer,
+  and retries once.
+- `uv run oral static-port`, answer on stdin. Shows the "Educational
+  simulation. Not operational guidance." banner before and after.
+- Three hand-written answers, graded once each (2026-11-23):
+
+  | Answer | Altimeter | VSI | Airspeed | Score |
+  |---|---|---|---|---|
+  | Strong | met | met | met | 100% |
+  | Partial | partly met | not met | partly met | 38% |
+  | Weak | not met | not met | not met | 0% |
+
+  Lenient mark: the partial answer said the airspeed "reads too high when
+  you climb" (wrong direction) and still got partly met, for saying the
+  reading is wrong. The rubric says a wrongly stated point is not met.
+  Left for the step 2 consistency eval to measure, not tuned here.
+- The flight-instructor review gate before this phase was skipped: owner
+  decision, 2026-11-23.
+
 ## Done when
 
 - Grading agrees with itself on at least 90% of criteria across

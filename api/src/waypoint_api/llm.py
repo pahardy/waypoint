@@ -10,11 +10,14 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 
 import anthropic
+from anthropic import transform_schema
+from pydantic import BaseModel
 
 MODEL = os.environ.get("WAYPOINT_LLM_MODEL", "claude-sonnet-5-5")
 EFFORT = os.environ.get("WAYPOINT_LLM_EFFORT", "low")
 MAX_TOKENS = 8000
 TIMEOUT_S = 120.0
+PARSE_TIMEOUT_S = 180.0
 FALLBACK_BETA = "server-side-fallback-2026-07-01"
 
 
@@ -37,6 +40,8 @@ class Reply:
 Complete = Callable[[str, list[dict]], Reply]
 # Yields the answer's text as it is generated, then the finished Reply.
 Stream = Callable[[str, list[dict]], Iterator[str | Reply]]
+# (model, effort, system, prompt, schema) -> an instance of schema.
+Parse = Callable[[str, str, str, str, type[BaseModel]], BaseModel]
 
 
 def request(system: str, messages: list[dict]) -> dict:
@@ -113,3 +118,23 @@ def reply_from(response) -> Reply:
         usage.cache_read_input_tokens or 0,
         usage.cache_creation_input_tokens or 0,
     )
+
+
+def parse(
+    model: str, effort: str, system: str, prompt: str, schema: type[BaseModel]
+) -> BaseModel:
+    """One structured model call with server-side fallback. Refusals and
+    truncation raise LLMError before the JSON is read: a refused answer can
+    end in filler text that is not valid JSON."""
+    output_format = {"type": "json_schema", "schema": transform_schema(schema)}
+    with api_errors():
+        response = anthropic.Anthropic(timeout=PARSE_TIMEOUT_S).beta.messages.create(
+            model=model,
+            max_tokens=MAX_TOKENS,
+            system=system,
+            messages=[{"role": "user", "content": prompt}],
+            output_config={"effort": effort, "format": output_format},
+            betas=[FALLBACK_BETA],
+            fallbacks="default",
+        )
+    return schema.model_validate_json(reply_from(response).text)

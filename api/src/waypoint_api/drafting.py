@@ -5,17 +5,14 @@ owner reviews them in that file and marks each `reviewed` or `retired`.
 """
 
 import random
-from collections.abc import Callable
 from typing import Literal
 
-import anthropic
 import psycopg
-from anthropic import transform_schema
 from pydantic import BaseModel, field_validator, model_validator
 
 from waypoint_api import llm
 from waypoint_api.instructor import MIN_SCORE, label, passage_block
-from waypoint_api.judge import JUDGE_EFFORT, JUDGE_MODEL, JUDGE_TIMEOUT_S
+from waypoint_api.judge import JUDGE_EFFORT, JUDGE_MODEL
 from waypoint_api.retrieval import EmbedQuery, Passage, RetrieveRequest, retrieve
 
 CANADIAN_PASSAGES = 3
@@ -126,8 +123,6 @@ differ in Canada. Facts that are the same everywhere (aerodynamics, engines, \
 instruments, weather physics) are fine from FAA passages.\
 """
 
-Parse = Callable[..., BaseModel]
-
 
 def draft_prompt(objective: dict, passages: list[Passage]) -> str:
     """The user turn: the objective, then the labelled passages."""
@@ -146,26 +141,8 @@ def check_prompt(question: GeneratedQuestion, passages: list[Passage]) -> str:
     return f"{blocks}\n\n<question>\n{question.stem}\n\n{choices}\n</question>"
 
 
-def parse(model: str, effort: str, system: str, prompt: str, schema) -> BaseModel:
-    """One structured model call with server-side fallback, as for the
-    instructor. Refusals and truncation raise LLMError before the JSON is read:
-    a refused answer can end in filler text that is not valid JSON."""
-    output_format = {"type": "json_schema", "schema": transform_schema(schema)}
-    with llm.api_errors():
-        response = anthropic.Anthropic(timeout=JUDGE_TIMEOUT_S).beta.messages.create(
-            model=model,
-            max_tokens=8000,
-            system=system,
-            messages=[{"role": "user", "content": prompt}],
-            output_config={"effort": effort, "format": output_format},
-            betas=[llm.FALLBACK_BETA],
-            fallbacks="default",
-        )
-    return schema.model_validate_json(llm.reply_from(response).text)
-
-
 def draft(
-    objective: dict, passages: list[Passage], parse: Parse = parse
+    objective: dict, passages: list[Passage], parse: llm.Parse = llm.parse
 ) -> GeneratedQuestion:
     """Draft and validate one question; raises ValueError if it is invalid."""
     result = parse(
@@ -209,7 +186,7 @@ def cited_passages(question: GeneratedQuestion, passages: list[Passage]):
 
 
 def check(
-    question: GeneratedQuestion, passages: list[Passage], parse: Parse = parse
+    question: GeneratedQuestion, passages: list[Passage], parse: llm.Parse = llm.parse
 ) -> AnswerCheck:
     """Ask the judge to answer the question from its cited section alone."""
     return parse(
