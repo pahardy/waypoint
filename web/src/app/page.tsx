@@ -13,6 +13,9 @@ export default function Home() {
       <Link href="/learn" className="text-sky underline">
         Ask the instructor
       </Link>
+      <Link href="/practice" className="text-sky underline">
+        PSTAR practice
+      </Link>
       <Disclaimer />
     </main>
   );

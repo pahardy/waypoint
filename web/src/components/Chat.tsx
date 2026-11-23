@@ -139,7 +139,7 @@ export default function Chat() {
         <button
           type="submit"
           disabled={busy || !draft.trim()}
-          className="min-h-11 rounded bg-accent px-5 font-semibold text-night disabled:opacity-50"
+          className="min-h-11 rounded bg-accent px-5 font-semibold text-on-accent disabled:opacity-50"
         >
           Ask
         </button>

@@ -80,6 +80,31 @@ Eval (on demand, real model):
 5. Results page: per-subject breakdown and a review of each question
    with its explanation and source.
 
+## Progress
+
+Steps 1 and 2 (PSTAR quiz and mock exam), done (issue #18):
+- `uv run ingest pstar-questions` parses TP 11919 (7th ed.) and its
+  answer key into `db/seed/pstar-questions.yaml`: 185 questions. The
+  guide has 186 numbers, but 7.07 is "Intentionally removed" (the key
+  still lists an answer). Table questions read "in flight: ... on the
+  ground: ...". `uv run seed` loads objectives and questions as
+  `official`, `reviewed`.
+- Exam rules (`api/exams.py`): 50 questions and a 90% pass mark from
+  TP 11919. TC publishes no time limit; 90 minutes comes from a third
+  party and is shown as unverified. Owner decision, 2026-11-23.
+- Mock selection: each section in proportion to its size (largest
+  remainder), labelled as Waypoint's rule, not TC's. Owner decision,
+  2026-11-23.
+- Quizzes: 10 questions, untimed, one section or all.
+- The server clock times attempts. Answers after the deadline are
+  refused (409); the page submits when its timer reaches zero.
+- Pages: `/practice`, `/practice/[attemptId]`, `/results/[attemptId]`
+  (score, pass mark, per-topic table, each question with its answer).
+- No accounts yet: attempts are reached by an unguessable id, so the
+  "another user's attempt" test waits for accounts (phase 6).
+- The light theme's amber failed contrast with Night text (3.5:1).
+  Buttons and the OFFICIAL badge now use `--on-accent` (white in light).
+
 ## Done when
 
 - Scoring and timing are covered by unit tests.
