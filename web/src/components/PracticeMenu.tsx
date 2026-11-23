@@ -17,10 +17,18 @@ const QUESTION_SOURCES: Record<string, React.ReactNode> = {
   PPAER: (
     <>
       <Badge variant="practice" /> Practice questions written by Waypoint from
-      the Canadian Aviation Regulations and the TC AIM, then reviewed. They are
-      not official Transport Canada questions. Air Law only so far.
+      the Canadian Aviation Regulations, the TC AIM and, for facts that are the
+      same in every country, FAA handbooks. They are not official Transport
+      Canada questions.
     </>
   ),
+};
+
+const MOCK_SELECTION: Record<string, string> = {
+  PSTAR:
+    "Questions are drawn from each TP 11919 section in proportion to its size.",
+  PPAER:
+    "25 questions from each subject. You need 60% overall and 60% in each subject; 60% overall with a weaker subject is a partial pass.",
 };
 
 /** Choose a topic quiz for one exam, or its timed mock exam if it has one. */
@@ -119,8 +127,8 @@ export default function PracticeMenu({ exam }: { exam: "PSTAR" | "PPAER" }) {
             Question count and pass mark: {info.source}.
             {timeUnverified &&
               ` Transport Canada does not publish a ${exam} time limit; the ${minutes} minutes comes from a third-party source.`}{" "}
-            Questions are drawn from each section in proportion to its size. That
-            is Waypoint&apos;s rule, not how Transport Canada builds the exam.
+            {MOCK_SELECTION[exam]} The question mix is Waypoint&apos;s rule, not
+            how Transport Canada builds the exam.
           </p>
           <button
             type="button"

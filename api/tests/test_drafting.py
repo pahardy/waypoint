@@ -1,15 +1,20 @@
+from types import SimpleNamespace
+
 import pytest
 from pydantic import ValidationError
 
+from waypoint_api import drafting
 from waypoint_api.drafting import (
+    AnswerCheck,
     Draft,
     GeneratedQuestion,
+    candidate_objectives,
     check_prompt,
     cited_passages,
     draft,
-    pick_objectives,
     shuffled,
 )
+from waypoint_api.llm import LLMError
 from waypoint_api.retrieval import Passage
 
 CAR = Passage(
@@ -144,10 +149,73 @@ def test_the_check_prompt_hides_the_answer():
 # Picking objectives
 
 
-def test_every_third_essential_objective_of_the_subject():
+def test_evenly_spaced_essential_objectives_come_first():
     objectives = [
         {"id": f"ppaer.air-law.{n:03d}", "subject": "air-law", "essential": n % 2 == 0}
         for n in range(20)
     ] + [{"id": "ppaer.navigation.001", "subject": "navigation", "essential": True}]
-    picked = [o["id"] for o in pick_objectives(objectives, "air-law", 3)]
-    assert picked == ["ppaer.air-law.000", "ppaer.air-law.006", "ppaer.air-law.012"]
+    picked = [o["id"] for o in candidate_objectives(objectives, "air-law", 3)]
+    assert picked[:3] == ["ppaer.air-law.000", "ppaer.air-law.006", "ppaer.air-law.012"]
+    assert len(picked) == len(set(picked)) == 10
+
+
+@pytest.mark.parametrize(
+    ("judge_index", "faa_as_canadian", "passes"),
+    [(1, False, True), (2, False, False), (None, False, False), (1, True, False)],
+)
+def test_a_draft_passes_only_if_the_judge_agrees_without_faa_rules(
+    judge_index, faa_as_canadian, passes
+):
+    check = AnswerCheck(
+        answer_index=judge_index, faa_as_canadian=faa_as_canadian, reason="."
+    )
+    question = GeneratedQuestion(**VALID, check=check)
+    assert question.passes_check is passes
+
+
+# The structured model call
+
+
+class FakeClient:
+    """Stands in for anthropic.Anthropic, returning one canned response."""
+
+    def __init__(self, response):
+        self.response = response
+        self.beta = self
+        self.messages = self
+
+    def __call__(self, timeout):
+        return self
+
+    def create(self, **request):
+        self.request = request
+        return self.response
+
+
+def response(stop_reason, text):
+    usage = SimpleNamespace(
+        input_tokens=1,
+        output_tokens=1,
+        cache_read_input_tokens=0,
+        cache_creation_input_tokens=0,
+    )
+    block = SimpleNamespace(type="text", text=text)
+    return SimpleNamespace(
+        stop_reason=stop_reason, content=[block], model="m", usage=usage
+    )
+
+
+def test_a_refusal_is_reported_as_declined_not_as_bad_json(monkeypatch):
+    fake = FakeClient(response("refusal", '{"answer_index":2,"reason":"x\\n.\\n.'))
+    monkeypatch.setattr(drafting.anthropic, "Anthropic", fake)
+    with pytest.raises(LLMError, match="declined"):
+        drafting.parse("m", "high", "system", "prompt", AnswerCheck)
+
+
+def test_a_finished_answer_is_parsed_with_server_side_fallback(monkeypatch):
+    fake = FakeClient(response("end_turn", '{"answer_index": 2, "reason": "ok"}'))
+    monkeypatch.setattr(drafting.anthropic, "Anthropic", fake)
+    check = drafting.parse("m", "high", "system", "prompt", AnswerCheck)
+    assert (check.answer_index, check.faa_as_canadian) == (2, False)
+    assert fake.request["fallbacks"] == "default"
+    assert fake.request["output_config"]["format"]["type"] == "json_schema"

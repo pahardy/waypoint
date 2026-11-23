@@ -42,6 +42,22 @@ export type Attempt = {
 
 export type ReviewItem = AttemptQuestion & { answer_index: number; correct: boolean };
 
+export type SubjectScore = {
+  subject: string;
+  correct: number;
+  total: number;
+  passed: boolean;
+  supplementary: string | null;
+};
+
+export const SUBJECTS: Record<string, string> = {
+  regulations: "Aviation Regulations",
+  "air-law": "Air Law",
+  navigation: "Navigation",
+  meteorology: "Meteorology",
+  aeronautics: "Aeronautics - General Knowledge",
+};
+
 export type TopicScore = {
   objective_id: string;
   topic: string;
@@ -57,7 +73,9 @@ export type Results = {
   total: number;
   pass_percent: number;
   passed: boolean;
+  outcome: "pass" | "partial" | "fail";
   submitted_at: string;
+  subjects: SubjectScore[];
   topics: TopicScore[];
   review: ReviewItem[];
 };

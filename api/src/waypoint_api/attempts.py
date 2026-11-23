@@ -48,6 +48,17 @@ class ReviewItem(AttemptQuestion):
     correct: bool
 
 
+class SubjectScore(BaseModel):
+    """Correct answers for one subject, and the supplementary exam to write
+    if this subject alone kept a PPAER mock exam from passing."""
+
+    subject: str
+    correct: int
+    total: int
+    passed: bool
+    supplementary: str | None
+
+
 class TopicScore(BaseModel):
     """Correct answers for one topic (objective)."""
 
@@ -67,7 +78,9 @@ class Results(BaseModel):
     total: int
     pass_percent: int
     passed: bool
+    outcome: exams.Outcome
     submitted_at: datetime
+    subjects: list[SubjectScore]
     topics: list[TopicScore]
     review: list[ReviewItem]
 
@@ -77,18 +90,20 @@ class AttemptError(Exception):
 
 
 def question_pool(
-    conn: psycopg.Connection, exam: str, objective_id: str | None
+    conn: psycopg.Connection, exam: str, objective_id: str | None, group: str
 ) -> dict[str, list[str]]:
-    """Reviewed question ids by objective, optionally for one objective."""
+    """Reviewed question ids grouped by `objective_id` or `subject`,
+    optionally for one objective."""
     rows = conn.execute(
-        "SELECT objective_id, id FROM question"
-        " WHERE exam = %s AND status = 'reviewed'"
-        " AND (%s::text IS NULL OR objective_id = %s) ORDER BY id",
+        f"SELECT o.{group}, q.id FROM question q"
+        " JOIN objective o ON o.id = q.objective_id"
+        " WHERE q.exam = %s AND q.status = 'reviewed'"
+        " AND (%s::text IS NULL OR q.objective_id = %s) ORDER BY q.id",
         (exam, objective_id, objective_id),
     ).fetchall()
     pool: dict[str, list[str]] = defaultdict(list)
-    for objective, question_id in rows:
-        pool[objective].append(question_id)
+    for key, question_id in rows:
+        pool[key].append(question_id)
     return pool
 
 
@@ -104,9 +119,13 @@ def start(
     rules = exams.RULES[exam]
     if kind == "mock" and not rules.mock_available:
         raise AttemptError(f"There is no {exam} mock exam yet.")
-    pool = question_pool(conn, exam, objective_id)
+    group = "subject" if rules.mock_mix == "by_subject" else "id"
+    pool = question_pool(conn, exam, objective_id, group)
     if kind == "mock":
-        chosen = exams.assemble_mock(pool, rules.question_count, rng)
+        counts = exams.mock_counts(rules, {k: len(v) for k, v in pool.items()})
+        if any(len(pool[k]) < n for k, n in counts.items()):
+            raise AttemptError(f"Not enough reviewed {exam} questions for a mock exam.")
+        chosen = exams.assemble_mock(pool, counts, rng)
         time_limit = rules.time_limit_s
     else:
         all_ids = [q for ids in pool.values() for q in ids]
@@ -130,7 +149,7 @@ def start(
 
 
 ITEMS = """
-    SELECT i.position, q.id AS question_id, q.number, q.objective_id, o.text AS topic,
+    SELECT i.position, q.id AS question_id, q.number, q.objective_id, o.subject, o.text AS topic,
            q.stem, q.choices, q.origin, i.chosen_index, q.answer_index
     FROM attempt_item i
     JOIN question q ON q.id = i.question_id
@@ -139,7 +158,7 @@ ITEMS = """
 """
 ATTEMPT = """
     SELECT id, kind, exam, started_at, time_limit_s, submitted_at, correct, total,
-           passed
+           passed, outcome
     FROM attempt WHERE id = %s
 """
 
@@ -206,17 +225,54 @@ def submit(conn: psycopg.Connection, attempt_id: UUID, now: datetime) -> None:
     row = attempt_row(conn, attempt_id)
     if row.submitted_at is not None:
         return
+    rules = exams.RULES[row.exam]
     items = item_rows(conn, attempt_id)
-    result = exams.score(
-        [i.chosen_index for i in items],
-        [i.answer_index for i in items],
-        exams.RULES[row.exam].pass_percent,
+    correct = sum(i.chosen_index == i.answer_index for i in items)
+    outcome = exams.outcome(
+        subject_counts(items),
+        rules.pass_percent,
+        per_subject=rules.subject_pass and row.kind == "mock",
     )
     conn.execute(
-        "UPDATE attempt SET submitted_at = %s, correct = %s, passed = %s WHERE id = %s",
-        (now, result.correct, result.passed, attempt_id),
+        "UPDATE attempt SET submitted_at = %s, correct = %s, passed = %s,"
+        " outcome = %s WHERE id = %s",
+        (now, correct, outcome == "pass", outcome, attempt_id),
     )
     conn.commit()
+
+
+def subject_counts(items: list[NamedTuple]) -> dict[str, tuple[int, int]]:
+    """(correct, total) for each subject of the attempt's questions."""
+    counts: dict[str, tuple[int, int]] = {}
+    for item in items:
+        correct, total = counts.get(item.subject, (0, 0))
+        counts[item.subject] = (
+            correct + (item.chosen_index == item.answer_index),
+            total + 1,
+        )
+    return counts
+
+
+def subject_scores(
+    counts: dict[str, tuple[int, int]], pass_percent: int, outcome: exams.Outcome
+) -> list[SubjectScore]:
+    """Per-subject results; a partial pass names each failed subject's
+    supplementary exam."""
+    scores = []
+    for subject in sorted(counts):
+        correct, total = counts[subject]
+        passed = exams.meets(correct, total, pass_percent)
+        partial = outcome == "partial" and not passed
+        scores.append(
+            SubjectScore(
+                subject=subject,
+                correct=correct,
+                total=total,
+                passed=passed,
+                supplementary=exams.SUPPLEMENTARY.get(subject) if partial else None,
+            )
+        )
+    return scores
 
 
 def results(conn: psycopg.Connection, attempt_id: UUID) -> Results | None:
@@ -224,23 +280,27 @@ def results(conn: psycopg.Connection, attempt_id: UUID) -> Results | None:
     row = attempt_row(conn, attempt_id)
     if row is None or row.submitted_at is None:
         return None
+    items = item_rows(conn, attempt_id)
     fields = ReviewItem.model_fields
     review = [
         ReviewItem(
             **{k: getattr(r, k) for k in fields if k != "correct"},
             correct=r.chosen_index == r.answer_index,
         )
-        for r in item_rows(conn, attempt_id)
+        for r in items
     ]
+    pass_percent = exams.RULES[row.exam].pass_percent
     return Results(
         id=row.id,
         kind=row.kind,
         exam=row.exam,
         correct=row.correct,
         total=row.total,
-        pass_percent=exams.RULES[row.exam].pass_percent,
+        pass_percent=pass_percent,
         passed=row.passed,
+        outcome=row.outcome,
         submitted_at=row.submitted_at,
+        subjects=subject_scores(subject_counts(items), pass_percent, row.outcome),
         topics=topic_scores(review),
         review=review,
     )

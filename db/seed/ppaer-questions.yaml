@@ -1,6 +1,651 @@
 # Practice questions drafted by `uv run draft-questions`. Not official
 # Transport Canada questions. Review each one: set status to reviewed
 # (edit the text if needed) or retired. Only reviewed questions are used.
+- id: ppaer.aeronautics.009.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.009
+  stem: In a typical certificated piston aeroplane engine with a dual ignition system, what
+    is the effect if one of the two magnetos fails in flight?
+  choices:
+  - The engine continues to operate normally, with a slight decrease in power
+  - The engine continues at full power because the second magneto compensates completely
+  - The engine stops immediately because both magnetos are needed to fire the spark plugs
+  - The engine runs only if the electrical system supplies current to the remaining spark
+    plugs
+  answer_index: 0
+  explanation: In a dual ignition system each magneto operates independently and fires one
+    of the two spark plugs in each cylinder. If one magneto fails the other is unaffected,
+    so the engine keeps running normally with a slight loss of power. This is background aerodynamics-independent
+    engine knowledge from the PHAK ignition system section.
+  source_chunk_id: faa-phak:PHAK p.175:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: The passage says that if one magneto fails, the other is unaffected and the engine
+      keeps operating normally, with a slight decrease in power expected. Magnetos work independently
+      of the electrical system, which rules out choice 3. This is engine system knowledge
+      that applies everywhere, not a Canadian rule.
+- id: ppaer.aeronautics.017.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.017
+  stem: As an aeroplane with a carburetted engine climbs to a higher altitude with the mixture
+    control left in the FULL RICH position, what happens to the fuel-air mixture, and why?
+  choices:
+  - It becomes progressively leaner, because the fuel density decreases while air density
+    remains the same
+  - It becomes progressively richer, because air density decreases while fuel density remains
+    the same
+  - It becomes progressively leaner, because air density decreases faster than fuel is delivered
+  - It stays the same, because the carburettor automatically meters fuel to match air density
+  answer_index: 1
+  explanation: Carburettors are calibrated at sea-level pressure. As altitude increases the
+    air entering the carburettor becomes less dense while the fuel density stays the same,
+    so the mixture becomes progressively richer unless it is leaned (PHAK p.168-169, background
+    aerodynamics and engine principle).
+  source_chunk_id: faa-phak:PHAK p.169:0
+  status: reviewed
+  check:
+    answer_index: 1
+    faa_as_canadian: false
+    reason: The passage states that as altitude increases, the density of air entering the
+      carburetor decreases while the density of the fuel stays the same. This makes the mixture
+      progressively richer, which matches choice 1. This is engine physics, so it is not specific
+      to any jurisdiction.
+- id: ppaer.aeronautics.018.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.018
+  stem: A pilot climbs to a high-altitude airport in an aeroplane with a carburetted engine
+    and leaves the mixture control in FULL RICH. Which of the following describes what happens
+    to the fuel-air mixture as altitude increases?
+  choices:
+  - The mixture becomes leaner because the air bleed admits more air at altitude
+  - The mixture becomes progressively richer because air density decreases while fuel density
+    remains the same
+  - The mixture stays at the correct ratio because the carburettor automatically compensates
+    for altitude
+  - The mixture becomes progressively leaner because fuel density decreases faster than air
+    density
+  answer_index: 1
+  explanation: Carburettors are calibrated at sea-level pressure with the mixture control
+    FULL RICH. As altitude increases, air density falls while fuel density stays the same,
+    so the mixture gets progressively richer and must be leaned with the mixture control (PHAK,
+    Mixture Control; background aerodynamics/engine physics).
+  source_chunk_id: faa-phak:PHAK p.169:0
+  status: reviewed
+  check:
+    answer_index: 1
+    faa_as_canadian: false
+    reason: The passage says that as altitude increases, the density of air entering the carburettor
+      decreases while fuel density stays the same, giving a progressively richer mixture.
+      That matches choice 1. This is engine physics, which is the same in Canada, so using
+      an FAA source is acceptable.
+- id: ppaer.aeronautics.019.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.019
+  stem: According to the TC AIM, when a pilot applies carburettor heat to clear ice, what
+    should the pilot expect and be prepared to accept?
+  choices:
+  - A rough-running engine for a minute or so as the melted ice is ingested into the engine
+  - A sudden increase in power because the heated air is denser
+  - A permanent loss of engine power until the aircraft lands
+  - An immediate return to smooth engine operation as soon as heat is selected
+  answer_index: 0
+  explanation: TC AIM AIR 2.3 states that the pilot must learn to accept a rough-running engine
+    for a minute or so as the heat melts and loosens the ice, which is then ingested into
+    the engine.
+  source_chunk_id: tc-aim:AIR 2.3:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: The TC AIM passage says the pilot must learn to accept a rough-running engine
+      for a minute or so while the heat melts and loosens the ice, which is then ingested
+      into the engine. That matches choice 0. The passage is Canadian material, so the FAA
+      flag does not apply.
+- id: ppaer.aeronautics.032.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.032
+  stem: Which of the following is one of the functions of the engine oil system in a reciprocating
+    aircraft engine?
+  choices:
+  - Raising the fuel-air mixture temperature in the induction system
+  - Providing a seal between the cylinder walls and the pistons
+  - Supplying electrical power to the magnetos
+  - Increasing the octane rating of the fuel-air mixture
+  answer_index: 1
+  explanation: The engine oil system lubricates moving parts, reduces friction, removes heat
+    from the cylinders, carries away contaminants and provides a seal between the cylinder
+    walls and pistons (PHAK, Oil Systems). The other choices are not functions of the oil
+    system.
+  source_chunk_id: faa-phak:PHAK p.176:0
+  status: reviewed
+  check:
+    answer_index: 1
+    faa_as_canadian: false
+    reason: The passage lists the engine oil system's functions. One of them is "Providing
+      a seal between the cylinder walls and pistons," which matches choice 1. None of the
+      other choices appear in that list. How engine oil systems work is general engine knowledge
+      and does not depend on the regulator, so the FAA source is fine here.
+- id: ppaer.aeronautics.046.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.046
+  stem: According to the background passage on fuel systems, which situation may allow air
+    to enter the fuel system and cause vapour lock, making it difficult to restart the engine?
+  choices:
+  - Filling the tanks on a hot day so that fuel comes out of the overflow drain
+  - Running a fuel tank completely dry
+  - Selecting the BOTH position on the fuel selector valve
+  - Visually checking the fuel level in each tank during the preflight inspection
+  answer_index: 1
+  explanation: 'The passage states that running a tank completely dry may allow air to enter
+    the fuel system and cause vapour lock, which makes engine restart difficult. The other
+    choices are normal procedures or normal fuel expansion behaviour. Source: PHAK p.186 (background,
+    applies in all countries).'
+  source_chunk_id: faa-phak:PHAK p.186:0
+  status: reviewed
+  check:
+    answer_index: 1
+    faa_as_canadian: false
+    reason: The passage states that running a tank completely dry may allow air to enter the
+      fuel system and cause vapor lock, which makes the engine difficult to restart. This
+      is a general fuel-system fact, not a Canada-specific rule.
+- id: ppaer.aeronautics.056.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.056
+  stem: Which statement correctly describes the two basic types of drag acting on an aeroplane?
+  choices:
+  - Parasite drag is the drag that is not associated with the production of lift, while induced
+    drag is a result of an airfoil developing lift.
+  - Both parasite drag and induced drag are produced only when the wing is developing lift.
+  - Induced drag is the drag that is not associated with the production of lift, while parasite
+    drag is a result of an airfoil developing lift.
+  - Parasite drag is produced only by the wing, while induced drag is produced only by the
+    fuselage and engine cowlings.
+  answer_index: 0
+  explanation: 'Drag has two basic types: parasite drag, which does not aid flight and is
+    not associated with lift production, and induced drag, which results from an airfoil developing
+    lift. This is described in the PHAK drag discussion, which is background aerodynamics
+    common to all countries.'
+  source_chunk_id: faa-phak:PHAK p.103:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: The passage gives two basic types of drag. Parasite drag is 'not associated with
+      the production of lift', and induced drag 'is a result of an airfoil developing lift',
+      which matches choice 0. Choice 2 swaps the two definitions. Choice 1 is contradicted
+      because parasite drag is not tied to lift. Choice 3 is contradicted because parasite
+      drag comes from cowlings, antennas and the shape of components. This is aerodynamics,
+      so it applies the same in Canada.
+- id: ppaer.aeronautics.065.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.065
+  stem: An aeroplane has an unaccelerated (1 G) stalling speed of 50 knots. If a manoeuvre
+    imposes a load factor of 4 G, at approximately what speed will the aeroplane stall?
+  choices:
+  - 150 knots
+  - 100 knots
+  - 200 knots
+  - 70 knots
+  answer_index: 1
+  explanation: Stalling speed increases with the square root of the load factor, so at 4 G
+    the stall speed doubles (the square root of 4 is 2), giving 100 knots from a 50-knot base.
+    This is the example in the PHAK passage on load factor and stall speed. It is aerodynamic
+    physics that applies in any country, and the Canadian study guide lists this relationship
+    as a topic.
+  source_chunk_id: faa-phak:PHAK p.132:0
+  status: reviewed
+  check:
+    answer_index: 1
+    faa_as_canadian: false
+    reason: The passage says an aircraft with a normal unaccelerated stalling speed of 50
+      knots can be stalled at 100 knots by inducing a load factor of 4 G. This follows because
+      stall speed rises with the square root of the load factor (√4 = 2). That is basic aerodynamics,
+      so it applies the same way in Canada.
+- id: ppaer.aeronautics.090.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.090
+  stem: According to the TC AIM, what do the forward and aft CG limits established during
+    certification flight testing represent?
+  choices:
+  - The maximum CG positions at which the longitudinal stability requirements can be met
+  - The CG positions at which fuel consumption is lowest during cruise
+  - The CG positions at which the aircraft reaches its maximum structural load factor
+  - The CG positions beyond which the aircraft cannot be loaded with fuel
+  answer_index: 0
+  explanation: TC AIM RAC 3.4.3 states the forward and aft limits are the maximum CG positions
+    at which longitudinal stability requirements can be met. Operating outside them means
+    handling is unsatisfactory or has not been investigated.
+  source_chunk_id: tc-aim:RAC 3.4.3:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: 'The TC AIM passage says the forward and aft limits are "the maximum CG positions
+      at which the longitudinal stability requirements can be met," which matches choice 0.
+      The passage does not support the other choices: it says nothing about cruise fuel efficiency,
+      structural load factor, or fuel-loading restrictions. The source is Canadian, so the
+      FAA flag does not apply.'
+- id: ppaer.aeronautics.104.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.104
+  stem: Which statement correctly describes the difference between indicated airspeed (IAS)
+    and calibrated airspeed (CAS) on an airspeed indicator?
+  choices:
+  - CAS is IAS corrected for altitude and nonstandard temperature, and the error is generally
+    greatest at high airspeeds
+  - CAS is IAS adjusted for wind, and the error is generally greatest in the cruise speed
+    range
+  - CAS is IAS corrected for lag in the pressure lines, and the error is the same at all airspeeds
+  - CAS is IAS corrected for installation error and instrument error, and the error is generally
+    greatest at low airspeeds
+  answer_index: 3
+  explanation: Calibrated airspeed is IAS corrected for installation and instrument error.
+    These errors are generally greatest at low airspeeds, and in cruise IAS and CAS are approximately
+    the same (PHAK p.211, background on aerodynamics and instruments).
+  source_chunk_id: faa-phak:PHAK p.211:0
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: The passage defines CAS as IAS corrected for installation error and instrument
+      error, and says this error is generally greatest at low airspeeds. That matches choice
+      3. Choice 0 describes TAS (correction for altitude and temperature). Choice 1 describes
+      groundspeed (adjustment for wind). Choice 2 contradicts the passage, which says the
+      error varies with airspeed. These are instrument principles that are the same everywhere,
+      so an FAA source is fine here.
+- id: ppaer.aeronautics.121.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.121
+  stem: On a conventional gyroscopic heading indicator, which principle of operation allows
+    the compass card to provide heading information as the aircraft turns?
+  choices:
+  - 'Rigidity in space: the rotor and its attached compass card stay fixed in space while
+    the aircraft rotates around them'
+  - 'Magnetic alignment: the compass card is pulled toward magnetic north by the Earth''s
+    field at all times'
+  - 'Flux induction: current in pickup coils directly turns the card to match the aircraft
+    heading'
+  - 'Pressure difference: the card is rotated by static pressure acting on a sealed bellows
+    in the case'
+  answer_index: 0
+  explanation: 'The heading indicator works on rigidity in space: the rotor, with the compass
+    card fixed to it, holds its position in space while the aircraft and instrument case revolve
+    around it. This is described in the PHAK heading indicator discussion, which is background
+    for a universal gyroscopic principle.'
+  source_chunk_id: faa-phak:PHAK p.222:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: The passage says the heading indicator works on the principle of rigidity in space.
+      The rotor and its compass card stay fixed in space, and the aircraft turns around the
+      gyro. The other choices describe the magnetic compass, the flux gate or a pressure instrument.
+      This is instrument physics, which is the same in Canada.
+- id: ppaer.aeronautics.129.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.129
+  stem: In a turn-and-slip indicator, what causes the gyro to tilt left or right so that the
+    turn needle shows the direction and rate of turn?
+  choices:
+  - Precession resulting from a yawing force
+  - Pitot pressure acting on a diaphragm
+  - Gravity acting on a ball in a fluid-filled tube
+  - Rigidity in space of a gyro spinning in the horizontal plane
+  answer_index: 0
+  explanation: The passage states that, because of precession, a yawing force causes the gyro
+    to tilt left or right, and the turn needle shows the direction and rate of turn. Rigidity
+    in space applies to the attitude indicator, and the ball in a tube is the inclinometer
+    (PHAK p.218, background physics).
+  source_chunk_id: faa-phak:PHAK p.218:1
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: The passage says that, because of precession, a yawing force makes the gyro tilt
+      left or right, and the turn needle then shows the direction and rate of turn. This describes
+      how an instrument works, which is the same in Canada, so FAA material is acceptable
+      here.
+- id: ppaer.aeronautics.157.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.157
+  stem: After landing at a controlled airport, a pilot exits the runway onto a taxiway that
+    has a taxi holding position line. Unless otherwise instructed by ATC, when is the aircraft
+    considered clear of the runway?
+  choices:
+  - When the aircraft has slowed to taxi speed on the taxiway
+  - When the pilot has contacted ground control for taxi instructions
+  - When all parts of the aircraft are past the taxi holding position line
+  - When the nose wheel has crossed the taxi holding position line
+  answer_index: 2
+  explanation: TC AIM RAC 4.4.4 states that pilots should continue to taxi forward across
+    the taxi holding position line, and that the aircraft is not considered clear of the runway
+    until all parts of the aircraft are past the line (or the 200-ft point where no line exists).
+  source_chunk_id: tc-aim:RAC 4.4.4:0
+  status: reviewed
+  check:
+    answer_index: 2
+    faa_as_canadian: false
+    reason: The TC AIM passage says the aircraft is not considered clear of the runway until
+      all parts of the aircraft are past the taxi holding position line (or the 200-ft point
+      where no line exists). That matches choice 2 and rules out the others. The source is
+      Canadian.
+- id: ppaer.aeronautics.160.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.160
+  stem: Under CAR 705.56, when the maximum take-off weight is determined for an aeroplane,
+    which wind component may be taken into account for the take-off performance calculation?
+  choices:
+  - Only the reported headwind component, with any tailwind ignored
+  - 100 per cent of the reported headwind component and 100 per cent of the reported tailwind
+    component
+  - Not less than 150 per cent of the reported headwind component or not more than 50 per
+    cent of the reported tailwind component
+  - Not more than 50 per cent of the reported headwind component or not less than 150 per
+    cent of the reported tailwind component
+  answer_index: 3
+  explanation: CAR 705.56(3)(d) requires that not more than 50 per cent of the reported headwind
+    component or not less than 150 per cent of the reported tailwind component be taken into
+    account. This makes the calculation conservative.
+  source_chunk_id: cars:CAR 705.56:0
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: CAR 705.56(3)(d) says to take into account not more than 50 per cent of the reported
+      headwind component or not less than 150 per cent of the reported tailwind component.
+      That matches choice 3 exactly. Choice 2 reverses the percentages. The passage is Canadian,
+      so no FAA concern arises."}
+- id: ppaer.aeronautics.165.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.165
+  stem: According to the TC AIM discussion of the CRFI landing distance tables, which aeroplanes
+    is Table 1.3 (CRFI Recommended Landing Distances) intended to be used for?
+  choices:
+  - Only turbojet aeroplanes using reverse thrust
+  - Only turboprop aeroplanes using discing
+  - Aeroplanes landing on dry runways only
+  - Aeroplanes with no discing and/or reverse thrust capability
+  answer_index: 3
+  explanation: The TC AIM states that landing distances recommended in Table 1.3 are intended
+    for aeroplanes with no discing and/or reverse thrust capability, while Table 1.4 gives
+    credit for discing and/or reverse thrust (TC AIM AIR 1.6.7).
+  source_chunk_id: tc-aim:AIR 1.6.7:2
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: The TC AIM says the landing distances in Table 1.3 are meant for aeroplanes with
+      no discing and/or reverse thrust capability. Table 1.4 is the one for aeroplanes that
+      have discing and/or reverse thrust. The tables apply corrections to dry-runway AFM data
+      for contaminated runways, so they are not for dry runways only. The passages are Canadian
+      (TC AIM).
+- id: ppaer.aeronautics.170.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.170
+  stem: According to the TC AIM, frost, ice or snow with a roughness similar to medium or
+    coarse sandpaper on the leading edge and upper surface of a wing can have which effect?
+  choices:
+  - Increase wing lift slightly while increasing drag by 80%
+  - Reduce wing lift by as much as 30% and increase drag by 40%
+  - Reduce wing lift by as much as 40% and increase drag by 30%
+  - Reduce wing lift by about 10% with no significant change in drag
+  answer_index: 1
+  explanation: The TC AIM states that contamination similar to medium or coarse sandpaper
+    on the leading edge and upper wing surface can reduce lift by as much as 30% and increase
+    drag by 40%. This also increases stall speed and reduces controllability (TC AIM AIR 2.12.2).
+  source_chunk_id: tc-aim:AIR 2.12.2:0
+  status: reviewed
+  check:
+    answer_index: 1
+    faa_as_canadian: false
+    reason: The TC AIM passage says sandpaper-like frost, ice or snow on the leading edge
+      and upper wing surface can reduce lift by as much as 30% and increase drag by 40%. This
+      matches choice 1. Choice 2 swaps the two figures, and choices 0 and 3 contradict the
+      passage.
+- id: ppaer.aeronautics.177.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.177
+  stem: What is the main benefit of flying an aeroplane at its speed for best rate of climb
+    (Vy)?
+  choices:
+  - It gives the maximum flying distance for a given fuel load
+  - It gives the minimum fuel flow for maximum endurance
+  - It gains the greatest altitude in a given period of time
+  - It gains the most altitude over the shortest horizontal distance
+  answer_index: 2
+  explanation: Flying at Vy provides maximum rate of climb, which gains the greatest altitude
+    over a given period of time. Vx, not Vy, gives the most altitude for the least horizontal
+    distance. TC AIM GEN 1.7 defines Vy as the speed for best rate of climb, and the PHAK
+    explains its purpose.
+  source_chunk_id: faa-phak:PHAK p.263:0
+  status: reviewed
+  check:
+    answer_index: 2
+    faa_as_canadian: false
+    reason: The passage says maximum rate of climb, flown at Vy, gives the greatest altitude
+      gain over time. That matches choice 2. Choice 3 describes the best angle of climb (Vx),
+      which gives the most altitude over the least horizontal distance. Choices 0 and 1 describe
+      best range and best endurance, which this passage does not cover. Climb performance
+      is general aerodynamics, so the FAA source is fine.
+- id: ppaer.aeronautics.191.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.191
+  stem: According to the TC AIM, what is the minimum height at which practice spin recoveries
+    must be completed?
+  choices:
+  - No lower than 1 000 feet AGL, or the manufacturer's recommended height, whichever is the
+    lesser
+  - No lower than 1 500 feet AGL, or the manufacturer's recommended height, whichever is the
+    greater
+  - No lower than 2 000 feet AGL, or the manufacturer's recommended height, whichever is the
+    greater
+  - No lower than 3 000 feet AGL in every case, regardless of the manufacturer's recommendation
+  answer_index: 2
+  explanation: TC AIM AIR 4.3 states that all practice spin recoveries should be completed
+    no less than 2 000 feet AGL, or at a height recommended by the manufacturer, whichever
+    is the greater.
+  source_chunk_id: tc-aim:AIR 4.3:0
+  status: reviewed
+  check:
+    answer_index: 2
+    faa_as_canadian: false
+    reason: The TC AIM passage says practice spin recoveries should be completed no lower
+      than 2 000 feet AGL, or at the manufacturer's recommended height, whichever is greater.
+      That matches choice 2. The source is Canadian, so the FAA flag does not apply.
+- id: ppaer.aeronautics.202.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.202
+  stem: According to the TC AIM, why are the forward and aft CG limits of an aircraft established
+    during certification flight testing?
+  choices:
+  - They are the maximum CG positions at which the longitudinal stability requirements can
+    be met
+  - They are the CG positions at which lateral balance is guaranteed regardless of fuel distribution
+  - They are the CG positions that give the best fuel economy in cruise flight
+  - They are the positions at which the aircraft reaches its maximum certified gross weight
+  answer_index: 0
+  explanation: TC AIM RAC 3.4.3 states that the forward and aft limits set during certification
+    flight testing are the maximum CG positions at which longitudinal stability requirements
+    can be met. Operating outside them means handling is unsatisfactory or has not been investigated.
+  source_chunk_id: tc-aim:RAC 3.4.3:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: 'The passage is Canadian (TC AIM), so there is no FAA concern. It says the forward
+      and aft limits set during certification flight testing are the maximum CG positions
+      at which the longitudinal stability requirements can be met. That matches choice 0.
+      The passage does not support the other choices: lateral balance, fuel economy and maximum
+      gross weight.'
+- id: ppaer.aeronautics.208.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.208
+  stem: An aeroplane has a maximum zero fuel weight of 4,400 pounds. After loading the empty
+    aircraft, occupants, baggage and cargo (but no fuel), the total weight is 4,240 pounds.
+    Which statement is correct about this loading with respect to the zero fuel weight limit?
+  choices:
+  - It is within the limit, because the weight without fuel is under the maximum zero fuel
+    weight
+  - It exceeds the limit, because fuel must be added to the weight before comparing it to
+    the maximum zero fuel weight
+  - It exceeds the limit, so passengers or cargo must be removed
+  - It is within the limit only if the ramp weight is also below 4,240 pounds
+  answer_index: 0
+  explanation: Zero fuel weight is the weight of the loaded aircraft without fuel, and 4,240
+    pounds is under the 4,400-pound maximum. Passengers or cargo would only need to be reduced
+    if the no-fuel weight exceeded the maximum (PHAK p.254, background on aerodynamics-independent
+    weight principles).
+  source_chunk_id: faa-phak:PHAK p.254:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: The passage says that with no fuel the aircraft weighs 4,240 lb, which is under
+      the 4,400 lb maximum zero fuel weight, so the loading is within the limit. Fuel is not
+      counted in zero fuel weight, and the passage calls for reducing passengers or cargo
+      only if the limit is exceeded. Zero fuel weight is a general weight and balance concept,
+      not a jurisdiction-specific rule.
+- id: ppaer.aeronautics.212.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.212
+  stem: You are cleared to take off after a large aircraft has departed from the same runway.
+    According to the TC AIM, what should you plan to do to avoid its wake turbulence?
+  choices:
+  - Become airborne well beyond the large aircraft's point of rotation and climb below its
+    departure path
+  - Hold the nosewheel on the runway until past the large aircraft's rotation point, then
+    climb straight out below its flight path
+  - Rotate at the same point as the large aircraft and climb directly along its departure
+    path
+  - Become airborne before the large aircraft's point of rotation and stay above its departure
+    path, or request a turn to avoid the departure path
+  answer_index: 3
+  explanation: TC AIM AIR 2.9.2 states that when cleared to take off after a large aircraft's
+    departure, you should plan to become airborne before its point of rotation and stay above
+    its departure path, or request a turn to avoid that path.
+  source_chunk_id: tc-aim:AIR 2.9.2:0
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: The TC AIM passage says that when cleared to take off after a large aircraft has
+      departed, you should plan to become airborne before the preceding aircraft's rotation
+      point. You should then stay above its departure path or request a turn to avoid that
+      path. This matches choice 3. The other choices have you airborne after its rotation
+      point, or climbing below or along its departure path, which the passage says to avoid.
+- id: ppaer.aeronautics.219.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.219
+  stem: On an aircraft with fuel tanks in the wings, which situation best describes the cold-soaking
+    phenomenon that can lead to clear ice on the wing during ground turn-around?
+  choices:
+  - Wing fuel that is colder than the ambient air, after a long flight or an uplift of cold
+    fuel, chills the wing surface above the tanks so that rain, drizzle or wet snow near 0°C
+    can freeze on it
+  - Frost forms only on the fuselage because the engines are cold after a long flight
+  - Clear ice forms only when the outside air temperature is below -20°C, regardless of fuel
+    temperature
+  - Warm fuel in the wing tanks heats the upper wing surface and causes snow to melt and refreeze
+    as ice on the trailing edge
+  answer_index: 0
+  explanation: TC AIM AIR 2.12.2 explains that fuel in the wing tanks can be considerably
+    colder than the ambient air after a flight or after cold fuel is uplifted. The cold-soaked
+    wings conduct heat away from precipitation, so clear ice may form on the wing areas above
+    the fuel tanks, especially in wet snow, drizzle or rain near 0°C.
+  source_chunk_id: tc-aim:AIR 2.12.2:1
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: 'The TC AIM passage says that after a flight the fuel in the wing tanks can be
+      much colder than the ambient air. It names the long airborne time of the previous flight
+      and uplift of cold fuel as causes. The cold-soaked wing then conducts heat away from
+      precipitation, so clear ice forms on wing areas above the tanks, with wet snow, drizzle
+      or rain around 0°C being very critical. That matches choice 0. Choices 1 and 2 contradict
+      the passage, which describes ice on the wings and freezing even at above-zero temperatures.
+      Choice 3 reverses it: warm fuel is a remedy, not the cause. The source is Canadian material.'
+- id: ppaer.aeronautics.235.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.235
+  stem: According to the TC AIM, a pilot who has a cold and wants to take an over-the-counter
+    cough medicine or herbal remedy before flying should do which of the following?
+  choices:
+  - Fly only if the medicine is taken in a half dose, since over-the-counter products are
+    not considered to impair judgment
+  - Fly if the product is a natural health product, because herbal remedies are exempt from
+    the restrictions that apply to drugs
+  - Fly as normal, since a medicine that masks symptoms removes any effect of the condition
+    on proficiency
+  - Not fly under its influence unless cleared by a Civil Aviation Medical Examiner (CAME)
+  answer_index: 3
+  explanation: TC AIM AIR 3.10 states that over-the-counter drugs, cough medicines and herbal
+    remedies can cause drowsiness and impair judgment and coordination. Pilots should not
+    fly under their influence unless cleared by a CAME, just as they would not fly under the
+    influence of alcohol.
+  source_chunk_id: tc-aim:AIR 3.10:0
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: The passage says that unless a CAME has cleared them, pilots should not fly under
+      the influence of prescription or over-the-counter drugs or herbal remedies. That matches
+      choice 3. It also says these products may impair judgment, that herbal remedies are
+      covered, and that masking symptoms does not remove impairment from the condition. This
+      rules out choices 0, 1 and 2. The source is Canadian.'faa_as_canadian' is false."faa_as_canadian":false}
+- id: ppaer.aeronautics.243.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.243
+  stem: According to the TC AIM, which of the following is a common cause of fatigue that
+    can impair a pilot's judgement and motor skills and lead to poor decisions?
+  choices:
+  - Staying mentally active during a long flight
+  - Insufficient rest, lack of sleep, or overexertion
+  - Frequent ground-speed and fuel-consumption checks
+  - Studying airfield charts before a diversion
+  answer_index: 1
+  explanation: TC AIM AIR 3.8 states that the most common causes of fatigue are insufficient
+    rest, lack of sleep, and overexertion, and that fatigue affects motor skills and judgement.
+    The other options are methods it lists for overcoming boredom.
+  source_chunk_id: tc-aim:AIR 3.8:0
+  status: reviewed
+  check:
+    answer_index: 1
+    faa_as_canadian: false
+    reason: The TC AIM passage says the most common causes of fatigue are insufficient rest,
+      lack of sleep and overexertion, which is choice 1. The passage presents the other three
+      choices as ways to beat boredom, not as causes of fatigue. The source is Canadian, so
+      there is no FAA concern.
+- id: ppaer.aeronautics.247.q1
+  exam: PPAER
+  objective_id: ppaer.aeronautics.247
+  stem: According to the passage on accident causation in aviation human factors, how are
+    aircraft accidents most accurately described?
+  choices:
+  - As the result of a chain of events and the decisions made along the way, rather than a
+    single decision or event
+  - As events that only happen to pilots with a particular personality type, so pilot groups
+    should be limited to safety-conscious people
+  - As the result of one critical error made by the pilot immediately before the accident
+  - As events caused mainly by equipment failures that the pilot cannot influence
+  answer_index: 0
+  explanation: The passage states that a single decision or event does not lead to an accident,
+    but a series of events and the resultant decisions together form a chain leading to the
+    outcome, which is why "human factors related" is a more apt phrase than "pilot error".
+    This is the basis of threat and error management, where errors are caught before the chain
+    completes. (PHAK p.51, background on a fact common to all countries.)
+  source_chunk_id: faa-phak:PHAK p.51:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: The passage says a single decision or event does not lead to an accident. Instead,
+      a series of events and the decisions that follow form a chain leading to the outcome.
+      It also calls limiting pilot groups to safety-conscious personalities inaccurate and
+      impossible, which rules out choice 1. The Everyman examples show a chain of poor choices,
+      not one error or an equipment failure. This is general human-factors material, not a
+      rule that differs between countries.
 - id: ppaer.air-law.015.q1
   exam: PPAER
   objective_id: ppaer.air-law.015
@@ -24,11 +669,43 @@
   status: reviewed
   check:
     answer_index: 3
+    faa_as_canadian: false
     reason: The runway is closed for several days, which is more than 24 hours, so the exemption
       in subsection (3) does not apply. A 1 000 m runway is longer than 450 m but not longer
       than 1 220 m. Under 301.04(4)(b), the operator must place closed markings of at least
       one-half the Schedule I dimensions at each end, plus one more marking of the same size
       equidistant between them.
+- id: ppaer.air-law.023.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.023
+  stem: Under CAR 401.03(1), which of the following is required in order for a person to act
+    as a flight crew member or exercise the privileges of a flight crew permit, licence or
+    rating?
+  choices:
+  - The person holds a licence that is valid or a medical certificate that is valid, but not
+    necessarily both
+  - The person holds the appropriate medical certificate and can produce the licence and certificate
+    when exercising those privileges
+  - The person holds the appropriate licence, and the medical certificate only needs to be
+    carried when carrying passengers
+  - The person holds a valid licence, and the licence only needs to be produced if requested
+    in advance by Transport Canada
+  answer_index: 1
+  explanation: CAR 401.03(1) requires the person to hold the appropriate and valid permit,
+    licence or rating, to hold the appropriate medical certificate, and to be able to produce
+    both when exercising those privileges.
+  source_chunk_id: cars:CAR 401.03:0
+  status: reviewed
+  check:
+    answer_index: 1
+    faa_as_canadian: false
+    reason: CAR 401.03(1)(c) requires the appropriate medical certificate. Paragraph (d) requires
+      the person to be able to produce the permit, licence or rating and the certificate when
+      exercising those privileges. Choice 1 matches both requirements. Choice 0 is wrong because
+      the requirements are cumulative, so both are needed. Choice 2 is wrong because the passage
+      says nothing limiting the medical certificate to flights with passengers. Choice 3 is
+      wrong because the passage requires the documents to be producible whenever privileges
+      are exercised, not only on advance request.
 - id: ppaer.air-law.025.q1
   exam: PPAER
   objective_id: ppaer.air-law.025
@@ -52,11 +729,34 @@
   status: reviewed
   check:
     answer_index: 2
+    faa_as_canadian: false
     reason: 'CAR 401.05(2)(b)(i)(A) requires, when a passenger is carried, at least five take-offs
       and five landings in the same category and class (or a Level B, C or D full-flight simulator)
       within the six months before the flight, for flights conducted wholly by day. The other
       periods belong to different requirements: 12 months for a flight review, 24 months for
       recurrent training, and 5 years for having acted as PIC or co-pilot.'
+- id: ppaer.air-law.031.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.031
+  stem: A 45-year-old holder of a private pilot licence has just had a medical examination
+    for the renewal of a Category 3 medical certificate. What is the maximum validity period
+    of the certificate, unless the Minister endorses a shorter period?
+  choices:
+  - 48 months
+  - 60 months
+  - 24 months
+  - 12 months
+  answer_index: 2
+  explanation: Under CAR 404.04(6), the table gives a private pilot licence holder aged 40
+    or older a validity period of 24 months, while those under 40 receive 60 months.
+  source_chunk_id: cars:CAR 404.04:0
+  status: reviewed
+  check:
+    answer_index: 2
+    faa_as_canadian: false
+    reason: The table in CAR 404.04(6), item 1, sets the validity period for a private pilot
+      licence at 24 months when the holder is 40 years of age or older. A 45-year-old therefore
+      gets a maximum of 24 months, unless the Minister endorses a shorter period.
 - id: ppaer.air-law.038.q1
   exam: PPAER
   objective_id: ppaer.air-law.038
@@ -75,10 +775,33 @@
   status: reviewed
   check:
     answer_index: 0
+    faa_as_canadian: false
     reason: Under CAR 601.03(a), transponder airspace includes all Class A, B and C airspace
       as specified in the Designated Airspace Handbook. Class D and E airspace counts only
       where the Handbook specifically designates it, so choices 1 and 3 are wrong. Choice
       2 leaves out Class C.
+- id: ppaer.air-law.039.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.039
+  stem: Under CAR 601.04, who must authorize a person to operate an aircraft in Class F Special
+    Use Restricted airspace?
+  choices:
+  - The person specified for that purpose in the Designated Airspace Handbook
+  - The owner of the aircraft, provided a flight plan has been filed
+  - The nearest air traffic control unit, on any frequency in use
+  - The pilot-in-command, if the pilot judges the activities not hazardous
+  answer_index: 0
+  explanation: CAR 601.04(2) prohibits operating an aircraft in Class F Special Use Restricted
+    airspace unless authorized by the person specified for that purpose in the Designated
+    Airspace Handbook.
+  source_chunk_id: cars:CAR 601.04:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: CAR 601.04(2) says no person shall operate an aircraft in Class F Special Use
+      Restricted airspace unless authorized by the person specified for that purpose in the
+      Designated Airspace Handbook. That matches choice 0. The passage is Canadian regulation.
 - id: ppaer.air-law.043.q1
   exam: PPAER
   objective_id: ppaer.air-law.043
@@ -101,12 +824,36 @@
   status: reviewed
   check:
     answer_index: 2
+    faa_as_canadian: false
     reason: Subsection (2) says the pilot-in-command of a VFR aircraft without two-way radio
       may enter Class D airspace during daylight in VMC if authorization to enter is received
       from the appropriate ATC unit before entering. That matches choice 2. Choice 0 leaves
       out both daylight and authorization. Choice 1 says night, but the rule says daylight.
       Choice 3 has contact after entry, which the rule does not provide for, and the aircraft
       has no two-way radio.
+- id: ppaer.air-law.057.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.057
+  stem: Under CAR 602.10, which of the following is a condition that must be met before a
+    person starts an engine of an aircraft?
+  choices:
+  - The aircraft is positioned facing into the wind
+  - A licensed aircraft maintenance engineer is standing beside the aircraft
+  - A pilot's seat is occupied by a person who is competent to control the aircraft
+  - A fire extinguisher is held by a person outside the aircraft
+  answer_index: 2
+  explanation: CAR 602.10(1)(a) states that no person shall start an aircraft engine unless
+    a pilot's seat is occupied by a person who is competent to control the aircraft. The other
+    options are not requirements in this section.
+  source_chunk_id: cars:CAR 602.10:0
+  status: reviewed
+  check:
+    answer_index: 2
+    faa_as_canadian: false
+    reason: CAR 602.10(1)(a) lists, as one of the conditions for starting an engine, that
+      a pilot's seat is occupied by a person competent to control the aircraft. The other
+      choices (facing into the wind, an AME beside the aircraft, a fire extinguisher held
+      outside) are not in the passage. The source is the Canadian Aviation Regulations.
 - id: ppaer.air-law.059.q1
   exam: PPAER
   objective_id: ppaer.air-law.059
@@ -126,6 +873,7 @@
   status: reviewed
   check:
     answer_index: 2
+    faa_as_canadian: false
     reason: CAR 602.12(1)(b) sets the distance at 2,000 feet for an aircraft other than a
       helicopter or balloon. The 500-foot figure in (1)(a) applies only to helicopters and
       balloons.
@@ -148,11 +896,33 @@
   status: reviewed
   check:
     answer_index: 3
+    faa_as_canadian: false
     reason: Subsection (2) says that when two aircraft converge at about the same altitude,
       the pilot whose aircraft has the other on its right must give way. None of the exceptions
       in (2)(a) to (d) apply, because both are power-driven aeroplanes, neither is towing,
       and neither is in an emergency. Choice 2 describes the head-on rule in (5), not converging
       traffic.
+- id: ppaer.air-law.065.q1
+  exam: PPAER
+  objective_id: ppaer.air-law.065
+  stem: According to CAR 602.21, which of the following is prohibited when operating an aircraft?
+  choices:
+  - Operating an aircraft at the same altitude as another aircraft in VFR flight
+  - Operating an aircraft within 5 nautical miles of another aircraft under any circumstances
+  - Operating an aircraft behind another aircraft without first notifying air traffic control
+  - Operating an aircraft in such proximity to another aircraft as to create a risk of collision
+  answer_index: 3
+  explanation: CAR 602.21 states that no person shall operate an aircraft in such proximity
+    to another aircraft as to create a risk of collision. It sets no fixed distance, altitude
+    or notification requirement.
+  source_chunk_id: cars:CAR 602.21:0
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: CAR 602.21 prohibits operating an aircraft so close to another aircraft that it
+      creates a risk of collision, which is choice 3 word for word. The passage says nothing
+      about same altitude, a 5 NM distance, or notifying ATC.
 - id: ppaer.air-law.071.q1
   exam: PPAER
   objective_id: ppaer.air-law.071
@@ -172,6 +942,7 @@
   status: reviewed
   check:
     answer_index: 2
+    faa_as_canadian: false
     reason: CAR 602.27(c) prohibits aerobatic manoeuvres when flight visibility is less than
       three miles. The altitude limit is 2,000 ft AGL, not 3,000. Uncontrolled airspace is
       not listed as a prohibition. Five miles is not the stated visibility threshold.
@@ -194,6 +965,7 @@
   status: reviewed
   check:
     answer_index: 0
+    faa_as_canadian: false
     reason: Paragraph 602.35(a) says that immediately before take-off the altimeter is set
       to the aerodrome's altimeter setting. If that setting cannot be obtained, it is set
       to the elevation of the aerodrome. Choice 1 is the in-flight rule from paragraph (b),
@@ -217,6 +989,7 @@
   status: reviewed
   check:
     answer_index: 2
+    faa_as_canadian: false
     reason: Subsection (2) says no person shall operate a land aeroplane more than 50 nautical
       miles from shore unless a life preserver is carried for each person on board. The 2
       NM figure in subsection (3) applies only to balloons.
@@ -238,6 +1011,7 @@
   status: reviewed
   check:
     answer_index: 1
+    faa_as_canadian: false
     reason: 'Subsection (2) requires a VFR flight plan or itinerary for VFR flight, with one
       exception: a flight conducted within 25 nautical miles of the departure aerodrome. That
       matches choice 1. Choice 0 is wrong because subsection (4) requires a flight plan for
@@ -270,6 +1044,7 @@
   status: reviewed
   check:
     answer_index: 3
+    faa_as_canadian: false
     reason: 'Subsection (3)(a)(ii) says an aircraft other than a helicopter in VFR flight
       at night must carry enough fuel to fly to the destination aerodrome and then fly for
       45 minutes at normal cruising speed. The other choices are wrong: 30 minutes is the
@@ -295,6 +1070,7 @@
   status: reviewed
   check:
     answer_index: 2
+    faa_as_canadian: false
     reason: Under 602.98(1), every report must be made on the mandatory frequency specified
       for the MF area. Under 602.98(2)(b), if a ground station does not exist or is not in
       operation, the report is broadcast. So the report is broadcast on the MF area's mandatory
@@ -324,6 +1100,7 @@
   status: reviewed
   check:
     answer_index: 2
+    faa_as_canadian: false
     reason: CAR 602.101(a) says the first report is made before entering the MF area, at least
       five minutes before where circumstances permit. It must give position, altitude, estimated
       time of landing and arrival procedure intentions. Choice 0 has the wrong timing and
@@ -348,6 +1125,7 @@
   status: reviewed
   check:
     answer_index: 3
+    faa_as_canadian: false
     reason: CAR 602.114(c) applies to all VFR flight in controlled airspace, whether or not
       the aircraft is in a control zone. It requires at least 500 feet vertically and one
       mile horizontally from cloud, which matches choice 3. The other choices use 1,000 feet
@@ -378,6 +1156,7 @@
   status: reviewed
   check:
     answer_index: 0
+    faa_as_canadian: false
     reason: Under 602.117(1)(b)-(d), an aeroplane needs flight visibility of at least one
       mile, must stay clear of cloud with visual reference to the surface at all times, and
       must request and obtain ATC authorization. Choice 1 adds an unsupported 500 ft below-cloud
@@ -402,6 +1181,7 @@
   status: reviewed
   check:
     answer_index: 3
+    faa_as_canadian: false
     reason: CAR 605.25(1)(a) and (b) require the PIC to direct all persons on board to fasten
       safety belts, including any shoulder harness, during movement of the aircraft on the
       surface and during take-off and landing. Choice 1 leaves out surface movement. Choice
@@ -427,6 +1207,7 @@
   status: reviewed
   check:
     answer_index: 1
+    faa_as_canadian: false
     reason: Item 1 of the table in subsection (2) requires all aircraft operating over land
       to carry one ELT of type AD, AF or AP. Subsection (1) requires the ELT to transmit simultaneously
       on 406 MHz and 121.5 MHz. The aircraft is a single-engine aeroplane, which is not on
@@ -450,6 +1231,7 @@
   status: reviewed
   check:
     answer_index: 2
+    faa_as_canadian: false
     reason: Subsection (3) of CAR 605.94 requires the owner of an aircraft to retain every
       entry in a journey log for a period of not less than one year. This makes choice 2 correct.
 - id: ppaer.air-law.151.q1
@@ -471,6 +1253,7 @@
   status: reviewed
   check:
     answer_index: 3
+    faa_as_canadian: false
     reason: The passage says that anyone taking safety measures must, to the extent possible
       and before acting, record the evidence by the best means available and advise the Board
       of their actions. That matches choice 3. The passage says nothing that supports choices
@@ -493,6 +1276,1318 @@
   status: reviewed
   check:
     answer_index: 0
+    faa_as_canadian: false
     reason: The passage says that in the clock position system, the 12 o'clock position is
       based on the observed surveillance track rather than the actual nose of the aircraft.
       That makes choice 0 correct and rules out choice 3.
+- id: ppaer.meteorology.012.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.012
+  stem: An aircraft's altimeter indicates 6 000 feet with 29.80 inches of mercury set on the
+    subscale. If the pilot momentarily changes the subscale setting to 29.92 inches of mercury,
+    what will the altimeter read, and what is this reading called?
+  choices:
+  - 5 880 feet, the pressure altitude
+  - 6 120 feet, the pressure altitude
+  - 6 120 feet, the true altitude
+  - 5 400 feet, the pressure altitude
+  answer_index: 1
+  explanation: TC AIM AIR 1.5.4 states that in this case, setting 29.92 inches of mercury
+    would give a pressure altitude of 6 120 feet. Pressure altitude is the altimeter reading
+    with 29.92 set, and a 0.12 inch increase in the setting raises the reading by about 120
+    feet.
+  source_chunk_id: tc-aim:AIR 1.5.4:0
+  status: reviewed
+  check:
+    answer_index: 1
+    faa_as_canadian: false
+    reason: The passage says that with 6 000 feet showing on 29.80 inHg, momentarily setting
+      29.92 inHg would show a pressure altitude of 6 120 feet. That matches choice 1. Choice
+      2 is wrong because this reading is the pressure altitude, not true altitude. Choice
+      0 has the correction in the wrong direction. Choice 3 (5 400 feet) is what the altimeter
+      would show with airport B's setting, not the pressure altitude. The source is the Canadian
+      TC AIM.
+- id: ppaer.meteorology.013.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.013
+  stem: According to the TC AIM, density altitude is the altitude in the ISA at which the
+    air density would be equal to which of the following?
+  choices:
+  - The air density at the aircraft's true altitude above ground level
+  - The air density at the standard pressure of 29.92 inches of mercury at 15°C
+  - The air density at field elevation at the current temperature
+  - The air density at mean sea level at the current altimeter setting
+  answer_index: 2
+  explanation: TC AIM MET 8.4.3 defines density altitude as the altitude in ISA at which the
+    air density would equal the air density at field elevation at the current temperature.
+  source_chunk_id: tc-aim:MET 8.4.3:0
+  status: reviewed
+  check:
+    answer_index: 2
+    faa_as_canadian: false
+    reason: 'TC AIM MET 8.4.3(d) defines density altitude as the altitude in ISA at which
+      the air density would equal the air density at field elevation at the current temperature.
+      That matches choice 2. The passage is Canadian, so there is no FAA issue.
+
+
+      The other choices do not match the definition:
+
+      - Choice 0 uses true altitude above ground level, which the definition does not mention.
+
+      - Choice 1 describes standard conditions, not current ones.
+
+      - Choice 3 refers to mean sea level and altimeter setting, which are not part of the
+      definition.
+
+
+      As written, the stem nearly restates the passage''s wording, so the question may be
+      a bit easy.'
+- id: ppaer.meteorology.014.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.014
+  stem: A pilot sets the altimeter to the departure airport's altimeter setting and then flies
+    to an area where the actual sea level pressure is lower, without changing the subscale
+    setting. How does the aircraft's actual altitude compare with the indicated altitude?
+  choices:
+  - The aircraft is lower than the altimeter indicates, because the subscale setting is too
+    high for the new area
+  - The aircraft is at the indicated altitude, because the altimeter is calibrated to the
+    Standard Atmosphere
+  - The aircraft is higher than the altimeter indicates, because the subscale setting is too
+    high for the new area
+  - The aircraft is higher than the altimeter indicates, because the subscale setting is too
+    low for the new area
+  answer_index: 0
+  explanation: A subscale setting that is too high gives a too-high altimeter reading, so
+    the aircraft is lower than indicated. Flying into lower pressure without resetting leaves
+    the setting too high, with an error of about 1 000 feet per inch of mercury (TC AIM AIR
+    1.5.3).
+  source_chunk_id: tc-aim:AIR 1.5.3:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: The passage says that flying into lower pressure without resetting leaves the
+      subscale setting too high. It states that a too-high subscale setting gives a too-high
+      altimeter reading, so the aircraft is lower than indicated. The worked example (29.80
+      set, actual 29.20, clearance 600 ft instead of 1,200 ft) confirms this, so choice 0
+      is correct. The source is the Canadian TC AIM.
+- id: ppaer.meteorology.016.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.016
+  stem: On a warm sunny day, the ground is heated unevenly by the Sun and warms a shallow
+    layer of air next to it. Which sequence best describes how this heating produces a thermal?
+  choices:
+  - The heated air rises because the Sun's radiation is absorbed directly by the air, bypassing
+    the ground
+  - The heated air contracts, becomes denser than the surrounding air, and sinks, while cooler
+    air is pushed upward
+  - The heated air stays in place because heat is transferred only by electromagnetic waves
+    through the air
+  - The heated air expands, becomes less dense than the surrounding air, and rises, while
+    cooler, denser air sinks to replace it
+  answer_index: 3
+  explanation: Heat conducted from the warm ground heats a shallow layer of air, which expands,
+    becomes less dense than the cooler surrounding air, and rises as a thermal, while cooler,
+    denser air sinks to replace it. This is the sensible heating process (conduction and convection)
+    described in the Aviation Weather Handbook, which relies on air density physics that applies
+    everywhere.
+  source_chunk_id: faa-awh:AWH p.89:0
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: The passage says the heated air expands, becomes less dense than the cooler air
+      around it, and rises as a thermal, while cooler, denser air sinks to take its place.
+      That matches choice 3. This is atmospheric physics, which is the same everywhere, so
+      using FAA material is fine.
+- id: ppaer.meteorology.019.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.019
+  stem: In meteorology, what is a temperature inversion?
+  choices:
+  - A layer in which temperature increases with altitude
+  - A layer in which temperature decreases with altitude at the standard rate
+  - A layer in which temperature stays constant with altitude
+  - A layer in which temperature falls rapidly and produces strong turbulence
+  answer_index: 0
+  explanation: An inversion is a layer in which the temperature increases with altitude, and
+    it is very stable with little turbulence (Aviation Weather Handbook 5.8.3, background
+    physics). A constant-temperature layer is isothermal, not an inversion.
+  source_chunk_id: faa-awh:AWH p.78:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: The passage defines a temperature inversion as "a layer in which the temperature
+      increases with altitude," which matches choice 0. The definition is weather physics
+      and holds the same everywhere, so using an FAA source is fine.
+- id: ppaer.meteorology.021.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.021
+  stem: An unsaturated parcel of air cools while its water vapour content and pressure stay
+    constant. What happens to its relative humidity and to the temperature-dewpoint spread?
+  choices:
+  - Relative humidity decreases and the spread increases
+  - Relative humidity increases and the spread increases
+  - Relative humidity stays the same and the spread decreases
+  - Relative humidity increases and the spread decreases
+  answer_index: 3
+  explanation: Cooling reduces the parcel's capacity to hold water vapour, so relative humidity
+    rises while the dewpoint stays constant. The temperature-dewpoint spread therefore shrinks,
+    and at zero spread the air is saturated at 100 percent relative humidity (AWH 6.4 and
+    6.6; background physics).
+  source_chunk_id: faa-awh:AWH p.84:0
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: The passage says that as the parcel cools with dewpoint constant, the temperature-dewpoint
+      spread decreases while relative humidity increases. That is choice 3. This is weather
+      physics, so it applies the same in Canada.
+- id: ppaer.meteorology.028.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.028
+  stem: A parcel of air is hypothetically lifted from the surface and, at the test altitude,
+    is found to be colder and therefore denser than the surrounding air. How is the parcel
+    described, and what will it tend to do?
+  choices:
+  - Unstable; it will continue to rise on its own
+  - Stable; it will sink back toward its original level
+  - Unstable; it will sink and then accelerate upward
+  - Neutrally stable; it will remain at the test altitude
+  answer_index: 1
+  explanation: If a lifted parcel is colder and denser than its surroundings, it resists upward
+    displacement and sinks back to its original level, so it is stable. A warmer, lighter
+    parcel would be unstable and keep rising, and an equal-temperature parcel would be neutrally
+    stable (Aviation Weather Handbook 13.2, background on physics of stability).
+  source_chunk_id: faa-awh:AWH p.155:0
+  status: reviewed
+  check:
+    answer_index: 1
+    faa_as_canadian: false
+    reason: The passage says a lifted parcel that is colder than the surrounding air is denser
+      and sinks back to its original level. Because it resists upward displacement, it is
+      called stable. That matches choice 1. Stability is atmospheric physics, which is the
+      same in Canada, so using an FAA source is fine here.
+- id: ppaer.meteorology.030.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.030
+  stem: In a column of unsaturated air that is conditionally unstable, what must happen to
+    a lifted air parcel before it becomes unstable and rises on its own buoyancy?
+  choices:
+  - It must descend to a lower level where the lapse rate exceeds the dry adiabatic lapse
+    rate
+  - It must be cooled at the surface until its temperature equals the dew point of the environment
+  - It must be lifted to a particular level, the Level of Free Convection, where it becomes
+    warmer than the surrounding air
+  - It must be lifted only a few metres, after which it is unstable at every level
+  answer_index: 2
+  explanation: Conditional instability means a lifted parcel is initially stable but must
+    reach a particular level, the Level of Free Convection, where it becomes warmer than the
+    environment and rises by its own buoyancy (AWH 13.3.4, background only).
+  source_chunk_id: faa-awh:AWH p.158:0
+  status: reviewed
+  check:
+    answer_index: 2
+    faa_as_canadian: false
+    reason: The passage says "conditional" means the parcel must be lifted to a particular
+      level before it becomes unstable and rises on its own buoyancy. That level is the Level
+      of Free Convection, where the parcel first becomes warmer than the surrounding air.
+      This is choice 2. The passage also says the parcel is initially stable, which rules
+      out choice 3. This is atmospheric physics, which is the same in Canada, so using an
+      FAA source is fine.
+- id: ppaer.meteorology.034.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.034
+  stem: In a Canadian METAR, which cloud type does the abbreviation "TCU" represent?
+  choices:
+  - Altocumulus castellanus
+  - Towering cumulus
+  - Cirrocumulus
+  - Stratocumulus
+  answer_index: 1
+  explanation: TC AIM MET 8.2 lists the abbreviations for cloud types and identifies TCU as
+    towering cumulus. SC is stratocumulus, ACC is altocumulus castellanus, and CC is cirrocumulus.
+  source_chunk_id: tc-aim:MET 8.2:4
+  status: reviewed
+  check:
+    answer_index: 1
+    faa_as_canadian: false
+    reason: 'The TC AIM cloud type list gives TCU = towering cumulus, and the sky conditions
+      section says the same (TCU (towering cumulus)). The other choices have their own abbreviations:
+      ACC for altocumulus castellanus, CC for cirrocumulus and SC for stratocumulus. The source
+      is Canadian.'
+- id: ppaer.meteorology.035.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.035
+  stem: According to the TC AIM, what is true about the external visual appearance of a thunderstorm
+    cloud and the turbulence or hail inside it?
+  choices:
+  - A tall, anvil-shaped cloud always means severe turbulence, while a small cloud means only
+    light turbulence
+  - A dark cloud base reliably indicates hail, while a bright white top indicates smooth air
+  - Appearance reliably indicates turbulence, but not the presence of lightning
+  - There is no useful correlation between its appearance and the severity of turbulence or
+    hail within it
+  answer_index: 3
+  explanation: TC AIM AIR 2.7.1 states that there is no useful correlation between the external
+    visual appearance of a thunderstorm and the severity or amount of turbulence or hail within
+    it. The visible cloud is only part of a larger turbulent system of updrafts and downdrafts.
+  source_chunk_id: tc-aim:AIR 2.7.1:0
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: The TC AIM passage says directly that there is no useful correlation between the
+      external visual appearance of a thunderstorm and the severity or amount of turbulence
+      or hail within it. That matches choice 3. Choices 0, 1 and 2 each claim the cloud's
+      appearance reliably indicates turbulence or hail, which the passage contradicts. The
+      source is Canadian, so no FAA concern.
+- id: ppaer.meteorology.037.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.037
+  stem: In Canadian METAR present weather reports, which abbreviation is used for mist, and
+    what visibility does it indicate?
+  choices:
+  - HZ, visibility less than 5/8 SM
+  - BR, visibility less than 5/8 SM
+  - BR, visibility of 5/8 SM or more
+  - FG, visibility of 5/8 SM or more
+  answer_index: 2
+  explanation: The TC AIM MET 8.2 table of obscuration phenomena lists BR as mist with visibility
+    of 5/8 SM or more, while FG (fog) is used when visibility is less than 5/8 SM.
+  source_chunk_id: tc-aim:MET 8.2:4
+  status: reviewed
+  check:
+    answer_index: 2
+    faa_as_canadian: false
+    reason: The TC AIM present weather table lists 'BR Mist (Vis ≥ 5/8 SM)' and 'FG Fog (Vis
+      < 5/8 SM)'. Mist is therefore BR with visibility of 5/8 SM or more, which is choice
+      2. Choice 0 is wrong because HZ is haze, not mist. Choice 1 gives fog's visibility range
+      rather than mist's. Choice 3 is wrong because FG is fog, not mist. The source is Canadian,
+      so no FAA material is involved.
+- id: ppaer.meteorology.043.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.043
+  stem: According to the TC AIM, an aircraft on takeoff flies through a microburst and first
+    encounters a headwind, then a downdraft, and then a tailwind. How do these successive
+    effects change the aircraft's performance?
+  choices:
+  - The headwind decreases performance, while the downdraft and tailwind both increase performance
+  - The headwind increases performance, while the downdraft and tailwind both decrease performance
+  - All three effects increase performance, because the aircraft is climbing out of the shear
+  - The headwind and downdraft both increase performance, while the tailwind decreases it
+  answer_index: 1
+  explanation: TC AIM AIR 2.8 says that on takeoff an aircraft may encounter a headwind (performance
+    increasing), followed by a downdraft and a tailwind (both performance decreasing).
+  source_chunk_id: tc-aim:AIR 2.8:0
+  status: reviewed
+  check:
+    answer_index: 1
+    faa_as_canadian: false
+    reason: The passage says that on takeoff the aircraft may meet a headwind, which increases
+      performance, followed by a downdraft and a tailwind, which both decrease performance.
+      That matches choice 1. The source is Canadian TC AIM, so no FAA issue.
+- id: ppaer.meteorology.048.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.048
+  stem: According to the TC AIM, in a terminal aerodrome forecast (TAF) when is "VRB" normally
+    coded for the wind direction?
+  choices:
+  - When the forecast wind speed is 10 kt or less
+  - When the wind direction is forecast to change by more than 60° during the period
+  - When the maximum gust exceeds the mean speed by 10 kt or more
+  - When the forecast wind speed is 3 kt or less
+  answer_index: 3
+  explanation: TC AIM MET 7.3 states that VRB is normally coded for variable direction only
+    if the wind speed is 3 kt or less. It may be used with higher speeds only when a single
+    direction is impossible to forecast, such as when a thunderstorm passes.
+  source_chunk_id: tc-aim:MET 7.3:1
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: The TC AIM passage says "VRB" is normally coded for variable direction only when
+      the wind speed is 3 kt or less, so choice 3 is correct. Choice 2 describes when a gust
+      (G) group is added, not VRB. Choices 0 and 1 are not supported by the passage. The source
+      is Canadian, so no FAA concern applies.
+- id: ppaer.meteorology.050.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.050
+  stem: In a Canadian METAR, a wind group is followed by the variation group 260V340. In which
+    order are the two extreme wind directions encoded, and what does this example indicate?
+  choices:
+  - In counterclockwise order; the wind direction varied from 340° true back to 260° true
+  - In clockwise order; the wind direction varied between 260° and 340° magnetic during the
+    preceding 2 minutes
+  - In order of the most recent direction first; the wind is currently from 260° true and
+    shifting to 340°
+  - In clockwise order; the wind direction varied between 260° true and 340° true during the
+    preceding 10 minutes
+  answer_index: 3
+  explanation: TC AIM MET 8.2 states the two extreme directions are encoded in clockwise order,
+    and the example 260V340 shows the wind varying from 260° true to 340° true. The group
+    covers the 10-minute period preceding the observation.
+  source_chunk_id: tc-aim:MET 8.2:1
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: 'The TC AIM passage says the two extreme directions are encoded in clockwise order
+      and that the 10-minute period before the observation is used. It also states that in
+      this example the wind varies from 260° true to 340° true. That matches choice 3. Choice
+      1 is wrong on magnetic and on 2 minutes, and choices 0 and 2 give the wrong order.
+
+
+      The passage is Canadian material, so it is not FAA material being treated as Canadian.
+
+
+      Side note: the passage''s VRB rule says "less than 3 kt," but its own variation-group
+      rule says "exceeds 3 kt," which leaves exactly 3 kt uncovered. This may be a transcription
+      slip; ICAO uses "less than 3 kt" and "3 kt or more." It does not affect this question.
+
+
+      The passage also has an extraction artifact, "Var iations."'
+- id: ppaer.meteorology.055.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.055
+  stem: According to the TC AIM, what is the effect on a pressure altimeter when wind is deflected
+    around a large single mountain peak or channelled through a mountain valley and increases
+    in speed?
+  choices:
+  - Local pressure decreases, so the altimeter is subject to an increased error in altitude
+    indication
+  - Local pressure remains unchanged, so the altimeter is unaffected by the wind speed
+  - Local pressure increases, so the altimeter indicates a lower altitude than the actual
+    altitude with no added error
+  - Local pressure decreases, but the altimeter error disappears as soon as the aircraft is
+    over the peak
+  answer_index: 0
+  explanation: Wind deflected around peaks or through valleys speeds up, which causes a local
+    pressure decrease (Bernoulli's Principle). A pressure altimeter in this airflow has an
+    increased altitude indication error until the airflow returns to normal speed some distance
+    away (TC AIM AIR 1.5.6).
+  source_chunk_id: tc-aim:AIR 1.5.6:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: The TC AIM passage says that wind deflected around a single peak or through a
+      valley speeds up and lowers the local pressure (Bernoulli's Principle). This gives a
+      pressure altimeter an increased error in altitude indication. The passage adds that
+      the error persists until the airflow returns to normal speed some distance from the
+      mountain. That supports choice 0 and rules out choices 1, 2 and 3. The source is Canadian,
+      so there is no FAA concern.
+- id: ppaer.meteorology.056.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.056
+  stem: According to the TC AIM, in which phase of flight and at what height is low-level
+    wind shear, such as that produced by a microburst, a particular hazard to aircraft?
+  choices:
+  - During approach to landing and takeoff, within 1 000 ft AGL
+  - During cruise flight above 10 000 ft AGL
+  - During taxi, within 50 ft AGL
+  - Only during descent through cloud above 5 000 ft AGL
+  answer_index: 0
+  explanation: TC AIM AIR 2.8 states that wind shear may create a severe hazard for aircraft
+    within 1 000 ft AGL, particularly during the approach to landing and the takeoff phases.
+    It is caused by small-scale intense downdrafts (bursts) that spread outward on reaching
+    the surface.
+  source_chunk_id: tc-aim:AIR 2.8:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: The TC AIM passage says wind shear may be a severe hazard within 1 000 ft AGL,
+      especially during approach to landing and takeoff. That matches choice 0. The source
+      is Canadian, so the FAA flag does not apply.
+- id: ppaer.meteorology.067.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.067
+  stem: A cold front is an advancing mass of cold, dense air that slides under warmer air.
+    What effect does this have on the warm air, and what weather is typically found along
+    or just ahead of the front if that warm air is unstable?
+  choices:
+  - The warm air sinks behind the front, producing stratus cloud and steady rain for several
+    days
+  - The warm air is lifted gradually over a long gentle slope, producing widespread steady
+    drizzle and fog for hundreds of miles ahead
+  - The warm air is forced upward abruptly, often producing a narrow band of showers and thunderstorms
+  - The warm air is pushed sideways along the ground, producing clear skies and light variable
+    winds
+  answer_index: 2
+  explanation: Cold air is dense and stays close to the ground, acting like a snowplow under
+    the warm air. Because cold fronts have a steep slope, the warm air is forced upward abruptly,
+    often giving a narrow band of showers and thunderstorms if it is unstable. The Canadian
+    passages do not cover this, so the facts rest on general atmospheric physics from the
+    background text (AWH 11.3.2).
+  source_chunk_id: faa-awh:AWH p.139:0
+  status: reviewed
+  check:
+    answer_index: 2
+    faa_as_canadian: false
+    reason: The passage says cold fronts have a steep slope and force the warm air upward
+      abruptly. If that warm air is unstable, this often produces a narrow band of showers
+      and thunderstorms along or just ahead of the front, which is choice 2. This is weather
+      physics that applies everywhere, so the FAA source is fine.
+- id: ppaer.meteorology.068.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.068
+  stem: According to the passages, how is a warm front depicted on a Canadian surface weather
+    map, and what does the line indicate?
+  choices:
+  - A purple line, indicating warm air advancing
+  - A red line, indicating warm air advancing
+  - Alternating red and blue lines, indicating warm air advancing
+  - A blue line, indicating warm air advancing
+  answer_index: 1
+  explanation: TC AIM MET 10.0 states that red lines are for warm fronts, where warm air is
+    advancing. Blue lines are cold fronts, purple lines are occluded fronts, and alternating
+    red and blue lines are stationary fronts.
+  source_chunk_id: tc-aim:MET 10.0:0
+  status: reviewed
+  check:
+    answer_index: 1
+    faa_as_canadian: false
+    reason: 'The TC AIM passage states: ''Red lines are for warm fronts—warm air advancing.''
+      Purple marks occluded fronts, alternating red and blue marks stationary fronts, and
+      blue marks cold fronts. Choice 1 is the only correct option, and the source is Canadian.'
+- id: ppaer.meteorology.073.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.073
+  stem: Which combination of three ingredients is needed for a thunderstorm cell to form?
+  choices:
+  - Sufficient water vapour, a stable air mass, and a temperature inversion
+  - Unstable air, freezing temperatures at the surface, and a high-pressure ridge
+  - Dry air, strong surface winds, and a lifting mechanism
+  - Sufficient water vapour, unstable air, and a lifting mechanism
+  answer_index: 3
+  explanation: Thunderstorm formation requires sufficient water vapour, unstable air and a
+    lifting mechanism strong enough to release the instability. The same three conditions
+    are described in the Aviation Weather Handbook, 22.2, and the Pilot's Handbook of Aeronautical
+    Knowledge.
+  source_chunk_id: faa-awh:AWH p.257:0
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: The passage lists the three ingredients for thunderstorm cell formation as sufficient
+      water vapor, unstable air, and a lifting mechanism, which matches choice 3. This is
+      weather physics, so it applies the same way in Canada.
+- id: ppaer.meteorology.076.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.076
+  stem: According to the TC AIM, within what range of temperatures is the probability of lightning
+    strikes to aircraft greatest?
+  choices:
+  - Between -5°C and 5°C
+  - Between 10°C and 20°C
+  - Between -25°C and -15°C
+  - Below -40°C
+  answer_index: 0
+  explanation: TC AIM AIR 2.7.1 states that the probability of lightning strikes to aircraft
+    is greatest at altitudes where temperatures are between -5°C and 5°C, and that lightning
+    can also strike aircraft in clear air near a thunderstorm.
+  source_chunk_id: tc-aim:AIR 2.7.1:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: The TC AIM passage says lightning strikes on aircraft are most likely at altitudes
+      where the temperature is between -5°C and 5°C. That matches choice 0. The source is
+      Canadian, so there is no FAA concern.
+- id: ppaer.meteorology.086.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.086
+  stem: According to the TC AIM, what does NAV CANADA's collaborative flight planning and
+    aviation weather website (CFPS) offer pilots?
+  choices:
+  - Verbal weather briefings given by flight service specialists over a FISE frequency
+  - Aviation weather products only, with flight plans filed solely through a FIC by radio
+  - Aviation weather products, NOTAM and the ability to file flight plans
+  - U.S. METAR, SPECI and TAF for pilots operating near the border
+  answer_index: 2
+  explanation: TC AIM MET 1.1.3 states that the CFPS website offers aviation weather products,
+    NOTAM and the ability to file flight plans. U.S. METAR, SPECI and TAF must instead be
+    obtained through ADDS.
+  source_chunk_id: tc-aim:MET 1.1.3:0
+  status: reviewed
+  check:
+    answer_index: 2
+    faa_as_canadian: false
+    reason: The passage says CFPS offers aviation weather products, NOTAM and the ability
+      to file flight plans, which is choice 2. Choice 3 is wrong because U.S. METAR, SPECI
+      and TAF must be obtained through ADDS. Choice 1 is wrong because CFPS itself allows
+      filing flight plans. Choice 0 describes the FIC briefing service, not the website.
+- id: ppaer.meteorology.091.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.091
+  stem: According to the TC AIM, how often are Graphic Area Forecast (GFA) charts issued,
+    and when is each issue made relative to the beginning of its forecast period?
+  choices:
+  - Twice daily, approximately 30 minutes before the beginning of the forecast period
+  - Every three hours, approximately 1 hour before the beginning of the forecast period
+  - Four times daily, approximately 20 minutes before the beginning of the forecast period
+  - Four times daily, approximately 30 minutes before the beginning of the forecast period
+  answer_index: 3
+  explanation: TC AIM MET 4.2 states that GFA charts are issued four times daily, approximately
+    30 min before the beginning of the forecast period (about 2330, 0530, 1130 and 1730 UTC).
+    The 20-minute lead time applies to TAFs, not the GFA.
+  source_chunk_id: tc-aim:MET 4.2:0
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: The TC AIM passage says GFA charts are issued four times daily, about 30 minutes
+      before the forecast period begins (issued around 2330, 0530, 1130 and 1730 UTC, valid
+      at 0000, 0600, 1200 and 1800 UTC). Only choice 3 matches. The source is Canadian, so
+      the FAA flag does not apply.
+- id: ppaer.meteorology.092.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.092
+  stem: An upper-level wind and temperature forecast (FB) for an altitude above 24 000 ft
+    contains the group 791159. How is this group decoded?
+  choices:
+  - 290° true at 11 kt, temperature -159°C
+  - 790° true at 111 kt, temperature +59°C
+  - 290° true at 111 kt, temperature -59°C
+  - 790° true at 11 kt, temperature -59°C
+  answer_index: 2
+  explanation: In an FB, speeds of 100 to 199 kt are coded by adding 50 to the direction and
+    subtracting 100 from the speed. So 79 - 50 = 29 gives 290° true, 11 + 100 = 111 kt, and
+    temperatures above 24 000 ft are negative, giving -59°C (TC AIM MET 9.2).
+  source_chunk_id: tc-aim:MET 9.2:0
+  status: reviewed
+  check:
+    answer_index: 2
+    faa_as_canadian: false
+    reason: The TC AIM table decodes 791159 as 290° true (79 - 50) at 111 kt (11 + 100), temperature
+      -59°C. Temperatures above 24 000 ft are always negative. This matches choice 2.
+- id: ppaer.meteorology.094.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.094
+  stem: According to the TC AIM, what is the maximum period of validity for a Canadian aerodrome
+    forecast (TAF)?
+  choices:
+  - 30 hours
+  - 24 hours
+  - 36 hours
+  - 12 hours
+  answer_index: 0
+  explanation: TC AIM MET 7.3 states that the maximum period of validity for a TAF is 30 hr,
+    although some TAFs with staggered issue times and more frequent updates have shorter validity
+    periods.
+  source_chunk_id: tc-aim:MET 7.3:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: 'The TC AIM MET 7.3 passage states plainly that the maximum period of validity
+      for a TAF is 30 hr. This matches choice 0. The source is Canadian, so no FAA concern
+      arises.
+
+
+      Note that the sample message covers only 24 hours (2812/2912), but the stated maximum
+      is still 30 hours.'
+- id: ppaer.meteorology.095.q1
+  exam: PPAER
+  objective_id: ppaer.meteorology.095
+  stem: In a Canadian upper wind and temperature forecast (FB), what does the wind and temperature
+    group 791159 for an altitude above 24 000 ft decode as?
+  choices:
+  - 290° true at 111 kt, temperature -59°C
+  - 290° true at 11 kt, temperature -59°C
+  - 790° true at 11 kt, temperature -59°C
+  - 790° true at 111 kt, temperature +59°C
+  answer_index: 0
+  explanation: For speeds of 100 to 199 kt, 50 is added to the direction code and 100 subtracted
+    from the speed. So 79 - 50 = 29 (290° true) and 11 + 100 = 111 kt, and temperatures above
+    24 000 ft are negative, giving -59°C (TC AIM MET 9.2).
+  source_chunk_id: tc-aim:MET 9.2:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: The passage's Table 9.3 decodes 791159 as 290° true (79 - 50 = 29) at 111 kt (11
+      + 100 = 111), temperature -59°C, because temperatures above 24 000 ft are always negative.
+      That matches choice 0. The source is the Canadian TC AIM.
+- id: ppaer.navigation.022.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.022
+  stem: According to the TC AIM, which of the following en route hazards is printed on Canadian
+    aeronautical charts together with topography, hydrography, aerodromes, NAVAIDs and airways?
+  choices:
+  - Tropopause heights
+  - Jet stream cores
+  - Freezing rain areas
+  - Obstructions
+  answer_index: 3
+  explanation: TC AIM MAP 2.5.1 lists en route hazards printed on aeronautical charts as advisory
+    areas, restricted areas and obstructions. Jet streams, tropopause heights and freezing
+    rain are weather chart items, not aeronautical chart features.
+  source_chunk_id: tc-aim:MAP 2.5.1:0
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: 'The passage lists the en route hazards printed on aeronautical charts as advisory
+      areas, restricted areas and obstructions. Tropopause heights, jet stream cores and freezing
+      rain areas are not among them. The source is the Canadian TC AIM.
+
+
+      Answer: 3 (Obstructions).
+
+
+      faa_as_canadian: false.
+
+
+      The passage lists "obstructions" as an en route hazard, alongside topography, hydrography,
+      aerodromes, NAVAIDs and airways. Tropopause heights, jet stream cores and freezing rain
+      areas are weather items and are not listed.
+
+
+      The source is the Canadian TC AIM.
+
+
+      faa_as_canadian: false.
+
+
+      Answer index: 3.
+
+
+      The passage lists obstructions as an en route hazard printed on the charts. The other
+      choices are weather phenomena and are not listed.
+
+
+      faa_as_canadian: false.
+
+
+      Answer index: 3. Obstructions are listed in TC AIM MAP 2.5.1 as an en route hazard on
+      charts.
+
+
+      faa_as_canadian: false.
+
+
+      Answer index: 3.
+
+
+      TC AIM MAP 2.5.1 lists obstructions among the en route hazards printed on aeronautical
+      charts. The other three choices are weather phenomena and do not appear in the list.
+
+
+      faa_as_canadian: false.
+
+
+      Answer index: 3.
+
+
+      The passage explicitly lists obstructions (along with advisory and restricted areas)
+      as en route hazards printed on charts. None of the weather options are listed.
+
+
+      faa_as_canadian: false.
+
+
+      Answer index: 3.
+
+
+      TC AIM MAP 2.5.1 explicitly lists obstructions as an en route hazard printed on aeronautical
+      charts.
+
+
+      faa_as_canadian: false.
+
+
+      Answer index: 3.
+
+
+      Obstructions are explicitly listed in the TC AIM passage as an en route hazard printed
+      on aeronautical charts.'
+- id: ppaer.navigation.023.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.023
+  stem: On a Canadian upper-air constant pressure chart, what do the solid lines called contours
+    represent?
+  choices:
+  - The approximate height of the pressure level shown on the map
+  - Lines of equal temperature drawn at 5°C intervals
+  - Points of equal wind speed at 30-kt intervals
+  - The elevation of terrain above sea level beneath the chart area
+  answer_index: 0
+  explanation: TC AIM MET 11.1 states that the solid lines (contours) on constant pressure
+    charts represent the approximate height of the pressure level indicated by the map. Isotachs
+    and temperature lines are dashed.
+  source_chunk_id: tc-aim:MET 11.1:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: The TC AIM passage says the solid lines (contours) on all the charts represent
+      the approximate height of the pressure level shown by the map. Temperature lines are
+      dashed at 5°C intervals, and isotachs are dashed lines at 30-kt intervals. The source
+      is Canadian.
+- id: ppaer.navigation.024.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.024
+  stem: Which kind of aeronautical information is published in an AIP Canada Supplement rather
+    than as a permanent change in the TC AIM or AIP Canada?
+  choices:
+  - Temporary operational changes lasting three months or longer, and short-duration information
+    with extensive text or graphics
+  - Time-critical information of very short duration, such as a closed runway for one day
+  - Permanent changes to Canadian aerodrome and airspace procedures
+  - Corrections to the printed edition of the Canada Flight Supplement
+  answer_index: 0
+  explanation: TC AIM MAP 2.2 states that permanent changes go in the TC AIM and AIP Canada,
+    while temporary operational changes of long duration (three months or longer) and short-duration
+    information with extensive text and/or graphics are published in an AIP Canada Supplement.
+  source_chunk_id: tc-aim:MAP 2.2:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: 'The passage says AIP Canada Supplements carry temporary operational changes of
+      long duration (three months or longer) and short-duration information with extensive
+      text and/or graphics. That is choice 0. Choice 2 is ruled out because the passage puts
+      permanent changes in the TC AIM and AIP Canada. Choices 1 and 3 do not fit the criteria
+      the passage gives.<br>Note: ''reason'' should not contain HTML; corrected below.</br>'
+- id: ppaer.navigation.025.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.025
+  stem: According to the TC AIM, which system of units is used for all information contained
+    on Canadian aeronautical charts and publications?
+  choices:
+  - The imperial system of units
+  - The metric system of units
+  - The metric system for distances and the imperial system for heights
+  - A system chosen by each chart publisher
+  answer_index: 0
+  explanation: TC AIM GEN 1.4 states that the imperial system of units is used for all information
+    contained on aeronautical charts and publications.
+  source_chunk_id: tc-aim:GEN 1.4:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: The passage says that the imperial system of units is used for all information
+      on aeronautical charts and publications. That settles choice 0 and rules out the metric,
+      mixed and publisher-chosen options. The source is the Canadian TC AIM.
+- id: ppaer.navigation.026.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.026
+  stem: Which geodetic reference datum is used to determine geographic coordinates (latitude
+    and longitude) in Canadian aeronautical publications?
+  choices:
+  - Greenwich Mean Time reference datum
+  - World Geodetic System 1984 (WGS-84)
+  - Lambert Conformal Conic datum
+  - North American Datum 1927 (NAD27)
+  answer_index: 1
+  explanation: TC AIM GEN 1.4.2 states that geographic coordinates are determined using the
+    World Geodetic System 1984 (WGS-84) geodetic reference datum.
+  source_chunk_id: tc-aim:GEN 1.4.2:0
+  status: reviewed
+  check:
+    answer_index: 1
+    faa_as_canadian: false
+    reason: The passage is Canadian (TC AIM GEN 1.4.2) and states that geographic coordinates
+      are determined using the WGS-84 geodetic reference datum, which is choice 1. Choice
+      0 is a time reference, not a datum. Choice 2 is a chart projection, not a datum. Choice
+      3, NAD27, is a different datum from the one named in the passage.
+- id: ppaer.navigation.032.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.032
+  stem: According to the TC AIM, how should a pilot report a distance from a reporting point
+    when the distance is derived from DME rather than from RNAV or GNSS?
+  choices:
+  - State the distance in miles only, e.g. 30 mi. from "Someplace"
+  - State DME with the distance, e.g. 30 DME from "Someplace"
+  - State the distance in kilometres from the reporting point
+  - State the distance as slant range corrected to ground distance
+  answer_index: 1
+  explanation: TC AIM RAC 6.4.4 says pilots should report RNAV and GNSS distances in miles,
+    but when the distance is based on DME they should state DME, e.g. 30 DME from "Someplace".
+    This lets controllers account for slant range when establishing longitudinal separation.
+  source_chunk_id: tc-aim:RAC 6.4.4:0
+  status: reviewed
+  check:
+    answer_index: 1
+    faa_as_canadian: false
+    reason: The TC AIM passage (Canadian source) says that when a distance report is based
+      on DME, the pilot should state DME, e.g. "30 DME from 'Someplace'". Choice 0 is the
+      format for RNAV/GNSS-derived distances, not DME. Choices 2 and 3 are not supported by
+      the passage.
+- id: ppaer.navigation.038.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.038
+  stem: Which statement correctly distinguishes magnetic variation from compass deviation?
+  choices:
+  - Variation is caused by magnetic fields within the aircraft, while deviation is the angle
+    between true north and magnetic north
+  - Both variation and deviation are the angle between true and magnetic north, but deviation
+    is applied only on east headings
+  - Variation is the angle between true north and magnetic north at a location, while deviation
+    is a compass error caused by magnetic fields within the aircraft
+  - Variation changes with the aircraft heading, while deviation is the same everywhere along
+    an isogonic line
+  answer_index: 2
+  explanation: Variation is the difference between true and magnetic directions (the angle
+    between true north and magnetic north) for a given location, shown by isogonic lines.
+    Deviation is a compass error created by magnetic fields in the aircraft, such as electrical
+    current and magnetized parts (PHAK p.226).
+  source_chunk_id: faa-phak:PHAK p.226:0
+  status: reviewed
+  check:
+    answer_index: 2
+    faa_as_canadian: false
+    reason: 'The passage defines variation as the difference between true and magnetic directions,
+      and deviation as a compass error caused by magnetic fields in the aircraft. That matches
+      choice 2. Choice 0 swaps the two definitions. Choice 1 treats deviation as the true-magnetic
+      angle, which the passage does not support. Choice 3 is contradicted: the passage says
+      variation does not change with heading. This is basic compass physics, the same in Canada,
+      so relying on FAA material is fine.'
+- id: ppaer.navigation.039.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.039
+  stem: According to the TC AIM, in which part of Canadian Domestic Airspace is true track,
+    rather than magnetic track, used to determine the cruising altitude or flight level for
+    the direction of flight?
+  choices:
+  - Northern Domestic Airspace (NDA)
+  - Only on published L-routes in the SDA
+  - Southern Domestic Airspace (SDA)
+  - Only on Q-routes above flight level 180
+  answer_index: 0
+  explanation: TC AIM RAC 2.2.1 states that in the NDA, true track is used in lieu of magnetic
+    track to determine cruising altitude or flight level, because the horizontal component
+    of the earth's magnetic field diminishes near the North Magnetic Pole. In the SDA, magnetic
+    track is used.
+  source_chunk_id: tc-aim:RAC 2.2.1:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: The TC AIM passage says that in the Northern Domestic Airspace, true track is
+      used instead of magnetic track to determine cruising altitude or flight level for the
+      direction of flight. In the SDA, magnetic track is used. The passage says nothing about
+      L-routes or Q-routes being exceptions, so choice 0 is the only one it supports.
+- id: ppaer.navigation.044.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.044
+  stem: A pilot is planning an IFR flight and files an IFR flight plan. According to the Canadian
+    Aviation Regulations, what must the filed IFR flight plan or itinerary include, unless
+    otherwise authorized by the Minister?
+  choices:
+  - A revised route to the destination shown in the RIF/ field
+  - An alternate aerodrome located within 100 NM of the destination
+  - An alternate aerodrome having a landing area suitable for use by the aircraft
+  - Two alternate aerodromes, each with an instrument approach procedure
+  answer_index: 2
+  explanation: CAR 602.122 prohibits the pilot-in-command from operating in IFR flight unless
+    the filed IFR flight plan or itinerary includes an alternate aerodrome with a landing
+    area suitable for the aircraft, except as authorized by the Minister.
+  source_chunk_id: cars:CAR 602.122:0
+  status: reviewed
+  check:
+    answer_index: 2
+    faa_as_canadian: false
+    reason: CAR 602.122 says the filed IFR flight plan or itinerary must include an alternate
+      aerodrome with a landing area suitable for use by that aircraft, which is choice 2.
+      The passage says nothing about a 100 NM distance limit, two alternates, or the RIF/
+      field, so choices 0, 1 and 3 have no support. The source is Canadian, so no FAA concern.
+- id: ppaer.navigation.049.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.049
+  stem: A VFR pilot is lost and unable to make radio contact, and wants to alert Canadian
+    radar systems by flying triangular patterns. According to the TC AIM, what should the
+    pilot do with respect to altitude, and why?
+  choices:
+  - Descend below cloud base, because radar detection is best near the surface
+  - Maintain the present altitude, because changing altitude cancels the radar alerting pattern
+  - Descend to low level, because low-flying aircraft are easier for radar to track
+  - Climb if flying low, because the greater the altitude, the better the chance of being
+    detected by radar
+  answer_index: 3
+  explanation: TC AIM SAR 4.4 states that the greater the altitude of the aircraft, the better
+    its chance of being detected, so low-flying aircraft should attempt to climb. The opportunity
+    for radar detection increases with altitude.
+  source_chunk_id: tc-aim:SAR 4.4:0
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: The passage says that the higher the aircraft, the better its chance of being
+      detected, so low-flying aircraft should attempt to climb. The note repeats that the
+      chance of radar detection increases with altitude. This supports choice 3 and rules
+      out the others. The source is the Canadian TC AIM.
+- id: ppaer.navigation.055.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.055
+  stem: An aircraft is flown in conditions where there is no wind. How do the aircraft's ground
+    track and ground speed compare with its heading and true airspeed?
+  choices:
+  - Ground track differs from heading by the drift angle, and ground speed is the same as
+    true airspeed
+  - Ground track differs from heading by the variation, and ground speed is greater than true
+    airspeed
+  - Ground track is the same as heading, and ground speed is less than true airspeed
+  - Ground track is the same as heading, and ground speed is the same as true airspeed
+  answer_index: 3
+  explanation: With no wind there is no drift and no wind effect on speed, so the track equals
+    the heading and the ground speed equals the true airspeed. This is the wind triangle principle
+    in the background passage (PHAK p.400), which applies in any country; the Canadian guide
+    TP 12880 p.17 lists heading, ground speed and drift as the same navigation topics.
+  source_chunk_id: faa-phak:PHAK p.400:0
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: The passage says that with no wind, the aircraft's ground track is the same as
+      its heading and its ground speed is the same as its true airspeed. That matches choice
+      3. This is wind-triangle physics, which is the same everywhere, so using FAA material
+      here is fine.
+- id: ppaer.navigation.056.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.056
+  stem: A pilot sets 29.92 inches of mercury on the altimeter subscale. According to the TC
+    AIM, what does the pilot then read from the altimeter?
+  choices:
+  - Altitude above the nearest airport
+  - Density altitude
+  - Pressure altitude
+  - True altitude at all levels
+  answer_index: 2
+  explanation: In the TC AIM example, momentarily setting 29.92 inches of mercury on the subscale
+    gives a pressure altitude reading (6 120 feet in the example), which is the value used
+    with OAT on the computer to find true altitude (TC AIM AIR 1.5.4).
+  source_chunk_id: tc-aim:AIR 1.5.4:0
+  status: reviewed
+  check:
+    answer_index: 2
+    faa_as_canadian: false
+    reason: The TC AIM passage says that if the pilot momentarily sets the subscale to 29.92
+      inches of mercury, the altimeter reads pressure altitude (6 120 ft in the example).
+      It reads true altitude only if ICAO Standard Atmosphere conditions exist, so choice
+      3 is wrong.
+- id: ppaer.navigation.057.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.057
+  stem: In the sequence of airspeed corrections used with a navigation computer, calibrated
+    airspeed (CAS) is converted to true airspeed (TAS) by correcting for which of the following?
+  choices:
+  - Installation error and instrument error
+  - Compressibility error only at sea level
+  - Headwind or tailwind component
+  - Altitude and nonstandard temperature
+  answer_index: 3
+  explanation: True airspeed is calibrated airspeed corrected for altitude and nonstandard
+    temperature, because air density decreases with altitude. Installation and instrument
+    errors are what convert IAS to CAS, and wind adjusts TAS to groundspeed (PHAK background
+    on airspeed definitions; the TP 12880 syllabus lists IAS, CAS and TAS as topics).
+  source_chunk_id: faa-phak:PHAK p.211:0
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: The passage defines TAS as CAS corrected for altitude and nonstandard temperature.
+      Choice 0 describes the step from IAS to CAS, and choice 2 describes the step from TAS
+      to groundspeed. This is airspeed theory that applies everywhere, not a Canada-specific
+      rule.
+- id: ppaer.navigation.058.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.058
+  stem: An aircraft is flying at a constant ground speed of 140 knots. How long will it take
+    to fly 210 nautical miles?
+  choices:
+  - 1 hour 30 minutes
+  - 1 hour 45 minutes
+  - 1 hour 15 minutes
+  - 2 hours
+  answer_index: 0
+  explanation: 'Time equals distance divided by ground speed: 210 NM ÷ 140 kt = 1.5 hours,
+    which is 1 hour 30 minutes. This is the basic time, speed and distance relationship (T
+    = D/GS) described in the PHAK background passage, and it is the same in every country.'
+  source_chunk_id: faa-phak:PHAK p.398:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: 'The passage works this exact example: T = D/GS = 210 ÷ 140 = 1.5 hours, which
+      is 1:30. Time-speed-distance arithmetic is the same everywhere, so an FAA source is
+      fine here.'
+- id: ppaer.navigation.059.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.059
+  stem: A pilot needs to convert a fuel quantity of 50 litres into US gallons using the conversion
+    factors in the TC AIM. Which factor should be used, and what is the approximate result?
+  choices:
+  - Multiply by 0.264, giving about 13.2 US gallons
+  - Multiply by 0.220, giving about 11.0 US gallons
+  - Multiply by 3.785, giving about 189 US gallons
+  - Multiply by 4.546, giving about 227 US gallons
+  answer_index: 0
+  explanation: TC AIM GEN 1.7.1 Table 1.6 gives the factor for litres to U.S. gallons as 0.264,
+    so 50 × 0.264 is about 13.2 US gallons. The 0.220 factor is for imperial gallons, and
+    3.785 and 4.546 convert gallons to litres.
+  source_chunk_id: tc-aim:GEN 1.7.1:1
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: Table 1.6 of the Canadian TC AIM lists litres to U.S. gallon as multiply by 0.264,
+      and 50 × 0.264 = 13.2 US gallons. Choice 1 uses the litres to imperial gallon factor.
+      Choices 2 and 3 use the reverse factors (U.S. and imperial gallons to litres).
+- id: ppaer.navigation.060.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.060
+  stem: In the western mountainous region, some VFR routes are marked by diamonds on visual
+    navigation charts. According to the TC AIM, who is responsible for choosing a suitable
+    route for the intended flight and conditions?
+  choices:
+  - The pilot-in-command, because alternative unmarked routes are always available and the
+    choice remains the pilot's sole responsibility
+  - The operator of the nearest airport, because the diamonds indicate routes with special
+    facilities and services
+  - The air traffic services unit, because the diamond marks identify routes approved for
+    traffic flow
+  - Transport Canada, because the marked routes absolve pilots of the need for detailed pre-flight
+    planning
+  answer_index: 0
+  explanation: TC AIM AIR 2.13 states that diamond-marked routes are only a convenience for
+    pre-flight planning, do not imply any special facilities or services, and do not absolve
+    the pilot of planning. The choice of a suitable route remains the sole responsibility
+    of the pilot-in-command.
+  source_chunk_id: tc-aim:AIR 2.13:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: 'The passage says the choice of a suitable route for the intended flight and conditions
+      remains the sole responsibility of the pilot-in-command, and that alternative unmarked
+      routes are always available. It also rules out the other choices: the diamonds do not
+      imply special facilities or services, and using marked routes does not absolve pilots
+      from pre-flight planning.'
+- id: ppaer.navigation.062.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.062
+  stem: When reviewing weather documentation for a flight, how are cloud base heights normally
+    stated in METARs and TAFs compared with GFAs and PIREPs?
+  choices:
+  - METARs and TAFs state height above sea level; GFAs and PIREPs normally state height above
+    ground level
+  - All four products state heights above ground level
+  - All four products state heights above sea level
+  - METARs and TAFs state height above ground level; GFAs and PIREPs normally state height
+    above sea level
+  answer_index: 3
+  explanation: TC AIM MET 1.2.2 says heights in METARs and TAFs are always AGL, while heights
+    in GFAs and PIREPs are normally ASL because terrain heights vary over the larger area
+    covered.
+  source_chunk_id: tc-aim:MET 1.2.2:0
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: The passage says heights in METARs and TAFs are always above ground level. Heights
+      in GFAs and PIREPs are normally above sea level, because terrain heights vary over the
+      larger area. That matches choice 3. The source is the Canadian TC AIM.
+- id: ppaer.navigation.063.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.063
+  stem: According to the TC AIM, a Canadian NOTAM subject is located 8 NM from the nearest
+    aerodrome and does not directly affect any aerodrome. What does item A) of the NOTAM contain?
+  choices:
+  - The location indicator CXXX only
+  - One or more flight information regions (FIR)
+  - The latitude and longitude of the subject
+  - The location indicator of the nearest aerodrome
+  answer_index: 1
+  explanation: Item A) contains an aerodrome location indicator or CXXX only if the subject
+    affects an aerodrome directly or is 5 NM or less from one. If the subject is beyond 5
+    NM from any aerodrome, item A) contains one or more FIRs (up to 7), per TC AIM MAP 3.4.
+  source_chunk_id: tc-aim:MAP 3.4:0
+  status: reviewed
+  check:
+    answer_index: 1
+    faa_as_canadian: false
+    reason: The TC AIM passage says that when a NOTAM subject is more than 5 NM from any aerodrome,
+      item A) contains one or more flight information regions (up to 7). A subject 8 NM from
+      the nearest aerodrome is beyond 5 NM, so choice 1 is correct. The aerodrome location
+      indicator or CXXX is used only when the subject is 5 NM or less from an aerodrome or
+      affects it directly.
+- id: ppaer.navigation.064.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.064
+  stem: According to the TC AIM, which type of information is published in an AIP Canada Supplement
+    rather than as a permanent change in the TC AIM or AIP Canada?
+  choices:
+  - Aircraft weight and balance data for privately owned aeroplanes
+  - Permanent changes to airspace classification and aeronautical regulations
+  - Hourly weather observations and forecasts for destination aerodromes
+  - Temporary operational changes of long duration (three months or longer), and short-duration
+    information containing extensive text or graphics
+  answer_index: 3
+  explanation: TC AIM MAP 2.2 states that permanent changes appear in the TC AIM and AIP Canada,
+    while temporary operational changes of three months or longer, and short-duration information
+    with extensive text or graphics, are published in an AIP Canada Supplement.
+  source_chunk_id: tc-aim:MAP 2.2:0
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: The passage says the AIP Canada Supplement carries temporary operational changes
+      of long duration (three months or longer) and short-duration information with extensive
+      text or graphics. Permanent changes go in the TC AIM and AIP Canada. Choice 3 matches
+      this, and the other choices are not supported.
+- id: ppaer.navigation.067.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.067
+  stem: According to the TC AIM, what should a pilot do about baggage weight if the aircraft
+    may be operating close to its maximum take-off weight (MTOW)?
+  choices:
+  - Use the standard baggage weight printed in the weight and balance report
+  - Estimate the baggage weight from the pilot's experience with similar loads
+  - Weigh only the baggage that is loaded in the rear seat area
+  - Weigh the baggage, using a spring balance if scales are not available
+  answer_index: 3
+  explanation: TC AIM RAC 3.4.2 states that estimating baggage weight can result in gross
+    inaccuracies, so if the aircraft may be close to its MTOW the baggage must be weighed.
+    Even a pocket-sized spring balance can be used if scales are not available.
+  source_chunk_id: tc-aim:RAC 3.4.2:0
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: The passage is from the Canadian TC AIM. It says that if the aircraft may be operating
+      close to its MTOW, the baggage must be weighed, and that a pocket-sized spring balance
+      can serve as a standby when scales are not available. That matches choice 3. The passage
+      also warns that estimating baggage weight can give gross inaccuracies, which rules out
+      choice 1. Nothing in it supports using standard weights (choice 0) or weighing only
+      rear-seat baggage (choice 2).
+- id: ppaer.navigation.068.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.068
+  stem: A student pilot planning a VFR flight needs the telephone numbers for flight planning
+    services and the current status of the airports along the route. Which publication contains
+    this information, according to the TC AIM?
+  choices:
+  - Aircraft flight manual
+  - ICAO Type A Aerodrome Obstacle Chart
+  - Visual aeronautical chart for the route
+  - Canada Flight Supplement (CFS)
+  answer_index: 3
+  explanation: TC AIM MAP 2.5.3 states that the CFS publishes aeronautical information needed
+    for VFR flight that cannot be shown on visual charts, including the current status of
+    airports and the telephone numbers for flight planning services.
+  source_chunk_id: tc-aim:MAP 2.5.3:0
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: The passage states that the CFS contains information not suitable for depiction
+      on visual charts. This includes the telephone numbers for flight planning services and
+      the current status of individual airports. The passage is from the Canadian TC AIM,
+      so no FAA material is involved.)","faa_as_canadian":false}
+- id: ppaer.navigation.073.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.073
+  stem: According to the TC AIM, why are pilots cautioned against allowing the operation of
+    handheld electronic calculators on board their aircraft while airborne?
+  choices:
+  - They can interfere with airborne ADF equipment in the 200 to 450 kHz range when held within
+    5 ft of the ADF antenna or lead-in cable
+  - They can interfere with VOR reception only when the aircraft is on the ground
+  - They can interfere with the transponder when operated within 5 ft of the control yoke
+  - They can cause the magnetic compass to deviate by more than 10 degrees when used in the
+    cockpit
+  answer_index: 0
+  explanation: TC AIM COM 4.4 states that Industry Canada testing found that using handheld
+    calculators can interfere with airborne ADF equipment in the 200 to 450 kHz range when
+    within 5 ft of the loop or sense antenna or lead-in cable.
+  source_chunk_id: tc-aim:COM 4.4:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: The passage says Industry Canada found that switching on or using handheld calculators
+      can interfere with airborne ADF equipment in the 200 to 450 kHz range when the calculator
+      is within 5 ft of the loop or sense antenna or the lead-in cable. That matches choice
+      0. The other choices (VOR on the ground, transponder near the yoke, compass deviation)
+      are not supported. The source is the Canadian TC AIM, so no FAA issue.
+- id: ppaer.navigation.075.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.075
+  stem: Under CAR 602.08, which condition must be met before a person may use a portable electronic
+    device (PED) on board an aircraft?
+  choices:
+  - The person must file a report with the Minister beforehand
+  - The person must be a licensed crew member
+  - The aircraft must be on the ground with the engines shut down
+  - The person must have the permission of the operator of the aircraft
+  answer_index: 3
+  explanation: CAR 602.08(2) states that no person shall use a portable electronic device
+    on board an aircraft except with the permission of the operator of the aircraft.
+  source_chunk_id: cars:CAR 602.08:0
+  status: reviewed
+  check:
+    answer_index: 3
+    faa_as_canadian: false
+    reason: CAR 602.08(2) says no person shall use a portable electronic device on board an
+      aircraft except with the permission of the operator of the aircraft. That matches choice
+      3. The passage says nothing about reports to the Minister, crew licensing, or the aircraft
+      being on the ground with engines shut down. The source is Canadian regulation.
+- id: ppaer.navigation.081.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.081
+  stem: A pilot is taxiing out for departure at an airport that does not use MLAT surface
+    surveillance. According to the TC AIM, when should the pilot switch the transponder from
+    STANDBY to ON (or NORMAL)?
+  choices:
+  - Before starting the engine, so that ATC can see the aircraft on the apron
+  - As late as practicable before takeoff, in practice upon entering the active runway for
+    departure
+  - Immediately after the before-takeoff checks are completed at the holding point, regardless
+    of runway entry
+  - Only after the aircraft has climbed through 1000 ft AGL
+  answer_index: 1
+  explanation: TC AIM COM 8.1 says pilots should select STANDBY while taxiing for takeoff
+    and ON (or NORMAL) as late as practicable before takeoff. In practice, this means turning
+    it on only upon entering the active runway for departure.
+  source_chunk_id: tc-aim:COM 8.1:0
+  status: reviewed
+  check:
+    answer_index: 1
+    faa_as_canadian: false
+    reason: The TC AIM passage says to set the transponder to STANDBY while taxiing and to
+      ON (or NORMAL) as late as practicable before takeoff. In practice, it should be turned
+      on only upon entering the active runway for departure. This matches choice 1. The source
+      is Canadian, so the FAA flag does not apply.
+- id: ppaer.navigation.083.q1
+  exam: PPAER
+  objective_id: ppaer.navigation.083
+  stem: After a forced landing in an uninhabited area, a pilot removes a portable ELT with
+    its own auxiliary antenna from the aircraft. According to the TC AIM, which placement
+    will best extend the range of its transmission?
+  choices:
+  - Placed as high as possible on a level surface, such as a level metal surface or wing,
+    with the antenna vertical
+  - Laid flat on the ground with the antenna horizontal to reduce obstructions
+  - Placed inside the aircraft cabin with the antenna folded down to shield it from the weather
+  - Held close to the pilot's body to keep the battery warm in cold weather
+  answer_index: 0
+  explanation: TC AIM SAR 3.6 says a portable ELT should be placed as high as possible on
+    a level surface with the antenna vertical, and metal or a level wing adds reflectivity.
+    Holding it against the body does not significantly increase battery output and the body
+    absorbs signal energy, which can reduce range.
+  source_chunk_id: tc-aim:SAR 3.6:0
+  status: reviewed
+  check:
+    answer_index: 0
+    faa_as_canadian: false
+    reason: The TC AIM passage says a portable ELT should go as high as possible on a level
+      surface, with the antenna vertical. It adds that a level piece of metal or the wing
+      reflects the signal and extends range. Holding the ELT close to the body reduces range
+      because the body absorbs the signal. Laying it flat with the antenna horizontal, or
+      folding the antenna, goes against the guidance to keep the antenna vertical.

@@ -32,7 +32,7 @@ test("completing a 10-question quiz shows the score and topic breakdown", async 
   await expect(page).toHaveURL(/\/results\/[0-9a-f-]{36}$/);
   await expect(page.getByText(/^\d+ \/ 10 \(\d+%\)$/)).toBeVisible();
   await expect(page.getByText(/90% PSTAR pass mark/)).toBeVisible();
-  const breakdown = page.getByRole("table");
+  const breakdown = page.getByRole("table", { name: "By topic" });
   await expect(breakdown.getByRole("row").nth(1)).toBeVisible();
   await expect(page.getByRole("region", { name: "Question review" }).getByRole("listitem")).toHaveCount(10);
 });
@@ -57,6 +57,23 @@ test("the mock exam shows the unverified time limit and a timer", async ({ page 
   await mock.getByRole("button", { name: "Start mock exam" }).click();
   await expect(page.getByRole("timer", { name: "Time remaining" })).toHaveText(/^1:(30|29):\d\d$/);
   await expect(page.getByText("0 of 50 answered")).toBeVisible();
+});
+
+test("the PPAER mock exam has a 3-hour timer and results by subject", async ({ page }) => {
+  await page.goto("/practice");
+  const mock = page.getByRole("region", { name: "PPAER mock exam" });
+  await expect(mock).toContainText("Time limit 180 minutes");
+  await expect(mock).toContainText("25 questions from each subject");
+  await mock.getByRole("button", { name: "Start mock exam" }).click();
+  await expect(page.getByRole("timer", { name: "Time remaining" })).toHaveText(/^(3:00|2:59):\d\d$/);
+  await expect(page.getByText("0 of 100 answered")).toBeVisible();
+  await expect(page.getByText("PRACTICE").first()).toBeVisible();
+  await page.getByRole("button", { name: "Submit answers" }).click();
+
+  await expect(page.getByText(/^Fail: below the 60% PPAER pass mark/)).toBeVisible();
+  const subjects = page.getByRole("table", { name: "By subject" });
+  await expect(subjects.getByRole("row")).toHaveCount(5);
+  await expect(subjects).toContainText("Meteorology");
 });
 
 for (const colorScheme of ["dark", "light"] as const) {
