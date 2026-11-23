@@ -1,0 +1,33 @@
+# Oral exercise. Key points are taken from the cited passage. The source is
+# an FAA handbook: pitot-static instrument behaviour is the same in Canada.
+id: static-port
+exam: PPAER
+objective_id: ppaer.aeronautics.100
+prompt: >-
+  In flight, the static port of your aeroplane becomes blocked, while the
+  pitot tube stays clear. Explain what happens to the altimeter, the
+  vertical speed indicator and the airspeed indicator.
+sources:
+  - faa-phak:PHAK p.213:0
+rubric:
+  - id: altimeter
+    description: The altimeter stops showing changes in altitude.
+    weight: 1
+    key_points:
+      - The altimeter freezes at the altitude where the blockage occurred.
+      - The trapped static pressure no longer changes with altitude.
+  - id: vsi
+    description: The vertical speed indicator stops showing climbs and descents.
+    weight: 1
+    key_points:
+      - The VSI shows a continuous zero.
+  - id: airspeed
+    description: The airspeed indicator keeps working but gives wrong readings
+      that depend on altitude.
+    weight: 2
+    key_points:
+      - The airspeed indicator continues to operate but is inaccurate.
+      - Above the altitude where the blockage occurred (in a climb), it shows
+        lower than the actual airspeed.
+      - Below that altitude (in a descent), it shows higher than the actual
+        airspeed.

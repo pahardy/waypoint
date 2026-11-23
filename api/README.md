@@ -91,5 +91,13 @@ Canadian, are kept, as `status: draft`. Review each (`reviewed` or
 `retired`); only reviewed questions are used. Choices are shuffled in code.
 Model calls use server-side fallback, and a refusal is reported as one.
 
+```
+uv run oral static-port < answer.txt   # or type the answer, then Ctrl-D
+```
+
+Oral exercises live in `content/exercises/` (prompt, sources, weighted
+rubric). The model marks each criterion met, partly met or not met with a
+quote from the answer; code checks the quotes and calculates the score.
+
 `uv run python tests/stub_server.py` serves the API with a stub model and
 stub retrieval, for the web end-to-end tests (run `uv run seed` first).

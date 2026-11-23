@@ -1,6 +1,7 @@
 # Phase 4: Practice Assessments
 
-Status: done (2026-11-23), except the review gate. See Progress and Done when.
+Status: done (2026-11-23). See Progress and Done when. The review gate was
+skipped: owner decision, 2026-11-23 ("do what's simplest" for this test app).
 
 Goal: topic quizzes and timed mock exams with deterministic scoring and
 per-subject results.

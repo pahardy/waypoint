@@ -3,7 +3,7 @@ from types import SimpleNamespace
 import pytest
 from pydantic import ValidationError
 
-from waypoint_api import drafting
+from waypoint_api import llm
 from waypoint_api.drafting import (
     AnswerCheck,
     Draft,
@@ -207,15 +207,15 @@ def response(stop_reason, text):
 
 def test_a_refusal_is_reported_as_declined_not_as_bad_json(monkeypatch):
     fake = FakeClient(response("refusal", '{"answer_index":2,"reason":"x\\n.\\n.'))
-    monkeypatch.setattr(drafting.anthropic, "Anthropic", fake)
+    monkeypatch.setattr(llm.anthropic, "Anthropic", fake)
     with pytest.raises(LLMError, match="declined"):
-        drafting.parse("m", "high", "system", "prompt", AnswerCheck)
+        llm.parse("m", "high", "system", "prompt", AnswerCheck)
 
 
 def test_a_finished_answer_is_parsed_with_server_side_fallback(monkeypatch):
     fake = FakeClient(response("end_turn", '{"answer_index": 2, "reason": "ok"}'))
-    monkeypatch.setattr(drafting.anthropic, "Anthropic", fake)
-    check = drafting.parse("m", "high", "system", "prompt", AnswerCheck)
+    monkeypatch.setattr(llm.anthropic, "Anthropic", fake)
+    check = llm.parse("m", "high", "system", "prompt", AnswerCheck)
     assert (check.answer_index, check.faa_as_canadian) == (2, False)
     assert fake.request["fallbacks"] == "default"
     assert fake.request["output_config"]["format"]["type"] == "json_schema"
