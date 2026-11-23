@@ -15,7 +15,7 @@ from pydantic import BaseModel, Field, model_validator
 from waypoint_api import attempts, exams, llm
 from waypoint_api.ask import database_search
 from waypoint_api.conversations import Conversation, SavedMessage, load, save
-from waypoint_api.instructor import Answer, Level, Search, label, respond
+from waypoint_api.instructor import Answer, Citation, Level, Search, cite, respond
 from waypoint_api.retrieval import (
     EmbedQuery,
     Passage,
@@ -101,12 +101,6 @@ class ChatRequest(BaseModel):
         return self
 
 
-class Citation(Passage):
-    """A passage the answer cites, with the label used in its text."""
-
-    label: str
-
-
 class Delta(BaseModel):
     """The next piece of the answer."""
 
@@ -182,9 +176,7 @@ def chat(
     yield Done(
         conversation_id=save(conn, request.conversation_id, request.level, saved),
         found=answer.found,
-        citations=[
-            Citation(**p.model_dump(), label=label(p)) for p in answer.citations
-        ],
+        citations=[cite(p) for p in answer.citations],
         unknown_references=answer.unknown_references,
     )
 

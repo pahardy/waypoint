@@ -11,6 +11,8 @@ from psycopg.rows import namedtuple_row
 from pydantic import BaseModel
 
 from waypoint_api import exams
+from waypoint_api.instructor import Citation, cite
+from waypoint_api.retrieval import Passage
 
 Kind = Literal["quiz", "mock"]
 
@@ -42,10 +44,15 @@ class Attempt(BaseModel):
 
 
 class ReviewItem(AttemptQuestion):
-    """A question after submission, with its correct answer."""
+    """A question after submission: its correct answer, why, and where that
+    comes from. Practice questions have an explanation and a cited passage;
+    official PSTAR questions have the references TP 11919 gives."""
 
     answer_index: int
     correct: bool
+    explanation: str | None
+    source: Citation | None
+    references: list[str]
 
 
 class SubjectScore(BaseModel):
@@ -149,11 +156,17 @@ def start(
 
 
 ITEMS = """
-    SELECT i.position, q.id AS question_id, q.number, q.objective_id, o.subject, o.text AS topic,
-           q.stem, q.choices, q.origin, i.chosen_index, q.answer_index
+    SELECT i.position, q.id AS question_id, q.number, q.objective_id, o.subject,
+           o.text AS topic, q.stem, q.choices, q.origin, i.chosen_index,
+           q.answer_index, q.explanation, q.source_refs AS references,
+           c.id AS chunk_id, d.id AS document_id, d.title AS document_title,
+           d.edition, d.jurisdiction, c.section_ref, c.heading_path, c.page,
+           c.subject AS chunk_subject, c.text
     FROM attempt_item i
     JOIN question q ON q.id = i.question_id
     JOIN objective o ON o.id = q.objective_id
+    LEFT JOIN chunk c ON c.id = q.source_chunk_id
+    LEFT JOIN document d ON d.id = c.document_id
     WHERE i.attempt_id = %s ORDER BY i.position
 """
 ATTEMPT = """
@@ -241,6 +254,27 @@ def submit(conn: psycopg.Connection, attempt_id: UUID, now: datetime) -> None:
     conn.commit()
 
 
+def source_citation(row: NamedTuple) -> Citation | None:
+    """The knowledge-base passage a practice question cites, if any."""
+    if row.chunk_id is None:
+        return None
+    return cite(
+        Passage(
+            chunk_id=row.chunk_id,
+            document_id=row.document_id,
+            document_title=row.document_title,
+            edition=row.edition,
+            jurisdiction=row.jurisdiction,
+            section_ref=row.section_ref,
+            heading_path=row.heading_path,
+            page=row.page,
+            subject=row.chunk_subject,
+            text=row.text,
+            score=1.0,
+        )
+    )
+
+
 def subject_counts(items: list[NamedTuple]) -> dict[str, tuple[int, int]]:
     """(correct, total) for each subject of the attempt's questions."""
     counts: dict[str, tuple[int, int]] = {}
@@ -281,11 +315,15 @@ def results(conn: psycopg.Connection, attempt_id: UUID) -> Results | None:
     if row is None or row.submitted_at is None:
         return None
     items = item_rows(conn, attempt_id)
-    fields = ReviewItem.model_fields
+    fields = AttemptQuestion.model_fields
     review = [
         ReviewItem(
-            **{k: getattr(r, k) for k in fields if k != "correct"},
+            **{k: getattr(r, k) for k in fields},
+            answer_index=r.answer_index,
             correct=r.chosen_index == r.answer_index,
+            explanation=r.explanation,
+            source=source_citation(r),
+            references=r.references,
         )
         for r in items
     ]

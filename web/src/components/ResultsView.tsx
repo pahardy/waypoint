@@ -1,9 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import Badge from "@/components/Badge";
-import { SUBJECTS, type Results, type SubjectScore, getResults } from "@/lib/practice";
+import CitationChip from "@/components/CitationChip";
+import SourceDetail from "@/components/SourceDetail";
+import {
+  type ReviewItem,
+  SUBJECTS,
+  type Results,
+  type SubjectScore,
+  getResults,
+} from "@/lib/practice";
 
 function percent(correct: number, total: number): number {
   return Math.round((correct * 100) / total);
@@ -41,6 +49,63 @@ function SubjectRow({ score, passPercent }: { score: SubjectScore; passPercent: 
         {score.supplementary && ` (${score.supplementary})`}
       </td>
     </tr>
+  );
+}
+
+/** One answered question: the answers, why the correct one is right, and
+ * its source (a cited passage, or the references TP 11919 gives). */
+function ReviewCard({ item }: { item: ReviewItem }) {
+  const [open, setOpen] = useState(false);
+  const detailId = useId();
+  return (
+    <li className="flex flex-col gap-2 rounded bg-surface p-5">
+      <p className="flex flex-wrap items-center gap-2 text-sm text-muted">
+        <span className={item.correct ? "text-pass" : "text-fail"}>
+          {item.correct ? "Correct" : "Incorrect"}
+        </span>
+        <Badge variant={item.origin === "official" ? "official" : "practice"} />
+        {item.number && <span>TP 11919 {item.number}</span>}
+      </p>
+      <p className="whitespace-pre-line">{item.stem}</p>
+      <p>
+        <span className="text-muted">Your answer: </span>
+        {item.chosen_index === null ? "Not answered" : item.choices[item.chosen_index]}
+      </p>
+      {!item.correct && (
+        <p>
+          <span className="text-muted">Correct answer: </span>
+          {item.choices[item.answer_index]}
+        </p>
+      )}
+      {item.explanation && (
+        <p>
+          <span className="text-muted">Why: </span>
+          {item.explanation}
+        </p>
+      )}
+      {item.source && (
+        <div>
+          <span className="text-muted">Source: </span>
+          <CitationChip
+            citation={item.source}
+            open={open}
+            detailId={detailId}
+            onToggle={() => setOpen(!open)}
+          />
+          <div id={detailId}>{open && <SourceDetail citation={item.source} />}</div>
+        </div>
+      )}
+      {item.references.length > 0 && (
+        <div>
+          <p className="text-muted">TP 11919 references:</p>
+          <ul className="list-disc pl-5 text-sm">
+            {item.references.map((ref) => (
+              <li key={ref}>{ref}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </li>
   );
 }
 
@@ -127,26 +192,7 @@ export default function ResultsView({ attemptId }: { attemptId: string }) {
         </h2>
         <ol className="flex flex-col gap-4">
           {results.review.map((item) => (
-            <li key={item.position} className="flex flex-col gap-2 rounded bg-surface p-5">
-              <p className="flex flex-wrap items-center gap-2 text-sm text-muted">
-                <span className={item.correct ? "text-pass" : "text-fail"}>
-                  {item.correct ? "Correct" : "Incorrect"}
-                </span>
-                <Badge variant={item.origin === "official" ? "official" : "practice"} />
-                {item.number && <span>TP 11919 {item.number}</span>}
-              </p>
-              <p className="whitespace-pre-line">{item.stem}</p>
-              <p>
-                <span className="text-muted">Your answer: </span>
-                {item.chosen_index === null ? "Not answered" : item.choices[item.chosen_index]}
-              </p>
-              {!item.correct && (
-                <p>
-                  <span className="text-muted">Correct answer: </span>
-                  {item.choices[item.answer_index]}
-                </p>
-              )}
-            </li>
+            <ReviewCard key={item.position} item={item} />
           ))}
         </ol>
       </section>

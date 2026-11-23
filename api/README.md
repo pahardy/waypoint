@@ -71,7 +71,8 @@ curl -N -X POST localhost:8000/chat -H 'Content-Type: application/json' \
   409 after submission or after the time limit (server clock).
 - `POST /attempts/{id}/submit`, `GET /attempts/{id}/results`: the score,
   the outcome (`pass`, `partial`, `fail`), per-subject and per-topic
-  breakdowns and each question with its answer. A PPAER mock with a
+  breakdowns and each question with its answer, its explanation and cited
+  passage (practice questions) or its TP 11919 references (PSTAR). A PPAER mock with a
   subject under 60% is a partial pass and names the supplementary exam.
 
 Exam rules live in `exams.py` and are deterministic code.

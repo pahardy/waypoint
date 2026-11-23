@@ -88,6 +88,17 @@ def label(passage: Passage) -> str:
     return f"{prefix} {passage.section_ref}" if prefix else passage.section_ref
 
 
+class Citation(Passage):
+    """A cited passage, with the label used in the text that cites it."""
+
+    label: str
+
+
+def cite(passage: Passage) -> Citation:
+    """The passage as a citation."""
+    return Citation(**passage.model_dump(), label=label(passage))
+
+
 def gather(search: Search, question: str, level: Level) -> list[Passage]:
     """Canadian passages first, then a little FAA background, keeping only
     those relevant enough to answer from."""
