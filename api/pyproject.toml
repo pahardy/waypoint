@@ -11,6 +11,7 @@ dependencies = [
     "anthropic>=2.11.0",
     "fastapi[standard]>=0.164.0",
     "psycopg[binary]>=3.3.9",
+    "pyyaml>=6.0.3",
     "voyageai>=0.6.0",
 ]
 
@@ -34,5 +35,6 @@ line-length = 88
 
 [project.scripts]
 migrate = "waypoint_api.migrate:main"
+seed = "waypoint_api.seed:main"
 instructor = "waypoint_api.ask:main"
 instructor-eval = "waypoint_api.instructor_eval:main"

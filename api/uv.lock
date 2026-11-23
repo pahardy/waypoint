@@ -2219,6 +2219,7 @@ dependencies = [
     { name = "anthropic" },
     { name = "fastapi", extra = ["standard"] },
     { name = "psycopg", extra = ["binary"] },
+    { name = "pyyaml" },
     { name = "voyageai" },
 ]
 
@@ -2233,6 +2234,7 @@ requires-dist = [
     { name = "anthropic", specifier = ">=2.11.0" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.164.0" },
     { name = "psycopg", extras = ["binary"], specifier = ">=3.3.9" },
+    { name = "pyyaml", specifier = ">=6.0.3" },
     { name = "voyageai", specifier = ">=0.6.0" },
 ]
 

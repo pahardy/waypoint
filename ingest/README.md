@@ -7,6 +7,7 @@ citable chunks.
 uv run ingest fetch              # download sources.yaml into data/raw/ (git-ignored)
 uv run ingest fetch --priority 1 # only priority 1 sources
 uv run ingest objectives         # write db/seed/objectives.yaml from the study guides
+uv run ingest pstar-questions    # write db/seed/pstar-questions.yaml from TP 11919
 uv run ingest chunk tc-aim       # write data/text/ and data/chunks/ for one source
 uv run ingest load tc-aim        # embed new or changed chunks into the database
 uv run ingest search "question"  # show the nearest chunks

@@ -60,7 +60,8 @@ Usage rules:
 - Dark is the default theme, and it is the signature look. The light
   theme follows the system setting, or the user's choice.
 - Amber is for one primary action per screen. Overuse dulls it.
-- On amber buttons, the text is Night `#0B1426` (9:1 contrast).
+- On amber buttons, the text is `--on-accent`: Night `#0B1426` in the dark
+  theme (9:1) and white in the light theme (4.9:1 on `#A15C00`).
 - Pass and fail always come with an icon or a word, never colour alone.
 
 ## Typography

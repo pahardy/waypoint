@@ -1,10 +1,12 @@
 const STYLES = {
-  official: { label: "OFFICIAL", className: "bg-accent text-night" },
+  official: { label: "OFFICIAL", className: "bg-accent text-on-accent" },
   practice: { label: "PRACTICE", className: "bg-sky text-night" },
   "non-CA": { label: "NON-CANADIAN", className: "border border-muted text-muted" },
+  unverified: { label: "UNVERIFIED", className: "border border-accent text-accent" },
 } as const;
 
-/** A small label: official material, practice content or non-Canadian sources. */
+/** A small label: official material, practice content, non-Canadian sources
+ * or an exam fact not confirmed by Transport Canada. */
 export default function Badge({ variant }: { variant: keyof typeof STYLES }) {
   const { label, className } = STYLES[variant];
   return (
