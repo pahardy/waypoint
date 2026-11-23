@@ -1,5 +1,7 @@
 # Phase 3: AI Instructor
 
+Status: done (2026-11-20). See Progress and Done when.
+
 Goal: a conversational instructor that explains concepts at the
 student's level and grounds every regulatory or technical claim in
 retrieved sources.
@@ -75,7 +77,8 @@ Eval (on demand, real model): see Evaluation below.
 2. Write the eval set and run it.
 3. Add the `/chat` endpoint with streaming.
 4. Add the chat page in the web app (see plan 07).
-5. Compare models, and record the choice in this document.
+5. Compare models, and record the choice in this document. Skipped:
+   see Progress.
 
 ## Progress
 
@@ -119,9 +122,13 @@ Improvement loop (issue #15), stopped before round 1:
 - `uv run instructor-eval --regrade` re-judges stored answers against the
   exact passages they saw; a harness gate stops the runner when grading
   files change until the owner approves them.
-- Planned changes still to try: shorter web-page citation labels, prompt
+- Planned changes not tried: shorter web-page citation labels, prompt
   rules on exam claims and advice, effort medium, retrieval across page
   splits. Details: `docs/evals/instructor-2026-11-19-baseline.md`.
+- Closed without further runs (2026-11-20): Waypoint is a testing app,
+  so the owner accepted 0.74 rather than paying for more eval runs. A
+  known gap remains: the model sometimes shortens long web-page citation
+  labels, and those citations show as plain text, not chips.
 
 Steps 3 and 4 (chat endpoint and page), done (issue #16):
 - `POST /chat` takes the conversation and the level. A follow-up is
@@ -146,7 +153,15 @@ Steps 3 and 4 (chat endpoint and page), done (issue #16):
   run-to-run variation at one rep, since the single-question prompt is
   unchanged.
 
+Step 5 (model comparison), skipped (2026-11-20): it needs paid eval runs,
+which the owner decided against for a testing app. The instructor keeps
+Claude Sonnet 5.5 at effort `low` (`WAYPOINT_LLM_MODEL`,
+`WAYPOINT_LLM_EFFORT`), not compared with other models. The judge stays
+Claude Opus 5.5.
+
 ## Done when
 
-- The eval set passes the agreed thresholds.
+- The eval set passes the agreed thresholds. Met: the owner set the
+  threshold at the measured 0.74 (key facts 0.99) on 2026-11-20.
 - Citations in the web UI link to the document, edition and section.
+  Met: chips open the source detail on `/learn` (issue #16).
