@@ -233,6 +233,25 @@ def add_ppaer_bank(db_url, per_subject=25):
         conn.execute("UPDATE question SET status = 'retired' WHERE exam = 'PPAER'")
         conn.execute(
             """
+            INSERT INTO document (id, title, publisher, edition, published,
+                                  retrieved_on, jurisdiction, url, sha256)
+            VALUES ('tc-aim', 'TC AIM', 'TC', '2026-1', '2026', '2026-11-01',
+                    'CA', 'https://tc.canada.ca', 'x')
+            ON CONFLICT DO NOTHING
+            """
+        )
+        conn.execute(
+            """
+            INSERT INTO chunk (id, document_id, section_ref, heading_path, page,
+                               text, token_count, embedding_model, embedding)
+            VALUES ('tc-aim:x:0', 'tc-aim', 'MET 3.9', '{MET}', 1,
+                    'Passage text.', 3, 'voyage-4-large',
+                    array_fill(0, ARRAY[1024])::vector)
+            ON CONFLICT DO NOTHING
+            """
+        )
+        conn.execute(
+            """
             INSERT INTO question (id, exam, objective_id, stem, choices,
                                   answer_index, explanation, source,
                                   source_chunk_id, origin, status)
@@ -300,3 +319,38 @@ def test_a_quiz_has_no_partial_pass(client, db_url):
     results = client.post(f"/attempts/{attempt['id']}/submit").json()
     assert results["outcome"] == "pass"
     assert all(s["supplementary"] is None for s in results["subjects"])
+
+
+# Question review: explanations and sources
+
+
+def test_explanations_and_sources_wait_for_submission(client, db_url):
+    add_ppaer_bank(db_url)
+    for exam in ("PSTAR", "PPAER"):
+        started = client.post("/attempts", json={"exam": exam, "kind": "quiz"})
+        loaded = client.get(f"/attempts/{started.json()['id']}")
+        for hidden in ("explanation", "references", "Because.", "Passage text."):
+            assert hidden not in started.text
+            assert hidden not in loaded.text
+
+
+def test_pstar_review_gives_the_tp11919_references(client):
+    attempt = start(client, "quiz")
+    review = client.post(f"/attempts/{attempt['id']}/submit").json()["review"]
+    assert all(item["references"] for item in review)
+    assert all(item["explanation"] is None for item in review)
+    assert all(item["source"] is None for item in review)
+
+
+def test_ppaer_review_gives_the_explanation_and_cited_passage(client, db_url):
+    add_ppaer_bank(db_url)
+    attempt = start_exam(client, "PPAER", "quiz")
+    review = client.post(f"/attempts/{attempt['id']}/submit").json()["review"]
+    assert all(item["explanation"] == "Because." for item in review)
+    source = review[0]["source"]
+    assert (source["label"], source["document_title"], source["text"]) == (
+        "TC AIM MET 3.9",
+        "TC AIM",
+        "Passage text.",
+    )
+    assert source["edition"] == "2026-1"

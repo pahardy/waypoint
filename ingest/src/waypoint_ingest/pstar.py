@@ -1,4 +1,5 @@
-"""Official PSTAR questions from TP 11919 and its answer key."""
+"""Official PSTAR questions from TP 11919, with their answers from the answer
+key and their references from the guide's "Examination Question References"."""
 
 import re
 from dataclasses import dataclass, field
@@ -31,6 +32,7 @@ class Question(BaseModel):
     stem: str
     choices: list[str]
     answer_index: int
+    references: list[str]
     source: str = "tp11919"
     page: int
 
@@ -101,6 +103,38 @@ def question_rows(pdf_path: Path) -> list[Row]:
     return rows
 
 
+def reference_rows(pdf_path: Path) -> list[Row]:
+    """Rows of the "Examination Question References" pages, without the
+    legend, section headings or page numbers."""
+    doc = pymupdf.open(pdf_path)
+    rows, started = [], False
+    for page_number in range(FIRST_PAGE, doc.page_count + 1):
+        for row in page_rows(doc, page_number):
+            started = started or row.text.startswith(END_MARK)
+            if started and row.size == 12 and not row.bold and row.x < 130:
+                rows.append(row)
+    return rows
+
+
+def parse_references(rows: list[Row]) -> dict[str, list[str]]:
+    """Question number to its references, one per row, in the guide's order."""
+    references: dict[str, list[str]] = {}
+    current = None
+    for row in rows:
+        if row.x < 80 and (match := QUESTION.match(row.text)):
+            current = match.group(1)
+            references[current] = [tidy_reference(match.group(2))]
+        elif current:
+            references[current].append(tidy_reference(row.text))
+    return references
+
+
+def tidy_reference(text: str) -> str:
+    """One space either side of each dash: "TC AIM-COM– Call Signs" becomes
+    "TC AIM-COM – Call Signs"."""
+    return re.sub(r"\s*–\s*", " – ", text).strip().rstrip(",")
+
+
 def parse_questions(rows: list[Row]) -> list[Draft]:
     """Assemble stems and choices from the question rows."""
     drafts: list[Draft] = []
@@ -167,6 +201,7 @@ def extract_questions(
 ) -> tuple[list[Question], list[str]]:
     """Questions with their answers, and any problems found while matching."""
     drafts = parse_questions(question_rows(pdf_path))
+    references = parse_references(reference_rows(pdf_path))
     answers = read_answers(answer_key_path)
     numbers = {d.number for d in drafts}
     problems = [f"in answer key only: {n}" for n in sorted(answers.keys() - numbers)]
@@ -180,6 +215,9 @@ def extract_questions(
         if draft.number not in answers:
             problems.append(f"{draft.number}: no answer")
             continue
+        if draft.number not in references:
+            problems.append(f"{draft.number}: no references")
+            continue
         section = int(draft.number.split(".")[0])
         questions.append(
             Question(
@@ -189,6 +227,7 @@ def extract_questions(
                 stem=stem_text(draft.stem),
                 choices=[choice_text(cells) for cells in draft.choices],
                 answer_index=answers[draft.number] - 1,
+                references=references[draft.number],
                 page=draft.page,
             )
         )

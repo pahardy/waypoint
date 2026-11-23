@@ -40,14 +40,16 @@ def load_pstar_questions(conn: psycopg.Connection, path: Path) -> int:
         cur.executemany(
             """
             INSERT INTO question (id, exam, objective_id, number, stem, choices,
-                                  answer_index, source, page, origin, status)
+                                  answer_index, source, page, source_refs, origin,
+                                  status)
             VALUES (%(id)s, 'PSTAR', %(objective_id)s, %(number)s, %(stem)s,
                     %(choices)s, %(answer_index)s, %(source)s, %(page)s,
-                    'official', 'reviewed')
+                    %(references)s, 'official', 'reviewed')
             ON CONFLICT (id) DO UPDATE SET
                 objective_id = EXCLUDED.objective_id, number = EXCLUDED.number,
                 stem = EXCLUDED.stem, choices = EXCLUDED.choices,
-                answer_index = EXCLUDED.answer_index, page = EXCLUDED.page
+                answer_index = EXCLUDED.answer_index, page = EXCLUDED.page,
+                source_refs = EXCLUDED.source_refs
             """,
             [{**q, "choices": Jsonb(q["choices"])} for q in questions],
         )

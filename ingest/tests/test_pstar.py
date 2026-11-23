@@ -3,6 +3,7 @@ from waypoint_ingest.pstar import (
     Row,
     load_questions,
     parse_questions,
+    parse_references,
     stem_text,
 )
 
@@ -74,6 +75,26 @@ def test_lettered_items_and_sentences_start_new_lines():
     )
 
 
+def reference(*cells):
+    return Row(page=50, y=0, bold=False, size=12, cells=list(cells))
+
+
+def test_references_follow_their_question_number():
+    references = parse_references(
+        [
+            reference((72.0, "9.07 CARs 602.70 – Flight Plans, Interpretation,")),
+            reference((126.0, "TC AIM-RAC– Filing")),
+            reference(
+                (72.0, "9.08 CARs 602.77 – Requirement to file an Arrival Report")
+            ),
+        ]
+    )
+    assert references == {
+        "9.07": ["CARs 602.70 – Flight Plans, Interpretation", "TC AIM-RAC – Filing"],
+        "9.08": ["CARs 602.77 – Requirement to file an Arrival Report"],
+    }
+
+
 # Repository file
 
 
@@ -94,3 +115,17 @@ def test_every_question_has_four_choices_and_one_answer():
 def test_every_question_maps_to_a_pstar_objective():
     objective_ids = {o.id for o in load_objectives() if o.exam == "PSTAR"}
     assert {q.objective_id for q in load_questions()} == objective_ids
+
+
+def test_every_question_has_its_tp11919_references():
+    questions = {q.number: q for q in load_questions()}
+    assert all(q.references for q in questions.values())
+    assert questions["1.01"].references == [
+        "TC AIM-RAC – Collision Avoidance – Right of Way",
+        "CARs 602.19 – Right of Way",
+    ]
+    assert questions["9.08"].references == [
+        "CARs 602.77 – Requirement to file an Arrival Report",
+        "TC AIM-RAC – Closing a Flight Plan",
+    ]
+    assert questions["3.18"].references[-1] == "RTORC – Distress Communications"
