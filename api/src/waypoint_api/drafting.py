@@ -10,6 +10,7 @@ from typing import Literal
 
 import anthropic
 import psycopg
+from anthropic import transform_schema
 from pydantic import BaseModel, field_validator, model_validator
 
 from waypoint_api import llm
@@ -17,13 +18,16 @@ from waypoint_api.instructor import MIN_SCORE, label, passage_block
 from waypoint_api.judge import JUDGE_EFFORT, JUDGE_MODEL, JUDGE_TIMEOUT_S
 from waypoint_api.retrieval import EmbedQuery, Passage, RetrieveRequest, retrieve
 
-SEARCH_PASSAGES = 3
+CANADIAN_PASSAGES = 3
+BACKGROUND_PASSAGES = 2
 
 
 class AnswerCheck(BaseModel):
-    """The judge's answer to a draft, from its cited passage alone."""
+    """The judge's answer to a draft, from its cited passage alone, and
+    whether the answer leans on FAA material for something Canada-specific."""
 
     answer_index: int | None
+    faa_as_canadian: bool = False
     reason: str
 
 
@@ -62,6 +66,15 @@ class GeneratedQuestion(BaseModel):
         return self
 
     @property
+    def passes_check(self) -> bool:
+        """The judge reached the same answer, without FAA rules as Canadian."""
+        return (
+            self.check is not None
+            and self.check.answer_index == self.answer_index
+            and not self.check.faa_as_canadian
+        )
+
+    @property
     def source(self) -> str:
         """The document the source chunk belongs to."""
         return self.source_chunk_id.split(":")[0]
@@ -83,25 +96,34 @@ preparing for the Transport Canada PPAER written examination (Private Pilot \
 Licence, Aeroplane).
 
 Write one question for the learning objective, using only the passages given. \
-The passages are current Canadian sources: the Canadian Aviation Regulations \
-(CARs) or the TC AIM.
+Canadian passages (the Canadian Aviation Regulations or the TC AIM) come \
+first. FAA (United States) passages are background: use them only for facts \
+that are the same in every country, such as aerodynamics, engines, \
+instruments or weather physics. Never base a question on an FAA rule, \
+procedure, limit or report format (for example METAR or TAF codes, airspace, \
+phraseology).
 
 - The stem is self-contained and asks about one fact or rule in the passages.
 - Exactly four choices. Exactly one is correct according to the passages. The \
 other three are plausible to a student but clearly wrong from the passages.
 - No "all of the above", "none of the above" or negatively worded stems.
 - The explanation says why the answer is correct, in one to three sentences, \
-and names the source section (for example "CAR 602.14").
+and names the source section (for example "CAR 602.14" or "TC AIM MET 3.9").
 - source_label is the label of the passage the answer rests on.
 - Do not use knowledge from outside the passages.\
 """
 
 CHECK_SYSTEM = """\
-You check practice questions for an aviation study app. Using only the \
-passages given (one regulation section, possibly split into parts), answer the multiple-choice question. Give the index (0 to 3) \
-of the one choice the passages show to be correct. If they do not \
-settle the question, or more than one choice could be correct, give null and \
-say why.\
+You check practice questions for Canadian student pilots. Using only the \
+passages given (one source section, possibly split into parts), answer the \
+multiple-choice question. Give the index (0 to 3) of the one choice the \
+passages show to be correct. If they do not settle the question, or more than \
+one choice could be correct, give null and say why.
+
+Set faa_as_canadian to true if the passages are FAA (United States) material \
+and the question asks about a rule, procedure, limit or format that may \
+differ in Canada. Facts that are the same everywhere (aerodynamics, engines, \
+instruments, weather physics) are fine from FAA passages.\
 """
 
 Parse = Callable[..., BaseModel]
@@ -125,19 +147,21 @@ def check_prompt(question: GeneratedQuestion, passages: list[Passage]) -> str:
 
 
 def parse(model: str, effort: str, system: str, prompt: str, schema) -> BaseModel:
-    """One structured model call. Refusals and truncation raise LLMError."""
+    """One structured model call with server-side fallback, as for the
+    instructor. Refusals and truncation raise LLMError before the JSON is read:
+    a refused answer can end in filler text that is not valid JSON."""
+    output_format = {"type": "json_schema", "schema": transform_schema(schema)}
     with llm.api_errors():
-        response = anthropic.Anthropic(timeout=JUDGE_TIMEOUT_S).messages.parse(
+        response = anthropic.Anthropic(timeout=JUDGE_TIMEOUT_S).beta.messages.create(
             model=model,
             max_tokens=8000,
             system=system,
             messages=[{"role": "user", "content": prompt}],
-            output_config={"effort": effort},
-            output_format=schema,
+            output_config={"effort": effort, "format": output_format},
+            betas=[llm.FALLBACK_BETA],
+            fallbacks="default",
         )
-    if response.stop_reason != "end_turn" or response.parsed_output is None:
-        raise llm.LLMError(f"no structured answer ({response.stop_reason})")
-    return response.parsed_output
+    return schema.model_validate_json(llm.reply_from(response).text)
 
 
 def draft(
@@ -197,12 +221,14 @@ def check(
     )
 
 
-def pick_objectives(objectives: list[dict], subject: str, count: int) -> list[dict]:
-    """Every third essential objective of a subject, in order, up to `count`."""
+def candidate_objectives(objectives: list[dict], subject: str, count: int):
+    """A subject's essential objectives: `count` evenly spaced ones first,
+    then the rest in order, so a failed draft can be replaced."""
     essential = [
         o for o in objectives if o["subject"] == subject and o.get("essential")
     ]
-    return essential[::3][:count]
+    spread = [essential[i * len(essential) // count] for i in range(count)]
+    return spread + [o for o in essential if o not in spread]
 
 
 CAR_SECTION = """
@@ -224,12 +250,19 @@ def source_passages(
     conn: psycopg.Connection, objective: dict, embed: EmbedQuery
 ) -> list[Passage]:
     """The CAR section an objective names, or else the closest Canadian
-    passages to its text."""
+    passages to its text, then a little FAA background."""
     ref = objective.get("ref") or ""
     if ref.startswith("CAR "):
         return car_section(conn, ref)
     text = f"{objective['topic']}: {objective['text']}"
-    request = RetrieveRequest(
-        question=text, exam="PPAER", jurisdiction="CA", limit=SEARCH_PASSAGES
-    )
-    return [p for p in retrieve(conn, request, embed(text)) if p.score >= MIN_SCORE]
+    vector = embed(text)
+    passages = []
+    for jurisdiction, limit in [
+        ("CA", CANADIAN_PASSAGES),
+        ("non-CA", BACKGROUND_PASSAGES),
+    ]:
+        request = RetrieveRequest(
+            question=text, exam="PPAER", jurisdiction=jurisdiction, limit=limit
+        )
+        passages += retrieve(conn, request, vector)
+    return [p for p in passages if p.score >= MIN_SCORE]

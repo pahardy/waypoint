@@ -127,6 +127,29 @@ Step 3 (drafting and review), issue #20:
 - PPAER quizzes are available (Air Law only). The PPAER mock exam waits
   for step 4. Generated questions show the PRACTICE badge.
 
+Step 4 (all PPAER subjects and the mock exam), issue #22:
+- 100 reviewed practice questions, 25 per subject. 24 rest on FAA
+  passages, for facts the judge confirmed are not Canada-specific.
+- Drafting falls back to Canadian passages plus at most 2 FAA passages
+  when an objective names no CAR section. A draft is kept only if the
+  Opus judge reaches the same answer and finds no FAA rule presented as
+  Canadian; failed drafts are replaced by the next essential objective.
+- 10 of about 90 checks failed during the run. Cause (reproduced): the
+  judge intermittently stopped with `stop_reason: refusal` on harmless
+  content, after filler text, and `messages.parse` reported it as invalid
+  JSON. Fix: structured calls use `beta.messages.create` with server-side
+  fallback (as the instructor does) and check the stop reason before
+  reading the JSON. Four live re-runs of a failing case then all passed.
+- PPAER mock: 100 questions, 25 per subject (Waypoint's rule; TC does not
+  publish the split), 3 hours. Outcome in `exams.py`: fail under 60%
+  overall; partial pass at 60% overall with a subject under 60%, naming
+  PALAW, PANAV, PAMET or PAGEN (TP 12880); otherwise pass. Quizzes have
+  no partial pass.
+- The 80 new questions were marked `reviewed` without a read-through, as
+  the issue allows (owner decision for #20, 2026-11-23).
+- With exactly 25 per subject, every PPAER mock uses the whole bank,
+  shuffled.
+
 ## Done when
 
 - Scoring and timing are covered by unit tests.

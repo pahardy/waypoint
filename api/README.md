@@ -61,8 +61,8 @@ curl -N -X POST localhost:8000/chat -H 'Content-Type: application/json' \
 ```
 
 - `GET /exams/{PSTAR|PPAER}`: the exam rules (50 questions, 90% pass mark, a
-  90-minute limit listed in `unverified`), whether it has a mock exam
-  (not PPAER yet) and the topics to quiz on.
+  90-minute limit listed in `unverified`), whether it has a mock exam and
+  the topics to quiz on.
 - `POST /attempts`: start a `quiz` (10 questions, untimed, optional
   `objective_id`) or a `mock` exam (50 questions drawn from each TP 11919
   section in proportion to its size, timed). Correct answers are never
@@ -70,20 +70,25 @@ curl -N -X POST localhost:8000/chat -H 'Content-Type: application/json' \
 - `POST /attempts/{id}/answers`: `{position, chosen_index}`. Refused with
   409 after submission or after the time limit (server clock).
 - `POST /attempts/{id}/submit`, `GET /attempts/{id}/results`: the score,
-  pass or fail, a per-topic breakdown and each question with its answer.
+  the outcome (`pass`, `partial`, `fail`), per-subject and per-topic
+  breakdowns and each question with its answer. A PPAER mock with a
+  subject under 60% is a partial pass and names the supplementary exam.
 
 Exam rules live in `exams.py` and are deterministic code.
 
 ```
-uv run draft-questions --subject air-law --count 20   # about $1; needs both API keys
+uv run draft-questions --subject navigation --count 25   # about $1 per 20; both API keys
 ```
 
-Drafts one PPAER practice question per picked objective (every third
-essential objective) from its CAR section, or the nearest TC AIM passages,
-and has the Opus judge answer each from its cited section alone. Drafts go
-to `db/seed/ppaer-questions.yaml` as `status: draft`; review each there
-(`reviewed` or `retired`). Only reviewed questions are used. Choices are
-shuffled in code so answers are not always in the same position.
+Drafts PPAER practice questions until the subject has `count` in
+`db/seed/ppaer-questions.yaml`, one per essential objective (evenly spaced
+first). Sources are the CAR section an objective names, or else the nearest
+Canadian passages plus a little FAA background, usable only for facts that
+are the same everywhere. The Opus judge answers each draft from its cited
+section alone; only drafts it agrees with, without FAA rules presented as
+Canadian, are kept, as `status: draft`. Review each (`reviewed` or
+`retired`); only reviewed questions are used. Choices are shuffled in code.
+Model calls use server-side fallback, and a refusal is reported as one.
 
 `uv run python tests/stub_server.py` serves the API with a stub model and
 stub retrieval, for the web end-to-end tests (run `uv run seed` first).

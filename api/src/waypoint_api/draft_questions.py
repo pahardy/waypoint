@@ -1,8 +1,9 @@
-"""Command line: `uv run draft-questions --subject air-law --count 20`.
+"""Command line: `uv run draft-questions --subject navigation --count 25`.
 
-Drafts one question per picked objective, checks that each can be answered
-from its cited passage, and adds it to db/seed/ppaer-questions.yaml.
-Objectives that already have a question in the file are skipped.
+Drafts questions until the subject has `count` in
+db/seed/ppaer-questions.yaml, one per objective, keeping only drafts the
+judge can answer from the cited passage. Objectives that already have a
+question are skipped.
 """
 
 import argparse
@@ -14,10 +15,10 @@ import yaml
 
 from waypoint_api.drafting import (
     GeneratedQuestion,
+    candidate_objectives,
     check,
     cited_passages,
     draft,
-    pick_objectives,
     source_passages,
 )
 from waypoint_api.llm import LLMError
@@ -53,14 +54,19 @@ def main() -> None:
     """Draft and check questions for the picked objectives."""
     parser = argparse.ArgumentParser(prog="draft-questions")
     parser.add_argument("--subject", default="air-law")
-    parser.add_argument("--count", type=int, default=20)
+    parser.add_argument("--count", type=int, default=25, help="questions wanted")
     args = parser.parse_args()
 
     objectives = yaml.safe_load((SEED_DIR / "objectives.yaml").read_text())
+    subjects = {o["id"]: o["subject"] for o in objectives}
     questions = load_generated()
     done = {q.objective_id for q in questions}
+    have = sum(subjects[q.objective_id] == args.subject for q in questions)
+    candidates = candidate_objectives(objectives, args.subject, args.count)
     with psycopg.connect(os.environ["DATABASE_URL"]) as conn:
-        for objective in pick_objectives(objectives, args.subject, args.count):
+        for objective in candidates:
+            if have >= args.count:
+                break
             if objective["id"] in done:
                 continue
             passages = source_passages(conn, objective, embed_query)
@@ -73,7 +79,11 @@ def main() -> None:
             except (ValueError, LLMError) as error:
                 print(f"failed  {objective['id']}: {error}")
                 continue
+            if not question.passes_check:
+                print(f"dropped {question.id}: {question.check.reason}")
+                continue
             questions.append(question)
             write_generated(questions)
-            agrees = question.check.answer_index == question.answer_index
-            print(f"{'ok' if agrees else 'CHECK':<7} {question.id}")
+            have += 1
+            print(f"ok      {question.id}")
+    print(f"{args.subject}: {have} questions")
