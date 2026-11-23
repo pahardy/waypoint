@@ -1,6 +1,6 @@
 /** Quizzes and mock exams: the /exams and /attempts endpoints. */
 
-import { API_URL } from "@/lib/chat";
+import { API_URL, type Citation } from "@/lib/chat";
 
 export type Topic = { objective_id: string; topic: string; question_count: number };
 
@@ -40,7 +40,13 @@ export type Attempt = {
   questions: AttemptQuestion[];
 };
 
-export type ReviewItem = AttemptQuestion & { answer_index: number; correct: boolean };
+export type ReviewItem = AttemptQuestion & {
+  answer_index: number;
+  correct: boolean;
+  explanation: string | null;
+  source: Citation | null;
+  references: string[];
+};
 
 export type SubjectScore = {
   subject: string;

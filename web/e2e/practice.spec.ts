@@ -34,7 +34,7 @@ test("completing a 10-question quiz shows the score and topic breakdown", async 
   await expect(page.getByText(/90% PSTAR pass mark/)).toBeVisible();
   const breakdown = page.getByRole("table", { name: "By topic" });
   await expect(breakdown.getByRole("row").nth(1)).toBeVisible();
-  await expect(page.getByRole("region", { name: "Question review" }).getByRole("listitem")).toHaveCount(10);
+  await expect(page.getByRole("region", { name: "Question review" }).locator("ol > li")).toHaveCount(10);
 });
 
 test("a topic quiz draws only from that topic", async ({ page }) => {
@@ -74,6 +74,23 @@ test("the PPAER mock exam has a 3-hour timer and results by subject", async ({ p
   const subjects = page.getByRole("table", { name: "By subject" });
   await expect(subjects.getByRole("row")).toHaveCount(5);
   await expect(subjects).toContainText("Meteorology");
+});
+
+test("the question review explains practice questions and lists PSTAR references", async ({
+  page,
+}) => {
+  await page.goto("/practice");
+  await page.getByRole("region", { name: "PPAER topic quiz" }).getByRole("button", { name: "Start quiz" }).click();
+  await answerAll(page, 10);
+  await page.getByRole("button", { name: "Submit answers" }).click();
+  const review = page.getByRole("region", { name: "Question review" });
+  await expect(review.getByText("Why:")).toHaveCount(10);
+
+  await page.goto("/practice");
+  await page.getByRole("region", { name: "PSTAR topic quiz" }).getByRole("button", { name: "Start quiz" }).click();
+  await answerAll(page, 10);
+  await page.getByRole("button", { name: "Submit answers" }).click();
+  await expect(review.getByText("TP 11919 references:")).toHaveCount(10);
 });
 
 for (const colorScheme of ["dark", "light"] as const) {

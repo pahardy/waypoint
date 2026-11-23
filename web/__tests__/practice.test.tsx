@@ -1,5 +1,5 @@
 import { afterEach, expect, test, vi } from "vitest";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import AttemptRunner from "@/components/AttemptRunner";
 import ResultsView from "@/components/ResultsView";
 
@@ -90,4 +90,87 @@ test("a PPAER partial pass names the subject and its supplementary exam", async 
   const table = screen.getByRole("table", { name: "By subject" });
   expect(table.textContent).toContain("Under 60% (PAMET)");
   expect(table.querySelectorAll("tbody tr")).toHaveLength(4);
+});
+
+function reviewed(extra: object) {
+  return {
+    position: 0,
+    question_id: "q1",
+    number: null,
+    objective_id: "o1",
+    topic: "Altimeter setting",
+    stem: "What does the altimeter read?",
+    choices: ["5 880 ft", "6 120 ft", "6 000 ft", "5 400 ft"],
+    origin: "generated",
+    chosen_index: 0,
+    answer_index: 1,
+    correct: false,
+    explanation: null,
+    source: null,
+    references: [],
+    ...extra,
+  };
+}
+
+function resultsWith(item: object) {
+  return {
+    id: "a1",
+    kind: "quiz",
+    exam: "PPAER",
+    correct: 0,
+    total: 1,
+    pass_percent: 60,
+    passed: false,
+    outcome: "fail",
+    submitted_at: "2026-11-23T13:00:00Z",
+    subjects: [subject("meteorology", 0)],
+    topics: [],
+    review: [item],
+  };
+}
+
+test("a reviewed practice question shows why and opens its source", async () => {
+  stubAttempt(
+    resultsWith(
+      reviewed({
+        explanation: "TC AIM AIR 1.5.4: 29.92 gives a pressure altitude of 6 120 ft.",
+        source: {
+          label: "TC AIM AIR 1.5.4",
+          chunk_id: "tc-aim:AIR 1.5.4:0",
+          document_title: "TC AIM",
+          edition: "2026-1",
+          jurisdiction: "CA",
+          section_ref: "AIR 1.5.4",
+          page: 12,
+          text: "Setting 29.92 would give a pressure altitude of 6 120 feet.",
+        },
+      }),
+    ),
+  );
+  render(<ResultsView attemptId="a1" />);
+  expect(await screen.findByText(/pressure altitude of 6 120 ft/)).toBeDefined();
+  expect(screen.queryByRole("region", { name: /Source detail/ })).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Source: TC AIM AIR 1.5.4" }));
+  const detail = screen.getByRole("region", { name: "Source detail: TC AIM AIR 1.5.4" });
+  expect(detail.textContent).toContain("Setting 29.92 would give");
+  expect(detail.textContent).toContain("2026-1");
+});
+
+test("a reviewed PSTAR question shows its TP 11919 references", async () => {
+  stubAttempt(
+    resultsWith(
+      reviewed({
+        origin: "official",
+        number: "9.08",
+        references: [
+          "CARs 602.77 – Requirement to file an Arrival Report",
+          "TC AIM-RAC – Closing a Flight Plan",
+        ],
+      }),
+    ),
+  );
+  render(<ResultsView attemptId="a1" />);
+  expect(await screen.findByText("TP 11919 references:")).toBeDefined();
+  expect(screen.getByText("TC AIM-RAC – Closing a Flight Plan")).toBeDefined();
+  expect(screen.queryByRole("button", { name: /^Source:/ })).toBeNull();
 });

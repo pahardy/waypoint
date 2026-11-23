@@ -1,5 +1,7 @@
 # Phase 4: Practice Assessments
 
+Status: done (2026-11-23), except the review gate. See Progress and Done when.
+
 Goal: topic quizzes and timed mock exams with deterministic scoring and
 per-subject results.
 
@@ -150,12 +152,25 @@ Step 4 (all PPAER subjects and the mock exam), issue #22:
 - With exactly 25 per subject, every PPAER mock uses the whole bank,
   shuffled.
 
+Step 5 (question review), issue #24:
+- `uv run ingest pstar-questions` also imports each question's references
+  from TP 11919's "Examination Question References" (all 185 have at
+  least one), stored in `question.source_refs` (migration 0008).
+- After submission each review item has, for practice questions, the
+  explanation and the cited passage (a citation chip that opens it, as on
+  /learn); for official PSTAR questions, the TP 11919 references as text.
+  Official questions get no invented explanations.
+- Nothing about the answer is returned before submission.
+- CI has no knowledge-base chunks, so there practice questions show no
+  source chip. Opening a source is covered by a component test, and works
+  wherever the knowledge base is loaded.
+
 ## Done when
 
-- Scoring and timing are covered by unit tests.
-- At least 25 reviewed questions per PPAER subject.
+- Scoring and timing are covered by unit tests. Met.
+- At least 25 reviewed questions per PPAER subject. Met: 25 each (#22).
 - All generated questions are labelled as practice questions, never
-  official.
+  official. Met: PRACTICE badge, tested in the API and UI.
 
 ## Review gate
 
