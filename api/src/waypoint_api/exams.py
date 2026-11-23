@@ -15,6 +15,7 @@ class ExamRules:
     pass_percent: int
     source: str
     unverified: tuple[str, ...]
+    mock_available: bool
 
 
 PSTAR = ExamRules(
@@ -24,8 +25,20 @@ PSTAR = ExamRules(
     pass_percent=90,
     source="TP 11919 (7th ed.), introduction",
     unverified=("time_limit_s",),
+    mock_available=True,
 )
-RULES = {"PSTAR": PSTAR}
+# The 60% pass mark also applies to each subject; that matters for the mock
+# exam (plan 04 step 4), not for single-subject quizzes.
+PPAER = ExamRules(
+    exam="PPAER",
+    question_count=100,
+    time_limit_s=3 * 60 * 60,
+    pass_percent=60,
+    source="TP 12880 (6th ed.), p. 4",
+    unverified=(),
+    mock_available=False,
+)
+RULES = {"PSTAR": PSTAR, "PPAER": PPAER}
 QUIZ_LENGTH = 10
 
 

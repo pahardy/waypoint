@@ -14,7 +14,7 @@ export default function Home() {
         Ask the instructor
       </Link>
       <Link href="/practice" className="text-sky underline">
-        PSTAR practice
+        Practice
       </Link>
       <Disclaimer />
     </main>

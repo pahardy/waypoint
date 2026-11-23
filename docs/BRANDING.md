@@ -61,7 +61,8 @@ Usage rules:
   theme follows the system setting, or the user's choice.
 - Amber is for one primary action per screen. Overuse dulls it.
 - On amber buttons, the text is `--on-accent`: Night `#0B1426` in the dark
-  theme (9:1) and white in the light theme (4.9:1 on `#A15C00`).
+  theme (9:1) and white in the light theme (4.9:1 on `#A15C00`). Sky
+  fills use `--on-sky` the same way (white on `#0369A1` in the light theme).
 - Pass and fail always come with an icon or a word, never colour alone.
 
 ## Typography

@@ -13,6 +13,7 @@
   --fail: #f87171;
   --night: #0b1426;
   --on-accent: #0b1426;
+  --on-sky: #0b1426;
   color-scheme: dark;
 }
 
@@ -28,6 +29,7 @@
     --pass: #047857;
     --fail: #b91c1c;
     --on-accent: #ffffff;
+    --on-sky: #ffffff;
     color-scheme: light;
   }
 }
@@ -44,6 +46,7 @@
   --color-fail: var(--fail);
   --color-night: var(--night);
   --color-on-accent: var(--on-accent);
+  --color-on-sky: var(--on-sky);
   --font-sans: var(--font-inter);
   --font-display: var(--font-barlow);
   --font-mono: var(--font-jetbrains);

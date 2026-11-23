@@ -60,8 +60,9 @@ curl -N -X POST localhost:8000/chat -H 'Content-Type: application/json' \
   -d '{"level": "PSTAR", "messages": [{"role": "user", "content": "How long after drinking can I fly?"}]}'
 ```
 
-- `GET /exams/PSTAR`: the exam rules (50 questions, 90% pass mark, a
-  90-minute limit listed in `unverified`) and the topics to quiz on.
+- `GET /exams/{PSTAR|PPAER}`: the exam rules (50 questions, 90% pass mark, a
+  90-minute limit listed in `unverified`), whether it has a mock exam
+  (not PPAER yet) and the topics to quiz on.
 - `POST /attempts`: start a `quiz` (10 questions, untimed, optional
   `objective_id`) or a `mock` exam (50 questions drawn from each TP 11919
   section in proportion to its size, timed). Correct answers are never
@@ -72,6 +73,17 @@ curl -N -X POST localhost:8000/chat -H 'Content-Type: application/json' \
   pass or fail, a per-topic breakdown and each question with its answer.
 
 Exam rules live in `exams.py` and are deterministic code.
+
+```
+uv run draft-questions --subject air-law --count 20   # about $1; needs both API keys
+```
+
+Drafts one PPAER practice question per picked objective (every third
+essential objective) from its CAR section, or the nearest TC AIM passages,
+and has the Opus judge answer each from its cited section alone. Drafts go
+to `db/seed/ppaer-questions.yaml` as `status: draft`; review each there
+(`reviewed` or `retired`). Only reviewed questions are used. Choices are
+shuffled in code so answers are not always in the same position.
 
 `uv run python tests/stub_server.py` serves the API with a stub model and
 stub retrieval, for the web end-to-end tests (run `uv run seed` first).

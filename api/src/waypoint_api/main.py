@@ -210,6 +210,7 @@ class ExamInfo(BaseModel):
     pass_percent: int
     source: str
     unverified: list[str]
+    mock_available: bool
     quiz_length: int
     topics: list[attempts.Topic]
 
@@ -217,7 +218,7 @@ class ExamInfo(BaseModel):
 class StartRequest(BaseModel):
     """Start a quiz (optionally on one topic) or a timed mock exam."""
 
-    exam: Literal["PSTAR"]
+    exam: Literal["PSTAR", "PPAER"]
     kind: attempts.Kind
     objective_id: str | None = None
 
@@ -231,7 +232,7 @@ class AnswerRequest(BaseModel):
 
 @app.get("/exams/{exam}")
 def exam_info(
-    exam: Literal["PSTAR"],
+    exam: Literal["PSTAR", "PPAER"],
     conn: Annotated[psycopg.Connection, Depends(database)],
 ) -> ExamInfo:
     """The exam's rules, with unverified facts named, and its quiz topics."""
@@ -243,6 +244,7 @@ def exam_info(
         pass_percent=rules.pass_percent,
         source=rules.source,
         unverified=list(rules.unverified),
+        mock_available=rules.mock_available,
         quiz_length=exams.QUIZ_LENGTH,
         topics=attempts.topics(conn, exam),
     )
