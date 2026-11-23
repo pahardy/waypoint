@@ -1,7 +1,9 @@
 """Waypoint API application."""
 
 import os
+import random
 from collections.abc import Iterable, Iterator
+from datetime import UTC, datetime
 from typing import Annotated, Literal
 from uuid import UUID
 
@@ -10,7 +12,7 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, model_validator
 
-from waypoint_api import llm
+from waypoint_api import attempts, exams, llm
 from waypoint_api.ask import database_search
 from waypoint_api.conversations import Conversation, SavedMessage, load, save
 from waypoint_api.instructor import Answer, Level, Search, label, respond
@@ -49,6 +51,16 @@ def knowledge_search(
 ) -> Search:
     """How the instructor searches the knowledge base."""
     return database_search(conn, embed)
+
+
+def clock() -> datetime:
+    """The current time; attempts are timed by the server, not the browser."""
+    return datetime.now(UTC)
+
+
+def question_rng() -> random.Random:
+    """The random source that chooses quiz and mock-exam questions."""
+    return random.Random()
 
 
 def model_stream() -> llm.Stream:
@@ -187,3 +199,122 @@ def read_conversation(
     if conversation is None:
         raise HTTPException(404, "No conversation with this id.")
     return conversation
+
+
+class ExamInfo(BaseModel):
+    """An exam's rules and the topics a quiz can be drawn from."""
+
+    exam: str
+    question_count: int
+    time_limit_s: int
+    pass_percent: int
+    source: str
+    unverified: list[str]
+    quiz_length: int
+    topics: list[attempts.Topic]
+
+
+class StartRequest(BaseModel):
+    """Start a quiz (optionally on one topic) or a timed mock exam."""
+
+    exam: Literal["PSTAR"]
+    kind: attempts.Kind
+    objective_id: str | None = None
+
+
+class AnswerRequest(BaseModel):
+    """The choice for one question of an attempt."""
+
+    position: int = Field(ge=0)
+    chosen_index: int = Field(ge=0)
+
+
+@app.get("/exams/{exam}")
+def exam_info(
+    exam: Literal["PSTAR"],
+    conn: Annotated[psycopg.Connection, Depends(database)],
+) -> ExamInfo:
+    """The exam's rules, with unverified facts named, and its quiz topics."""
+    rules = exams.RULES[exam]
+    return ExamInfo(
+        exam=rules.exam,
+        question_count=rules.question_count,
+        time_limit_s=rules.time_limit_s,
+        pass_percent=rules.pass_percent,
+        source=rules.source,
+        unverified=list(rules.unverified),
+        quiz_length=exams.QUIZ_LENGTH,
+        topics=attempts.topics(conn, exam),
+    )
+
+
+@app.post("/attempts", status_code=201)
+def start_attempt(
+    request: StartRequest,
+    conn: Annotated[psycopg.Connection, Depends(database)],
+    now: Annotated[datetime, Depends(clock)],
+    rng: Annotated[random.Random, Depends(question_rng)],
+) -> attempts.Attempt:
+    """Choose the questions and start the attempt. No answers are sent."""
+    try:
+        attempt_id = attempts.start(
+            conn, request.exam, request.kind, request.objective_id, now, rng
+        )
+    except attempts.AttemptError as error:
+        raise HTTPException(422, str(error))
+    return attempts.load(conn, attempt_id)
+
+
+@app.get("/attempts/{attempt_id}")
+def read_attempt(
+    attempt_id: UUID,
+    conn: Annotated[psycopg.Connection, Depends(database)],
+) -> attempts.Attempt:
+    """An attempt with its questions and the choices made so far."""
+    attempt = attempts.load(conn, attempt_id)
+    if attempt is None:
+        raise HTTPException(404, "No attempt with this id.")
+    return attempt
+
+
+@app.post("/attempts/{attempt_id}/answers", status_code=204)
+def answer_question(
+    attempt_id: UUID,
+    request: AnswerRequest,
+    conn: Annotated[psycopg.Connection, Depends(database)],
+    now: Annotated[datetime, Depends(clock)],
+) -> None:
+    """Record a choice. Refused (409) after submission or the time limit."""
+    if attempts.attempt_row(conn, attempt_id) is None:
+        raise HTTPException(404, "No attempt with this id.")
+    try:
+        attempts.answer(conn, attempt_id, request.position, request.chosen_index, now)
+    except attempts.AttemptError as error:
+        raise HTTPException(409, str(error))
+
+
+@app.post("/attempts/{attempt_id}/submit")
+def submit_attempt(
+    attempt_id: UUID,
+    conn: Annotated[psycopg.Connection, Depends(database)],
+    now: Annotated[datetime, Depends(clock)],
+) -> attempts.Results:
+    """Score the attempt and return its results."""
+    if attempts.attempt_row(conn, attempt_id) is None:
+        raise HTTPException(404, "No attempt with this id.")
+    attempts.submit(conn, attempt_id, now)
+    return attempts.results(conn, attempt_id)
+
+
+@app.get("/attempts/{attempt_id}/results")
+def read_results(
+    attempt_id: UUID,
+    conn: Annotated[psycopg.Connection, Depends(database)],
+) -> attempts.Results:
+    """A submitted attempt's results. 409 while it is still in progress."""
+    if attempts.attempt_row(conn, attempt_id) is None:
+        raise HTTPException(404, "No attempt with this id.")
+    result = attempts.results(conn, attempt_id)
+    if result is None:
+        raise HTTPException(409, "This attempt has not been submitted.")
+    return result
