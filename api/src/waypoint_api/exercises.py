@@ -7,7 +7,7 @@ from typing import Literal
 
 import psycopg
 import yaml
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from waypoint_api.retrieval import Passage
 
@@ -38,10 +38,48 @@ class Exercise(BaseModel):
     rubric: list[Criterion] = Field(min_length=1)
 
 
+class Stage(BaseModel):
+    """One stage of a scenario: the facts it reveals, its question and rubric."""
+
+    id: str = Field(min_length=1)
+    facts: list[str] = Field(min_length=1)
+    question: str = Field(min_length=1)
+    rubric: list[Criterion] = Field(min_length=1)
+
+
+class Scenario(BaseModel):
+    """A staged situation; each stage's answer is graded on its own rubric."""
+
+    id: str = Field(min_length=1)
+    exam: Literal["PSTAR", "PPAER", "FLIGHT_TEST"]
+    objective_id: str = Field(min_length=1)
+    prompt: str = Field(min_length=1)
+    sources: list[str] = Field(min_length=1)
+    stages: list[Stage] = Field(min_length=2)
+
+    @field_validator("stages")
+    @classmethod
+    def unique_stage_ids(cls, stages: list[Stage]) -> list[Stage]:
+        """Stage ids must be unique."""
+        ids = [s.id for s in stages]
+        if len(set(ids)) != len(ids):
+            raise ValueError(f"repeated stage ids: {ids}")
+        return stages
+
+
+def read(exercise_id: str, directory: Path) -> dict:
+    """The parsed YAML of one exercise file."""
+    return yaml.safe_load((directory / f"{exercise_id}.yaml").read_text())
+
+
 def load_exercise(exercise_id: str, directory: Path = EXERCISES_DIR) -> Exercise:
-    """Read and validate one exercise file."""
-    path = directory / f"{exercise_id}.yaml"
-    return Exercise(**yaml.safe_load(path.read_text()))
+    """Read and validate one oral exercise file."""
+    return Exercise(**read(exercise_id, directory))
+
+
+def load_scenario(scenario_id: str, directory: Path = EXERCISES_DIR) -> Scenario:
+    """Read and validate one scenario file."""
+    return Scenario(**read(scenario_id, directory))
 
 
 SOURCE_PASSAGES = """
@@ -52,7 +90,9 @@ SOURCE_PASSAGES = """
 """
 
 
-def source_passages(conn: psycopg.Connection, exercise: Exercise) -> list[Passage]:
+def source_passages(
+    conn: psycopg.Connection, exercise: Exercise | Scenario
+) -> list[Passage]:
     """The exercise's cited passages. Raises ValueError if any is missing
     from the knowledge base."""
     rows = conn.execute(SOURCE_PASSAGES, (exercise.sources,)).fetchall()
