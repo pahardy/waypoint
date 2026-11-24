@@ -15,7 +15,7 @@ document holds the shared structure. Look and feel follow
 | `/practice` | Choose a quiz or mock exam | 4 |
 | `/practice/[attemptId]` | Quiz or exam in progress, with timer | 4 |
 | `/results/[attemptId]` | Results breakdown and question review | 4 |
-| `/exercises` and `/exercises/[id]` | Oral and scenario exercises | 5 |
+| `/exercises` and `/exercises/[sessionId]` | Oral and scenario exercises; the URL holds the session, so a reload continues it | 5 |
 | `/flight-test` | Flight-test study companion: exercises from TP 13723 with a personal checklist | 5 |
 | `/sources` | List of ingested documents with their editions and dates | 2 |
 | `/about` | Purpose, limitations, "built with Claude", sources policy | 0 |
