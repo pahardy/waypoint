@@ -22,7 +22,8 @@ as the facts. For each criterion give:
 
 - mark: "met" if the answer states every key point correctly, "partly_met" \
 if it states some of them correctly or states them vaguely, "not_met" if it \
-states none or states them wrongly.
+states none or states them wrongly. If any key point is stated wrongly, \
+the mark is "not_met", even if other key points are right.
 - evidence: the exact words from the student's answer that support the \
 mark, copied character for character. Use "" only for "not_met" when the \
 answer says nothing about the criterion.
