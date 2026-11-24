@@ -1,0 +1,88 @@
+# Scenario. Key points are taken from the cited passages: CAR 602.114 and
+# 602.115 (VFR minima), TC AIM MET 8.2 (ceiling) and MET 7.3 (TEMPO).
+# Aerodromes and weather are fictional.
+id: deteriorating-weather
+exam: PPAER
+objective_id: ppaer.meteorology.094
+prompt: >-
+  You are planning a day VFR cross-country flight in a training aeroplane,
+  from Alpha (ZZZA), an aerodrome in a control zone, to Bravo (ZZZB), in
+  uncontrolled airspace. Both aerodromes are fictional, and all weather in
+  this scenario is synthetic, for training only.
+sources:
+  - cars:CAR 602.114:0
+  - cars:CAR 602.115:0
+  - tc-aim:MET 8.2:3
+  - tc-aim:MET 7.3:3
+stages:
+  - id: before-departure
+    facts:
+      - "Synthetic METAR, not real weather: METAR ZZZA 241500Z 27008KT 5SM -RA
+        SCT015 BKN030 OVC060 11/08 A2990"
+      - "Synthetic TAF, not real weather: TAF ZZZA 241440Z 2415/2503 27010KT
+        5SM -RA SCT015 BKN030 TEMPO 2418/2422 2SM -RA BR BKN012"
+    question: >-
+      What is the ceiling at Alpha now, what does the TEMPO group forecast,
+      and do the reported conditions meet the VFR weather minima for flying
+      in Alpha's control zone?
+    rubric:
+      - id: ceiling
+        description: The student identifies the ceiling from the METAR.
+        weight: 1
+        key_points:
+          - The ceiling is 3,000 ft, the first layer reported as BKN or OVC.
+          - The scattered layer at 1,500 ft is not a ceiling.
+      - id: tempo
+        description: The student decodes the TEMPO group.
+        weight: 1
+        key_points:
+          - Between 1800Z and 2200Z on the 24th, the visibility is forecast to
+            drop temporarily to 2 SM in light rain and mist, with a broken
+            layer at 1,200 ft.
+          - Elements not repeated after TEMPO, such as the wind, stay as in
+            the period before it.
+      - id: minima
+        description: The student applies the VFR minima for controlled airspace
+          and the control zone.
+        weight: 2
+        key_points:
+          - In controlled airspace, VFR flight needs a flight visibility of at
+            least 3 miles and at least 500 ft vertically and 1 mile
+            horizontally from cloud.
+          - In a control zone, reported ground visibility must be at least 3
+            miles, so the reported 5 SM meets it.
+          - The 2 SM forecast in the TEMPO period would be below the 3-mile
+            minimum.
+  - id: en-route
+    facts:
+      - "1630Z: you are en route in uncontrolled airspace, by day, at 800 ft
+        AGL, with visual reference to the surface."
+      - "Ahead, the flight visibility is dropping to about 1 1/2 miles in rain,
+        and the cloud base is about 1,000 ft AGL, so you cannot climb above
+        1,000 ft AGL and stay clear of cloud."
+    question: >-
+      What VFR weather minima apply where you are now, do the conditions
+      ahead meet them, and what does that mean for continuing the flight
+      under VFR?
+    rubric:
+      - id: minima
+        description: The student states the VFR minima for uncontrolled
+          airspace below 1,000 ft AGL by day.
+        weight: 2
+        key_points:
+          - Below 1,000 ft AGL by day in uncontrolled airspace, an aeroplane
+            needs a flight visibility of at least 2 miles.
+          - It must be operated clear of cloud and with visual reference to
+            the surface.
+      - id: conditions-ahead
+        description: The student compares the conditions ahead with the minima.
+        weight: 1
+        key_points:
+          - The visibility of about 1 1/2 miles ahead is below the 2-mile
+            minimum.
+      - id: conclusion
+        description: The student draws the conclusion the rules require.
+        weight: 1
+        key_points:
+          - The flight must not continue under VFR into the conditions ahead,
+            because they do not meet the minima in CAR 602.115.

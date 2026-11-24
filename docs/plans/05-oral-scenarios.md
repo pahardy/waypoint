@@ -119,6 +119,35 @@ Step 2 (grading consistency), issue #28:
   the same 10 answers the rule was written from, so new exercises need
   their own eval answers.
 
+Step 3 (one two-stage scenario in the CLI), issue #32:
+- `content/exercises/deteriorating-weather.yaml`: a day VFR cross-country
+  between fictional aerodromes. Stage 1, before departure: a synthetic
+  METAR and TAF (ceiling, TEMPO, control-zone VFR minima). Stage 2, en
+  route: visibility below the minima ahead in uncontrolled airspace below
+  1,000 ft AGL. Key points from CAR 602.114, 602.115 and TC AIM MET 7.3
+  and 8.2. The student explains the rules and options; no go/no-go call.
+- `Scenario` and `Stage` validate the format (at least two stages, unique
+  ids, a question and rubric each). `ScenarioState` advances stages in
+  order, accumulates the revealed facts and refuses to advance once
+  finished. State is in memory; the session table comes with step 4.
+- Each stage is graded by the oral grader, unchanged, with the facts
+  revealed so far in the question. Overall score: the mean of the stage
+  scores, halves rounded up.
+- `uv run scenario deteriorating-weather`; piped answers are separated by
+  a line holding only `---`. The disclaimer and "All weather in this
+  scenario is synthetic" show before and after.
+- Two sets of answers, graded once each (2026-11-24):
+
+  | Answers | Stage 1 (ceiling, TEMPO, minima) | Stage 2 (minima, ahead, conclusion) | Overall |
+  |---|---|---|---|
+  | Strong | met, met, met: 100% | met, met, met: 100% | 100% |
+  | Weak | not met, not met, partly met: 25% | not met, not met, not met: 0% | 13% |
+
+  Borderline mark: the weak stage 1 answer ("Visibility is 5 miles, so
+  it's fine to go") got partly met on minima for the 5 SM meeting the
+  3-mile minimum, though it ignored the TEMPO. Defensible under the rule;
+  no consistency eval yet for scenarios.
+
 ## Done when
 
 - Grading agrees with itself on at least 90% of criteria across
