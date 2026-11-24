@@ -123,9 +123,19 @@ def reply_from(response) -> Reply:
 def parse(
     model: str, effort: str, system: str, prompt: str, schema: type[BaseModel]
 ) -> BaseModel:
-    """One structured model call with server-side fallback. Refusals and
-    truncation raise LLMError before the JSON is read: a refused answer can
-    end in filler text that is not valid JSON."""
+    """One structured model call with server-side fallback, as an instance
+    of schema."""
+    return schema.model_validate_json(
+        structured(model, effort, system, prompt, schema).text
+    )
+
+
+def structured(
+    model: str, effort: str, system: str, prompt: str, schema: type[BaseModel]
+) -> Reply:
+    """The Reply to one structured call; its text is JSON for schema. Refusals
+    and truncation raise LLMError before the JSON is read: a refused answer
+    can end in filler text that is not valid JSON."""
     output_format = {"type": "json_schema", "schema": transform_schema(schema)}
     with api_errors():
         response = anthropic.Anthropic(timeout=PARSE_TIMEOUT_S).beta.messages.create(
@@ -137,4 +147,4 @@ def parse(
             betas=[FALLBACK_BETA],
             fallbacks="default",
         )
-    return schema.model_validate_json(reply_from(response).text)
+    return reply_from(response)

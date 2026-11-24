@@ -96,6 +96,23 @@ Step 1 (one oral question in the CLI), issue #26:
 - The flight-instructor review gate before this phase was skipped: owner
   decision, 2026-11-23.
 
+Step 2 (grading consistency), issue #28:
+- `api/eval/oral.yaml`: 10 answers to `static-port`, strong to weak,
+  including vague, wrong-direction, reversed, pitot/static mix-up and
+  grader-instruction answers; expected marks written from the rubric and
+  its cited passage.
+- `uv run oral-eval` grades each answer 3 times (resumes if interrupted);
+  consistency, agreement, the confusion table and score spread are
+  calculated in code.
+- Result (2026-11-24, Sonnet 5.5, effort low, $0.23):
+  [docs/evals/oral-2026-11-24.md](../evals/oral-2026-11-24.md).
+  - **Consistency 27/30 (90%): the 90% target is met**, with no margin.
+  - Agreement with expected marks 83/90 (92%); 6 of the 7 wrong marks are
+    partly met where a wrongly stated point should give not met: the
+    step 1 leniency, confirmed.
+  - Proposed follow-up: state in the grading prompt that any wrongly
+    stated key point gives not met.
+
 ## Done when
 
 - Grading agrees with itself on at least 90% of criteria across
