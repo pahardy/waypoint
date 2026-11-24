@@ -10,6 +10,7 @@ from waypoint_api import llm
 from waypoint_api.grading import CriterionMark, Grading
 from waypoint_api.main import app, clock, database, exercise_passages, model_parse
 from waypoint_api.migrate import apply_migrations
+from waypoint_api.sessions import exercise_ids
 
 NOW = datetime(2026, 11, 24, 12, 0, tzinfo=UTC)
 
@@ -88,7 +89,9 @@ def reload(client, session):
 
 def test_the_exercises_are_listed_with_their_kind(client):
     listed = {e["id"]: e["kind"] for e in client.get("/exercises").json()}
-    assert listed == {"static-port": "oral", "deteriorating-weather": "scenario"}
+    assert sorted(listed) == exercise_ids()
+    assert listed["static-port"] == "oral"
+    assert listed["deteriorating-weather"] == "scenario"
 
 
 def test_a_scenario_starts_at_its_first_stage(client):
