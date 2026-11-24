@@ -122,5 +122,13 @@ score is the mean of the stage scores.
   current stage and advance; 409 once finished, 502 with nothing stored
   if grading fails. An oral exercise is a one-stage session.
 
+```
+uv run check-exercises             # all; or name exercise ids
+```
+
+Checks every file in `content/exercises/`: it loads, its sources are in
+the knowledge base, and the Opus judge finds every key point supported by
+the cited passages. Run it after writing or changing an exercise.
+
 `uv run python tests/stub_server.py` serves the API with a stub model and
 stub retrieval, for the web end-to-end tests (run `uv run seed` first).

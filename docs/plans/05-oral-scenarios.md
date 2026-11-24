@@ -183,6 +183,44 @@ Step 4 (web pages), issue #34:
   practice pages too. Not a defect; a test locator on `main` must
   allow for it.
 
+Step 5a (PPAER content), issue #36:
+- `uv run check-exercises`: every exercise loads, its sources are in the
+  knowledge base, and the Opus judge decides from the cited passages
+  alone whether each key point is supported (code checks every point got
+  a verdict). Calibrated on 2026-11-24: static-port passed; two planted
+  errors (a reversed airspeed direction, an invented 6-to-9-second VSI
+  lag) were both caught.
+- It found a gap in step 3's scenario: `-RA` and `BR` were decoded
+  without a source. TC AIM MET 8.2:2 is now cited.
+- Six new PPAER exercises; PPAER now has 5 oral questions and 3
+  scenarios:
+
+  | Exercise | Kind | Subject | Sources |
+  |---|---|---|---|
+  | static-port | oral | aeronautics | PHAK p.213 |
+  | carburettor-ice | oral | aeronautics | PHAK pp.169-170 |
+  | right-of-way | oral | air law | CAR 602.19 |
+  | compass-heading | oral | navigation | PHAK pp.393-394 |
+  | thunderstorm-life-cycle | oral | meteorology | FAA AWH pp.257-258 |
+  | deteriorating-weather | scenario | meteorology | CAR 602.114, 602.115; TC AIM MET 7.3, 8.2 |
+  | fuel-reserve | scenario | navigation | CAR 602.88 |
+  | radio-failure | scenario | air law | CAR 602.138; TC AIM RAC 4.4.7 |
+
+  FAA sources are used only for facts that are the same in Canada.
+- `check-exercises` (2026-11-24): all 8 pass. Its one finding on the new
+  content, fixed: fuel-reserve's change-of-destination key point gave
+  only the 30-minute reserve, but CAR 602.88(2) also requires the
+  subsection (5) allowances.
+- Smoke test, one strong and one weak answer per new exercise, graded
+  once: every strong answer 100% (all met), every weak answer 0% (all not
+  met). The answers sit close to the key points, so this shows each
+  rubric can be met and failed, not how it grades answers in between.
+- Fixed along the way: the exercise list repeated "Scenario (PPAER)" as
+  a heading; each exercise is now headed by its name.
+- Cost: estimated under $2 (13 judge calls, 16 grading calls).
+- Review: the judge checked the content; the owner may approve it
+  without a read-through. The instructor review gate below stays open.
+
 ## Done when
 
 - Grading agrees with itself on at least 90% of criteria across
