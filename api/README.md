@@ -107,5 +107,13 @@ uv run oral-eval --variant v1   # a new results directory, to compare with basel
 Measures grading consistency and agreement with expected marks; results
 and `report.md` go to `.claude/hillclimb/oral/<variant>/` (default `baseline`).
 
+```
+uv run scenario deteriorating-weather < answers.txt   # answers separated by ---
+```
+
+A scenario has stages; each reveals facts (synthetic weather) and asks a
+question graded on its own rubric. Stages advance in code; the overall
+score is the mean of the stage scores.
+
 `uv run python tests/stub_server.py` serves the API with a stub model and
 stub retrieval, for the web end-to-end tests (run `uv run seed` first).
