@@ -1,0 +1,68 @@
+# Scenario. Key points are taken from the cited passage (CAR 602.88) and
+# arithmetic on the stated facts. Aerodromes and figures are fictional.
+id: fuel-reserve
+exam: PPAER
+objective_id: ppaer.navigation.066
+prompt: >-
+  You are planning a day VFR flight in a training aeroplane from Delta
+  (ZZZD) to Echo (ZZZE), 120 NM away. Both aerodromes are fictional, and
+  all figures in this scenario are invented for training.
+sources:
+  - cars:CAR 602.88:0
+stages:
+  - id: planning
+    facts:
+      - "Planned groundspeed: 100 kt."
+      - "The aeroplane burns 30 L per hour at normal cruising speed and
+        holds 100 L of usable fuel."
+    question: >-
+      What fuel does CAR 602.88 require for this flight, and what is the
+      least fuel, before allowing for taxi, that meets it?
+    rubric:
+      - id: rule
+        description: The student states the day VFR fuel rule.
+        weight: 2
+        key_points:
+          - For a day VFR flight in an aeroplane, enough fuel to fly to the
+            destination and then for 30 minutes at normal cruising speed.
+          - Fuel must also be carried for taxiing and foreseeable delays
+            before take-off, and for the meteorological conditions.
+      - id: calculation
+        description: The student calculates the minimum fuel.
+        weight: 2
+        key_points:
+          - The 120 NM at 100 kt takes 72 minutes and uses 36 L.
+          - The 30-minute reserve is 15 L at 30 L per hour, so at least 51 L
+            before taxi fuel.
+  - id: en-route
+    facts:
+      - "60 NM from Echo, a stronger headwind than forecast has cut your
+        groundspeed to 75 kt."
+      - "The fuel gauge and your fuel log agree that 35 L of usable fuel
+        remain."
+    question: >-
+      Can you reach Echo and still have the reserve the rule requires, and
+      what does CAR 602.88 require if you change your destination?
+    rubric:
+      - id: calculation
+        description: The student recalculates the fuel to Echo.
+        weight: 2
+        key_points:
+          - The remaining 60 NM at 75 kt takes 48 minutes and uses 24 L.
+          - With the 15 L reserve, reaching Echo needs 39 L, more than the
+            35 L remaining.
+      - id: conclusion
+        description: The student draws the conclusion from the calculation.
+        weight: 1
+        key_points:
+          - Continuing to Echo would leave less than the 30-minute reserve on
+            arrival.
+      - id: new-destination
+        description: The student states the rule for changing destination.
+        weight: 1
+        key_points:
+          - CAR 602.88 allows a change of destination in flight only if the
+            aircraft carries enough fuel to fly to the new destination and
+            then for 30 minutes at normal cruising speed, with the
+            allowances for meteorological conditions, routings and other
+            foreseeable delays.

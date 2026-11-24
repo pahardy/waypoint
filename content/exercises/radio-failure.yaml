@@ -1,0 +1,62 @@
+# Scenario. Key points are taken from the cited passages: CAR 602.138
+# (two-way radio failure) and TC AIM RAC 4.4.7 (light signals to aircraft in
+# flight). The aerodrome is fictional.
+id: radio-failure
+exam: PPAER
+objective_id: ppaer.air-law.115
+prompt: >-
+  You are flying VFR by day in a training aeroplane equipped with a
+  transponder, returning to Charlie (ZZZC), a fictional aerodrome with a
+  control tower and a control zone in Class D airspace.
+sources:
+  - cars:CAR 602.138:0
+  - tc-aim:RAC 4.4.7:0
+stages:
+  - id: radio-fails
+    facts:
+      - "You are 4 NM from Charlie, inside its control zone, and the tower
+        has cleared you to join the circuit."
+      - "Your radio fails: you can no longer hear the tower or transmit."
+    question: >-
+      What do the Canadian Aviation Regulations require you to do?
+    rubric:
+      - id: leave
+        description: The student states how to leave the airspace.
+        weight: 2
+        key_points:
+          - Leave the airspace by landing at the aerodrome for which the
+            control zone is established, Charlie.
+      - id: transponder
+        description: The student states the transponder code.
+        weight: 1
+        key_points:
+          - Set the transponder to code 7600.
+      - id: inform
+        description: The student states who must be told.
+        weight: 1
+        key_points:
+          - Inform an air traffic control unit as soon as possible of the
+            actions taken.
+  - id: light-signals
+    facts:
+      - "On the downwind leg, the tower points a steady red light at you."
+      - "A little later, it points a steady green light at you."
+    question: >-
+      What do the two light signals mean, and how can you acknowledge them?
+    rubric:
+      - id: red
+        description: The student interprets the steady red light.
+        weight: 1
+        key_points:
+          - A steady red light means give way to other aircraft and continue
+            circling.
+      - id: green
+        description: The student interprets the steady green light.
+        weight: 1
+        key_points:
+          - A steady green light means cleared to land.
+      - id: acknowledge
+        description: The student states how to acknowledge by day.
+        weight: 1
+        key_points:
+          - In flight, acknowledge by distinctly rocking the aircraft.
