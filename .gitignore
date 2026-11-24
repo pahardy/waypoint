@@ -32,6 +32,7 @@ supabase/.branches/
 # Eval output: traces hold source passages; reports are regenerated
 .claude/hillclimb/**/traces/
 .claude/hillclimb/**/report.html
+.claude/hillclimb/**/report.md
 .claude/hillclimb/**/trajectory/
 .claude/hillclimb/**/state.json
 .claude/hillclimb/instructor/pilot/

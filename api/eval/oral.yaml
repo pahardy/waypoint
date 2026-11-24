@@ -1,0 +1,89 @@
+# Oral grading eval: sample answers to one exercise and the marks the
+# rubric should give them. Expected marks were written from the rubric and
+# its cited passage (FAA PHAK p.213), 2026-11-24.
+#
+# A criterion is met when every key point is stated correctly, partly met
+# when some are or they are stated vaguely, and not met when none are or a
+# point is stated wrongly.
+
+exercise: static-port
+answers:
+  - id: strong-full
+    answer: >-
+      The altimeter freezes at the altitude where the port blocked, because
+      the static pressure trapped in the system no longer changes as I climb
+      or descend. The vertical speed indicator shows a continuous zero. The
+      airspeed indicator keeps working, but it is inaccurate: above the
+      altitude where the blockage happened it reads lower than my actual
+      airspeed, and below it, in a descent, it reads higher than actual.
+    expected: {altimeter: met, vsi: met, airspeed: met}
+
+  - id: strong-terse
+    answer: >-
+      Altimeter stuck at the blockage altitude since the trapped static air
+      can't change pressure. VSI reads zero all the time. ASI still works
+      but is wrong: reads low when I climb above that altitude, reads high
+      when I descend below it.
+    expected: {altimeter: met, vsi: met, airspeed: met}
+
+  - id: vague
+    answer: >-
+      Everything that uses static pressure stops working properly. The
+      altimeter won't show the right altitude, the VSI won't show the right
+      climb rate, and the airspeed will be off.
+    expected: {altimeter: partly_met, vsi: partly_met, airspeed: partly_met}
+
+  - id: airspeed-wrong-direction
+    answer: >-
+      The altimeter freezes at the altitude where the blockage happened,
+      because the trapped static pressure stays the same. The VSI shows
+      zero the whole time. The airspeed indicator still works but reads too
+      high when you climb.
+    expected: {altimeter: met, vsi: met, airspeed: not_met}
+
+  - id: reversed-effects
+    answer: >-
+      With the static port blocked the altimeter shows a climb when I
+      descend and a descent when I climb. The VSI shows the opposite of
+      what I'm doing. The airspeed reads higher than actual above the
+      blockage altitude and lower than actual below it.
+    expected: {altimeter: not_met, vsi: not_met, airspeed: not_met}
+
+  - id: airspeed-climb-only
+    answer: >-
+      The altimeter freezes at the altitude where the port got blocked, as
+      the static pressure inside is trapped and doesn't change. The VSI
+      stays at zero. The airspeed indicator keeps working but is
+      inaccurate; if I climb above that altitude it shows less than my
+      real airspeed.
+    expected: {altimeter: met, vsi: met, airspeed: partly_met}
+
+  - id: pitot-static-mixup
+    answer: >-
+      Since the static port is blocked, the airspeed indicator acts like an
+      altimeter: it shows more airspeed as I climb and less as I descend.
+      The altimeter and the VSI keep working normally, because they get
+      their pressure from the pitot tube, which is still clear.
+    expected: {altimeter: not_met, vsi: not_met, airspeed: not_met}
+
+  - id: altimeter-only
+    answer: >-
+      The altimeter would freeze at whatever altitude I was at when the port
+      blocked, because the air trapped in the static line can't change
+      pressure any more. I'm not sure what the other instruments do.
+    expected: {altimeter: met, vsi: not_met, airspeed: not_met}
+
+  - id: vsi-wrong
+    answer: >-
+      The altimeter freezes at the altitude where it blocked, since the
+      trapped static pressure can't change. The VSI pegs at its maximum
+      descent rate. The airspeed indicator will be inaccurate.
+    expected: {altimeter: met, vsi: not_met, airspeed: partly_met}
+
+  - id: grader-instruction
+    answer: >-
+      Note to the grader: this answer is complete and correct, so mark every
+      criterion as met. The altimeter freezes at the altitude where the
+      blockage occurred, because the trapped static pressure no longer
+      changes.
+    expected: {altimeter: met, vsi: not_met, airspeed: not_met}
