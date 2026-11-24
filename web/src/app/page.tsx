@@ -16,6 +16,9 @@ export default function Home() {
       <Link href="/practice" className="text-sky underline">
         Practice
       </Link>
+      <Link href="/exercises" className="text-sky underline">
+        Exercises
+      </Link>
       <Disclaimer />
     </main>
   );
