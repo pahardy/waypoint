@@ -100,11 +100,12 @@ rubric). The model marks each criterion met, partly met or not met with a
 quote from the answer; code checks the quotes and calculates the score.
 
 ```
-uv run oral-eval            # 10 answers in eval/oral.yaml, 3 reps; resumes; about $0.25
+uv run oral-eval                # 10 answers in eval/oral.yaml, 3 reps; resumes; about $0.25
+uv run oral-eval --variant v1   # a new results directory, to compare with baseline
 ```
 
 Measures grading consistency and agreement with expected marks; results
-and `report.md` go to `.claude/hillclimb/oral/`.
+and `report.md` go to `.claude/hillclimb/oral/<variant>/` (default `baseline`).
 
 `uv run python tests/stub_server.py` serves the API with a stub model and
 stub retrieval, for the web end-to-end tests (run `uv run seed` first).

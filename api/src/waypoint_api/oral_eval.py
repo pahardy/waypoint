@@ -1,8 +1,8 @@
-"""Oral grading eval: `uv run oral-eval [--reps N]`.
+"""Oral grading eval: `uv run oral-eval [--variant NAME] [--reps N]`.
 
 Grades every answer in api/eval/oral.yaml N times (default 3) with the real
-grader and writes one row per grading to .claude/hillclimb/oral/results.jsonl
-(errors to errors.jsonl). Re-running skips (answer, rep) pairs already
+grader and writes one row per grading to
+.claude/hillclimb/oral/<variant>/results.jsonl (errors to errors.jsonl). Re-running skips (answer, rep) pairs already
 written. The metrics are calculated in code and written to report.md there.
 """
 
@@ -24,7 +24,7 @@ from waypoint_api.instructor_eval import ServedModelError, append, cost
 
 REPO = Path(__file__).resolve().parents[3]
 EVAL_FILE = REPO / "api" / "eval" / "oral.yaml"
-OUT_DIR = REPO / ".claude" / "hillclimb" / "oral"
+FLOW_DIR = REPO / ".claude" / "hillclimb" / "oral"
 MARKS: list[Mark] = ["met", "partly_met", "not_met"]
 
 
@@ -160,10 +160,12 @@ def read_rows(path: Path) -> list[dict]:
 FAILURES = (GradingError, llm.LLMError, ServedModelError)
 
 
-def run(eval_set: EvalSet, exercise: Exercise, reps: int, workers: int) -> None:
-    """Grade the (answer, rep) pairs not yet in results.jsonl."""
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    done = {(r["answer_id"], r["rep"]) for r in read_rows(OUT_DIR / "results.jsonl")}
+def run(
+    eval_set: EvalSet, exercise: Exercise, out_dir: Path, reps: int, workers: int
+) -> None:
+    """Grade the (answer, rep) pairs not yet in out_dir/results.jsonl."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    done = {(r["answer_id"], r["rep"]) for r in read_rows(out_dir / "results.jsonl")}
     todo = [
         (a, rep)
         for a in eval_set.answers
@@ -184,10 +186,10 @@ def run(eval_set: EvalSet, exercise: Exercise, reps: int, workers: int) -> None:
                 row = future.result()
             except FAILURES as error:
                 failure = {"answer_id": sample.id, "rep": rep, "error": repr(error)}
-                append(OUT_DIR / "errors.jsonl", failure)
+                append(out_dir / "errors.jsonl", failure)
                 print(f"  error  {sample.id} rep {rep}: {error!r}")
                 continue
-            append(OUT_DIR / "results.jsonl", row)
+            append(out_dir / "results.jsonl", row)
             print(f"  {row['score']:>3}%  {sample.id} rep {rep}")
 
 
@@ -267,13 +269,15 @@ def report(rows: list[dict], eval_set: EvalSet, errors: int) -> str:
 def main() -> None:
     """Run the gradings not yet done, then write and print the report."""
     parser = argparse.ArgumentParser(prog="oral-eval")
+    parser.add_argument("--variant", default="baseline")
     parser.add_argument("--reps", type=int, default=3)
     parser.add_argument("--workers", type=int, default=4)
     args = parser.parse_args()
     eval_set, exercise = load_eval_set()
-    run(eval_set, exercise, args.reps, args.workers)
-    rows = read_rows(OUT_DIR / "results.jsonl")
-    errors = len(read_rows(OUT_DIR / "errors.jsonl"))
+    out_dir = FLOW_DIR / args.variant
+    run(eval_set, exercise, out_dir, args.reps, args.workers)
+    rows = read_rows(out_dir / "results.jsonl")
+    errors = len(read_rows(out_dir / "errors.jsonl"))
     text = report(rows, eval_set, errors)
-    (OUT_DIR / "report.md").write_text(text)
+    (out_dir / "report.md").write_text(text)
     print(text)
