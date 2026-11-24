@@ -1,5 +1,6 @@
 # Scenario. Key points are taken from the cited passages: CAR 602.114 and
-# 602.115 (VFR minima), TC AIM MET 8.2 (ceiling) and MET 7.3 (TEMPO).
+# 602.115 (VFR minima), TC AIM MET 8.2 (weather codes, ceiling) and MET 7.3
+# (TEMPO).
 # Aerodromes and weather are fictional.
 id: deteriorating-weather
 exam: PPAER
@@ -12,6 +13,7 @@ prompt: >-
 sources:
   - cars:CAR 602.114:0
   - cars:CAR 602.115:0
+  - tc-aim:MET 8.2:2
   - tc-aim:MET 8.2:3
   - tc-aim:MET 7.3:3
 stages:

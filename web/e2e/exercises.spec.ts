@@ -7,7 +7,7 @@ test("completing the scenario shows rubric feedback and survives a reload", asyn
   await page.goto("/exercises");
   await expect(page.getByText("Educational simulation. Not operational guidance.")).toBeVisible();
   await page
-    .getByRole("region", { name: "Scenario (PPAER)" })
+    .getByRole("region", { name: "Deteriorating weather" })
     .getByRole("button", { name: "Start" })
     .click();
   await expect(page).toHaveURL(/\/exercises\/[0-9a-f-]{36}$/);

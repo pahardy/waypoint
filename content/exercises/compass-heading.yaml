@@ -1,0 +1,36 @@
+# Oral exercise. Key points are taken from the cited passages (FAA PHAK
+# pp.393-394). Variation and deviation work the same way in Canada; the
+# example values are the handbook's.
+id: compass-heading
+exam: PPAER
+objective_id: ppaer.navigation.038
+prompt: >-
+  You measure a true course of 090° on your chart, and the variation shown
+  there is 9° E. Assuming no wind, explain what variation and deviation
+  are, and how you get from the true course to the course you fly by your
+  aircraft's compass.
+sources:
+  - faa-phak:PHAK p.393:0
+  - faa-phak:PHAK p.394:0
+rubric:
+  - id: variation
+    description: The student explains magnetic variation.
+    weight: 1
+    key_points:
+      - Variation is the angle between true north and magnetic north,
+        expressed as east or west.
+  - id: magnetic-course
+    description: The student applies the variation to the true course.
+    weight: 2
+    key_points:
+      - With easterly variation, the variation is subtracted from the true
+        course.
+      - A true course of 090° with 9° E variation gives a magnetic course of
+        081°.
+  - id: deviation
+    description: The student explains compass deviation.
+    weight: 1
+    key_points:
+      - Deviation is the error caused by the aircraft's own magnetic
+        influences on its compass, taken from the compass deviation card.
+      - Applying deviation to the magnetic course gives the compass course.

@@ -1,0 +1,31 @@
+# Oral exercise. Key points are taken from the cited passage (CAR 602.19).
+id: right-of-way
+exam: PPAER
+objective_id: ppaer.air-law.063
+prompt: >-
+  Two power-driven aeroplanes meet in flight. Explain who gives way, and
+  how, when they converge at about the same altitude, when they approach
+  head-on, and when one overtakes the other.
+sources:
+  - cars:CAR 602.19:0
+rubric:
+  - id: converging
+    description: The student states who gives way when converging.
+    weight: 1
+    key_points:
+      - The aeroplane that has the other on its right gives way.
+  - id: head-on
+    description: The student states what both aircraft do when head-on.
+    weight: 1
+    key_points:
+      - When approaching head-on with a risk of collision, each aircraft
+        alters its heading to the right.
+  - id: overtaking
+    description: The student states the overtaking rule.
+    weight: 2
+    key_points:
+      - The aircraft being overtaken has the right of way.
+      - The overtaking aircraft gives way by altering its heading to the
+        right.
+      - The obligation lasts until the overtaking aircraft has entirely
+        passed and is clear of the other aircraft.

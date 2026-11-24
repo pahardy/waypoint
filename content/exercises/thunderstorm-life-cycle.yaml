@@ -1,0 +1,39 @@
+# Oral exercise. Key points are taken from the cited passages (FAA Aviation
+# Weather Handbook pp.257-258). Thunderstorm development is the same in
+# Canada.
+id: thunderstorm-life-cycle
+exam: PPAER
+objective_id: ppaer.meteorology.074
+prompt: >-
+  Explain what a thunderstorm cell needs in order to form, and describe
+  the stages of its life cycle and what marks each one.
+sources:
+  - faa-awh:AWH p.257:0
+  - faa-awh:AWH p.258:0
+rubric:
+  - id: ingredients
+    description: The student names the ingredients for a thunderstorm.
+    weight: 1
+    key_points:
+      - Sufficient water vapour, unstable air and a lifting mechanism.
+  - id: towering-cumulus
+    description: The student describes the first stage.
+    weight: 1
+    key_points:
+      - The first stage, the towering cumulus stage, is marked by a strong
+        convective updraft.
+  - id: mature
+    description: The student describes the mature stage.
+    weight: 2
+    key_points:
+      - The mature stage begins when precipitation reaches the surface.
+      - Precipitation drags air down, creating a strong downdraft alongside
+        the updraft.
+      - Hazards reach their peak intensity toward the end of the mature
+        stage.
+  - id: dissipating
+    description: The student describes the dissipating stage.
+    weight: 1
+    key_points:
+      - Subsiding air replaces the updraft throughout the cloud, cutting off
+        the supply of moisture, and the precipitation tapers off and ends.

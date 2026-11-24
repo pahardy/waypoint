@@ -1,6 +1,11 @@
 import { afterEach, expect, test, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import ExerciseMenu from "@/components/ExerciseMenu";
 import ExerciseRunner from "@/components/ExerciseRunner";
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ push: vi.fn(), replace: vi.fn() }),
+}));
 
 afterEach(() => {
   cleanup();
@@ -94,4 +99,18 @@ test("a grading failure keeps the answer so it can be submitted again", async ()
     "The language model timed out.",
   );
   expect((box as HTMLTextAreaElement).value).toBe("Turn back.");
+});
+
+test("each exercise is listed under its own name", async () => {
+  respond({
+    status: 200,
+    body: [
+      { id: "fuel-reserve", kind: "scenario", exam: "PPAER", prompt: "A flight." },
+      { id: "radio-failure", kind: "scenario", exam: "PPAER", prompt: "A flight." },
+    ],
+  });
+  render(<ExerciseMenu />);
+  expect(await screen.findByRole("heading", { name: "Fuel reserve" })).toBeDefined();
+  expect(screen.getByRole("heading", { name: "Radio failure" })).toBeDefined();
+  expect(screen.getAllByText("Scenario, PPAER")).toHaveLength(2);
 });

@@ -6,6 +6,13 @@ import { type ExerciseSummary, listExercises, startSession } from "@/lib/exercis
 
 const KIND_LABELS = { oral: "Oral question", scenario: "Scenario" } as const;
 
+/** An exercise's name from its id: "deteriorating-weather" is
+ * "Deteriorating weather". */
+export function exerciseName(id: string): string {
+  const words = id.replaceAll("-", " ");
+  return words.charAt(0).toUpperCase() + words.slice(1);
+}
+
 /** Every oral exercise and scenario, each with a button that starts a session. */
 export default function ExerciseMenu() {
   const router = useRouter();
@@ -42,8 +49,11 @@ export default function ExerciseMenu() {
             className="flex flex-col gap-3 rounded bg-surface p-5"
           >
             <h2 id={`${e.id}-heading`} className="font-display text-2xl font-bold uppercase">
-              {KIND_LABELS[e.kind]} ({e.exam})
+              {exerciseName(e.id)}
             </h2>
+            <p className="text-muted">
+              {KIND_LABELS[e.kind]}, {e.exam}
+            </p>
             <p>{e.prompt}</p>
             <button
               type="button"

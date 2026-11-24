@@ -1,0 +1,38 @@
+# Oral exercise. Key points are taken from the cited passages (FAA PHAK
+# pp.169-170). Carburettor icing works the same way in Canada.
+id: carburettor-ice
+exam: PPAER
+objective_id: ppaer.aeronautics.019
+prompt: >-
+  You are flying an aeroplane with a fixed-pitch propeller and a
+  float-type carburettor on a cool, humid day. Explain why carburettor ice
+  forms, how you would recognize it, and what you would do about it.
+sources:
+  - faa-phak:PHAK p.169:0
+  - faa-phak:PHAK p.170:0
+  - faa-phak:PHAK p.170:1
+rubric:
+  - id: cause
+    description: The student explains why carburettor ice forms.
+    weight: 1
+    key_points:
+      - Fuel vaporization and the drop in air pressure in the venturi cause
+        a sharp temperature drop in the carburettor.
+      - Moisture in the air can then freeze in the venturi and on the
+        throttle valve, restricting the fuel-air flow and reducing power.
+  - id: recognition
+    description: The student describes the first sign with a fixed-pitch
+      propeller.
+    weight: 1
+    key_points:
+      - The first sign is a drop in engine rpm, which may be followed by
+        engine roughness.
+  - id: action
+    description: The student describes the use of carburettor heat.
+    weight: 2
+    key_points:
+      - Apply full carburettor heat immediately.
+      - Leave full heat on until the ice is gone and normal power returns;
+        partial heat or too short a time may make it worse.
+      - With ice present, the rpm drops further when heat is applied, then
+        gradually rises as the ice melts.
