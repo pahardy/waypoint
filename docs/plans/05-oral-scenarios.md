@@ -112,6 +112,12 @@ Step 2 (grading consistency), issue #28:
     step 1 leniency, confirmed.
   - Proposed follow-up: state in the grading prompt that any wrongly
     stated key point gives not met.
+- Follow-up, issue #30: the prompt now says a wrongly stated key point
+  gives not met. Re-run (`--variant wrong-point-not-met`, $0.23):
+  consistency 30/30 (100%), agreement 90/90 (100%), no score varies.
+  [Report](../evals/oral-2026-11-24-wrong-point-not-met.md). Checked on
+  the same 10 answers the rule was written from, so new exercises need
+  their own eval answers.
 
 ## Done when
 
