@@ -2,7 +2,7 @@
 
 import os
 import random
-from collections.abc import Iterable, Iterator
+from collections.abc import Callable, Iterable, Iterator
 from datetime import UTC, datetime
 from typing import Annotated, Literal
 from uuid import UUID
@@ -12,9 +12,11 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, model_validator
 
-from waypoint_api import attempts, exams, llm
+from waypoint_api import attempts, exams, llm, sessions
 from waypoint_api.ask import database_search
 from waypoint_api.conversations import Conversation, SavedMessage, load, save
+from waypoint_api.exercises import Exercise, Scenario, source_passages
+from waypoint_api.grading import GradingError
 from waypoint_api.instructor import Answer, Citation, Level, Search, cite, respond
 from waypoint_api.retrieval import (
     EmbedQuery,
@@ -71,6 +73,18 @@ def model_stream() -> llm.Stream:
 def model_complete() -> llm.Complete:
     """The model call that rewrites follow-up questions."""
     return llm.complete
+
+
+def exercise_passages() -> Callable[
+    [psycopg.Connection, Exercise | Scenario], list[Passage]
+]:
+    """How an exercise's cited passages are read."""
+    return source_passages
+
+
+def model_parse() -> llm.Parse:
+    """The structured model call that grades exercise answers."""
+    return llm.parse
 
 
 class RetrieveResponse(BaseModel):
@@ -312,3 +326,78 @@ def read_results(
     if result is None:
         raise HTTPException(409, "This attempt has not been submitted.")
     return result
+
+
+class StartSessionRequest(BaseModel):
+    """Start a session on an exercise."""
+
+    exercise_id: str = Field(pattern=r"^[a-z0-9-]+$", max_length=100)
+
+
+class SessionAnswerRequest(BaseModel):
+    """The student's answer to the current stage."""
+
+    answer: str = Field(min_length=1, max_length=8000)
+
+
+@app.get("/exercises")
+def list_exercises() -> list[sessions.ExerciseSummary]:
+    """Every oral exercise and scenario."""
+    return sessions.summaries()
+
+
+@app.post("/sessions", status_code=201)
+def start_session(
+    request: StartSessionRequest,
+    conn: Annotated[psycopg.Connection, Depends(database)],
+    now: Annotated[datetime, Depends(clock)],
+) -> sessions.SessionState:
+    """Start an exercise session at its first stage."""
+    try:
+        session_id = sessions.start(conn, request.exercise_id, now)
+    except FileNotFoundError:
+        raise HTTPException(404, "No exercise with this id.")
+    return sessions.load(conn, session_id)
+
+
+@app.get("/sessions/{session_id}")
+def read_session(
+    session_id: UUID,
+    conn: Annotated[psycopg.Connection, Depends(database)],
+) -> sessions.SessionState:
+    """A session's revealed facts, current stage and graded stages."""
+    state = sessions.load(conn, session_id)
+    if state is None:
+        raise HTTPException(404, "No session with this id.")
+    return state
+
+
+@app.post("/sessions/{session_id}/answers")
+def answer_stage(
+    session_id: UUID,
+    request: SessionAnswerRequest,
+    conn: Annotated[psycopg.Connection, Depends(database)],
+    now: Annotated[datetime, Depends(clock)],
+    passages: Annotated[
+        Callable[[psycopg.Connection, Exercise | Scenario], list[Passage]],
+        Depends(exercise_passages),
+    ],
+    parse: Annotated[llm.Parse, Depends(model_parse)],
+) -> sessions.SessionState:
+    """Grade the current stage and advance. 409 once the session is
+    finished; 502 if grading fails, with nothing stored."""
+    state = sessions.load(conn, session_id)
+    if state is None:
+        raise HTTPException(404, "No session with this id.")
+    exercise = sessions.load_any(state.exercise_id)
+    try:
+        sessions.answer(
+            conn, session_id, request.answer, passages(conn, exercise), parse, now
+        )
+    except sessions.SessionError as error:
+        raise HTTPException(409, str(error))
+    except llm.LLMError as error:
+        raise HTTPException(502, str(error))
+    except GradingError:
+        raise HTTPException(502, "The answer could not be graded. Try again.")
+    return sessions.load(conn, session_id)

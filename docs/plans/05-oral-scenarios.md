@@ -148,6 +148,41 @@ Step 3 (one two-stage scenario in the CLI), issue #32:
   3-mile minimum, though it ignored the TEMPO. Defensible under the rule;
   no consistency eval yet for scenarios.
 
+Step 4 (web pages), issue #34:
+- Migration 0009: `exercise_session` (current stage, start and finish
+  times) and `stage_answer` (answer, marks with evidence and reasons,
+  score). An oral exercise is a one-stage session, so both kinds share
+  one table, one API and one page.
+- API (`sessions.py`): `GET /exercises`, `POST /sessions`,
+  `GET /sessions/{id}`, `POST /sessions/{id}/answers` (409 once
+  finished; 502 with nothing stored when grading fails). The grader and
+  the cited passages are dependencies, stubbed in the tests and the
+  end-to-end stub server.
+- Web: `/exercises` lists both exercises; `/exercises/[sessionId]` shows
+  the revealed facts, the current question, each graded stage and the
+  overall score, with the simulation disclaimer and the synthetic-weather
+  label. Plan 07 updated: the URL holds the session id.
+- Tests: 9 API and database tests (a deliberately broken version that
+  stored before grading failed the "stores nothing" test), 3 web unit
+  tests, 1 end-to-end test that reloads between stages (desktop and
+  phone, axe clean).
+- Checked in the real app with the real grader (2026-11-24, 3 grading
+  calls, about $0.03), driven in a browser:
+
+  | Exercise | Answers | Marks | Score |
+  |---|---|---|---|
+  | Scenario | Strong stage 1 | met, met, met | 100% |
+  | | Weak stage 2 ("the minimum is 1 mile ... I can keep going") | not met, not met, not met | 0% |
+  | | Overall, with a reload between stages | | 50% |
+  | Oral | Wrong airspeed direction | met, met, not met | 50% |
+
+  The oral mark confirms the #30 rule in the app. Cosmetic: a one-stage
+  exercise shows both the stage score and the same overall score.
+- Seen while checking: after a client-side navigation the previous page
+  stays mounted but hidden (`cacheComponents` in next.config), on the
+  practice pages too. Not a defect; a test locator on `main` must
+  allow for it.
+
 ## Done when
 
 - Grading agrees with itself on at least 90% of criteria across

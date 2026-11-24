@@ -115,5 +115,12 @@ A scenario has stages; each reveals facts (synthetic weather) and asks a
 question graded on its own rubric. Stages advance in code; the overall
 score is the mean of the stage scores.
 
+- `GET /exercises`: oral exercises and scenarios (`kind`).
+- `POST /sessions` `{exercise_id}`: start a session. `GET /sessions/{id}`:
+  revealed facts, current stage, graded stages and, once finished, the
+  overall score. `POST /sessions/{id}/answers` `{answer}`: grade the
+  current stage and advance; 409 once finished, 502 with nothing stored
+  if grading fails. An oral exercise is a one-stage session.
+
 `uv run python tests/stub_server.py` serves the API with a stub model and
 stub retrieval, for the web end-to-end tests (run `uv run seed` first).

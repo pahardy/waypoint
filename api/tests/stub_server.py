@@ -1,12 +1,22 @@
-"""The API with a stub model and stub retrieval, for the web end-to-end tests:
-`uv run python tests/stub_server.py` (needs a migrated DATABASE_URL)."""
+"""The API with a stub model, stub retrieval and a stub grader, for the web
+end-to-end tests: `uv run python tests/stub_server.py` (needs a migrated
+DATABASE_URL)."""
 
+import re
 import time
 
 import uvicorn
 
+from waypoint_api.grading import CriterionMark, Grading
 from waypoint_api.llm import Reply
-from waypoint_api.main import app, knowledge_search, model_complete, model_stream
+from waypoint_api.main import (
+    app,
+    exercise_passages,
+    knowledge_search,
+    model_complete,
+    model_parse,
+    model_stream,
+)
 from waypoint_api.retrieval import Passage
 
 CAR = Passage(
@@ -57,9 +67,22 @@ def complete(system, messages):
     return Reply(messages[-1]["content"], "stub", 1, 1)
 
 
+def parse(model, effort, system, prompt, schema):
+    """Mark every criterion met, quoting the whole answer as the evidence."""
+    answer = re.search(r"<answer>\n(.*)\n</answer>", prompt, re.DOTALL).group(1)
+    return Grading(
+        marks=[
+            CriterionMark(criterion_id=i, mark="met", evidence=answer, reason="Stub.")
+            for i in re.findall(r'<criterion id="([^"]+)"', prompt)
+        ]
+    )
+
+
 app.dependency_overrides[knowledge_search] = lambda: search
 app.dependency_overrides[model_stream] = lambda: stream
 app.dependency_overrides[model_complete] = lambda: complete
+app.dependency_overrides[model_parse] = lambda: parse
+app.dependency_overrides[exercise_passages] = lambda: lambda conn, exercise: []
 
 if __name__ == "__main__":
     uvicorn.run(app, port=8000)
