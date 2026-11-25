@@ -1,0 +1,34 @@
+# Oral exercise. Key points are taken from the cited passages (TP 13723 Ex. 12
+# A, pp.23-24).
+id: power-off-stall
+exam: FLIGHT_TEST
+objective_id: flight-test.ex12a
+prompt: >-
+  Your examiner will ask for a power-off stall. Explain at what altitude
+  the stall must be done, how you will recognize and announce the onset of
+  the stall, and how you will recover.
+sources:
+  - tp13723:TP 13723 p.23:0
+  - tp13723:TP 13723 p.24:0
+rubric:
+  - id: altitude
+    description: The student states the altitude requirement.
+    weight: 1
+    key_points:
+      - At an altitude that allows recovery at or above 2,000 ft AGL, or
+        the minimum height recommended by the manufacturer, whichever is
+        higher.
+  - id: recognition
+    description: The student states how the onset is recognized.
+    weight: 1
+    key_points:
+      - Recognize and announce the onset by the stall warning, the first
+        aerodynamic buffeting or decay of control effectiveness.
+  - id: recovery
+    description: The student explains the recovery.
+    weight: 2
+    key_points:
+      - Promptly reduce the angle of attack to break the stall and level
+        the wings.
+      - Avoid a secondary stall, add full power and return to a cruise
+        attitude.

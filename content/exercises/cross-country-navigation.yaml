@@ -1,0 +1,65 @@
+# Scenario. Key points are taken from the cited passages (TP 13723 Ex. 23 B
+# and C, pp.35-36). The aerodrome is fictional.
+id: cross-country-navigation
+exam: FLIGHT_TEST
+objective_id: flight-test.ex23c
+prompt: >-
+  On your flight test, you begin the simulated VFR cross-country flight you
+  planned, departing from Kilo (ZZZK), a fictional aerodrome.
+sources:
+  - tp13723:TP 13723 p.35:0
+  - tp13723:TP 13723 p.36:0
+stages:
+  - id: departure
+    facts:
+      - "The examiner asks you to depart on the cross-country flight as
+        planned."
+    question: >-
+      What must you do and record from take-off until you have set heading
+      on your first track?
+    rubric:
+      - id: times
+        description: The student states the times to note.
+        weight: 1
+        key_points:
+          - Note the take-off time and the set-heading time at or abeam the
+            set-heading point in the flight log.
+      - id: track
+        description: The student explains how to join the track.
+        weight: 1
+        key_points:
+          - Use an organized and efficient procedure to intercept the
+            pre-planned track, complying with departure clearances and
+            instructions.
+      - id: setup
+        description: The student states the other departure tasks.
+        weight: 1
+        key_points:
+          - Open the flight plan with ATS or simulate opening it with the
+            examiner.
+          - Set the heading indicator by reference to the magnetic compass
+            or other acceptable means.
+          - Estimate the time of arrival at the first turning point or
+            destination.
+  - id: enroute
+    facts:
+      - "You have set heading. GPS and radio navigation aids may not be
+        used."
+    question: >-
+      What must you demonstrate within the first 15 minutes after setting
+      heading?
+    rubric:
+      - id: position
+        description: The student states the position and track tasks.
+        weight: 2
+        key_points:
+          - Verify the aircraft's position.
+          - Revise the heading to correct any track error, staying within
+            3 NM of the planned route.
+      - id: eta-fuel
+        description: The student states the ETA and fuel tasks.
+        weight: 1
+        key_points:
+          - Confirm or revise the ETA for the first turning point or
+            destination, and confirm the fuel needed to reach the
+            destination or first refuelling stop.

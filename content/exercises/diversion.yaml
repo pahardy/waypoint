@@ -1,0 +1,73 @@
+# Scenario. Key points are taken from the cited passages (TP 13723 Ex. 23 D,
+# pp.36-37). The weather is synthetic and the aerodromes are fictional.
+id: diversion
+exam: FLIGHT_TEST
+objective_id: flight-test.ex23d
+prompt: >-
+  On your flight test, en route on the simulated cross-country flight to
+  Lima (ZZZL), a fictional aerodrome, the examiner tells you that weather
+  at Lima has closed in and asks you to divert.
+sources:
+  - tp13723:TP 13723 p.36:0
+  - tp13723:TP 13723 p.37:0
+stages:
+  - id: start-diversion
+    facts:
+      - "Synthetic weather: Lima reports ceiling 400 ft and visibility
+        1 SM in rain."
+      - "Mike (ZZZM), a fictional aerodrome, lies about 30 NM to the north."
+      - "You have a paper VNC chart; no ruler, protractor, GPS or radio
+        navigation aids may be used."
+    question: >-
+      What must you work out, and how quickly, before you set off toward
+      the alternate?
+    rubric:
+      - id: without-delay
+        description: The student states the need to start promptly.
+        weight: 1
+        key_points:
+          - Initiate the diversion without undue delay, avoiding the need
+            to loiter in a holding pattern.
+      - id: position-alternate
+        description: The student states the position and alternate tasks.
+        weight: 1
+        key_points:
+          - Identify and record the present position, and select an
+            alternate within the fuel range.
+      - id: estimates
+        description: The student states the estimates required.
+        weight: 2
+        key_points:
+          - Estimate an initial heading from a track line, or select a
+            series of geographic references leading to the destination.
+          - Estimate the time en route and the flight time that will remain
+            with the fuel on board on arrival.
+  - id: en-route
+    facts:
+      - "You are established toward Mike."
+      - "Synthetic weather: visibility is reduced in haze."
+    question: >-
+      How do you choose your altitude for the diversion, how do you set up
+      the aeroplane for the reduced visibility, and what do you report?
+    rubric:
+      - id: altitude
+        description: The student explains the altitude choice.
+        weight: 2
+        key_points:
+          - Identify the highest Maximum Elevation Figure along the route
+            and determine a minimum safe altitude.
+          - When practicable, fly between 500 and 1,000 ft above ground or
+            at the minimum safe altitude, whichever is higher.
+      - id: configuration
+        description: The student addresses poor visibility.
+        weight: 1
+        key_points:
+          - Select an aircraft configuration and airspeed suited to the
+            poor visibility, for see and avoid.
+      - id: report
+        description: The student states the ETA and communication tasks.
+        weight: 1
+        key_points:
+          - Give an initial ETA when setting heading and confirm or revise
+            it en route.
+          - Simulate informing ATS of the intention to divert.

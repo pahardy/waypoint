@@ -1,0 +1,37 @@
+# Oral exercise. Key points are taken from the cited passage (TP 13723 Ex. 2 A,
+# p.18).
+id: documents-and-airworthiness
+exam: FLIGHT_TEST
+objective_id: flight-test.ex02a
+prompt: >-
+  On your flight test, the examiner asks you to show from the aeroplane's
+  documents that it is airworthy for the flight. Explain what you must
+  determine about the documents and the maintenance, and how you would deal
+  with deferred defects and with an unserviceability found during the
+  flight.
+sources:
+  - tp13723:TP 13723 p.18:0
+rubric:
+  - id: documents
+    description: The student states what to check about the documents.
+    weight: 1
+    key_points:
+      - Determine that the documents required on board are valid.
+  - id: maintenance
+    description: The student explains what to determine about maintenance.
+    weight: 2
+    key_points:
+      - From the aircraft documents, including the Journey Logbook,
+        determine that the maintenance release shows the aeroplane
+        serviceable and that no service or inspection comes due during
+        the flight.
+      - Determine the flying hours remaining before the next service or
+        maintenance task.
+  - id: defects
+    description: The student addresses deferred defects and in-flight
+      unserviceabilities.
+    weight: 1
+    key_points:
+      - Determine the impact of deferred defects on the intended flight.
+      - Explain the process for dealing with unserviceabilities discovered
+        during a flight.

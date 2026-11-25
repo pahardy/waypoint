@@ -1,0 +1,33 @@
+# Oral exercise. Key points are taken from the cited passage (TP 13723 Ex. 18
+# C, p.32). Aircraft-specific speeds are left to the POH/AFM.
+id: overshoot
+exam: FLIGHT_TEST
+objective_id: flight-test.ex18c
+prompt: >-
+  Explain when an overshoot may be carried out on your flight test, and
+  what you do with power, pitch, flaps and landing gear during it, until you
+  reach a safe manoeuvring altitude.
+sources:
+  - tp13723:TP 13723 p.32:0
+rubric:
+  - id: when
+    description: The student states when an overshoot is carried out.
+    weight: 1
+    key_points:
+      - On the examiner's command, or by the candidate's timely decision
+        to discontinue the approach.
+  - id: power-pitch
+    description: The student explains the initial power and pitch.
+    weight: 2
+    key_points:
+      - Promptly and smoothly apply maximum allowable power and set a pitch
+        attitude that stops the descent.
+      - Keep maximum allowable power to a safe manoeuvring altitude, then
+        set climb power where applicable.
+  - id: configuration
+    description: The student explains flaps and landing gear.
+    weight: 1
+    key_points:
+      - Retract the flaps in stages or as the manufacturer recommends.
+      - Retract the landing gear, where applicable, after a positive rate
+        of climb is established.

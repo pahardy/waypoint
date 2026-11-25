@@ -1,0 +1,33 @@
+# Oral exercise. Key points are taken from the cited passages (TP 13723 Ex. 21,
+# pp.32-33).
+id: precautionary-landing
+exam: FLIGHT_TEST
+objective_id: flight-test.ex21
+prompt: >-
+  Your examiner sets a scenario in which you must land at an aerodrome of
+  unknown condition. Explain what you must evaluate, how you inspect the
+  landing area from the air, and what you must decide and tell the examiner
+  before the final approach.
+sources:
+  - tp13723:TP 13723 p.32:0
+  - tp13723:TP 13723 p.33:0
+rubric:
+  - id: evaluate
+    description: The student states what must be evaluated.
+    weight: 1
+    key_points:
+      - Evaluate the wind conditions, the landing surface and obstacles.
+  - id: inspection
+    description: The student explains the low-level inspection.
+    weight: 2
+    key_points:
+      - Overfly the landing area in stabilized level flight at a safe
+        height above obstacles, at an airspeed that allows the surface to
+        be assessed.
+      - Communicate the intended height for the low-level inspection.
+  - id: decisions
+    description: The student states the decisions before final approach.
+    weight: 1
+    key_points:
+      - Determine the suitability of the surface, select the most suitable
+        touchdown zone and indicate the type of landing to be used.
