@@ -1,0 +1,33 @@
+# Oral exercise. Key points are taken from the cited passages (TC AIM AGA 5.4.3
+# and 5.6).
+id: closed-markings
+exam: PSTAR
+objective_id: pstar.regulations.004
+prompt: >-
+  While taxiing at an unfamiliar aerodrome you see a runway marked with
+  white Xs, a taxiway with yellow Xs at each end, and two solid and two
+  dashed lines painted across your taxiway ahead. Explain what each of
+  these markings means.
+sources:
+  - tc-aim:AGA 5.4.3:0
+  - tc-aim:AGA 5.6:0
+rubric:
+  - id: closed-runway
+    description: The student interprets the white Xs on the runway.
+    weight: 1
+    key_points:
+      - White Xs on a runway mean the runway is closed to operations.
+  - id: closed-taxiway
+    description: The student interprets the yellow Xs on the taxiway.
+    weight: 1
+    key_points:
+      - Yellow Xs at each end of a taxiway portion mean that portion is
+        closed.
+  - id: holding-position
+    description: The student interprets the solid and dashed lines.
+    weight: 2
+    key_points:
+      - Two solid and two dashed lines are a runway holding position
+        marking.
+      - It is placed near runway/taxiway intersections to protect the
+        runway in use.

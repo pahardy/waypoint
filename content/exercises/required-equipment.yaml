@@ -1,0 +1,36 @@
+# Oral exercise. Key points are taken from the cited passage (CAR 605.14).
+id: required-equipment
+exam: PSTAR
+objective_id: pstar.regulations.005
+prompt: >-
+  You are about to take off for a day VFR flight in a single-engine
+  training aeroplane with an air-cooled engine that has an oil pressure
+  system and a separate oil system, a fixed-pitch propeller and fixed
+  landing gear. The flight will be in controlled airspace. Explain
+  which instruments and equipment the Canadian Aviation Regulations require,
+  and when a two-way radio is required.
+sources:
+  - cars:CAR 605.14:0
+rubric:
+  - id: flight-instruments
+    description: The student names the required flight instruments.
+    weight: 2
+    key_points:
+      - In controlled airspace, a sensitive altimeter adjustable for
+        barometric pressure.
+      - An airspeed indicator.
+      - A magnetic compass or magnetic direction indicator independent of
+        the electrical generating system.
+  - id: engine-fuel
+    description: The student names the required engine and fuel indications.
+    weight: 1
+    key_points:
+      - A tachometer, an oil pressure indicator and an oil temperature
+        indicator.
+      - A means to determine the fuel quantity in each main fuel tank.
+  - id: radio
+    description: The student states when a two-way radio is required.
+    weight: 1
+    key_points:
+      - Two-way radio is required in Class B, C or D airspace and in an MF
+        area.

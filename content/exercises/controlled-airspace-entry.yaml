@@ -1,0 +1,65 @@
+# Scenario. Key points are taken from the cited passages: TC AIM RAC 2.8.3
+# (Class C airspace) and CAR 602.31 (clearances and instructions). The
+# aerodrome is fictional.
+id: controlled-airspace-entry
+exam: PSTAR
+objective_id: pstar.regulations.013
+prompt: >-
+  You plan a day VFR flight whose route crosses the terminal control area
+  around Juliett (ZZZJ), a fictional airport. The terminal area is Class C
+  airspace.
+sources:
+  - tc-aim:RAC 2.8.3:0
+  - cars:CAR 602.31:0
+stages:
+  - id: planning
+    facts:
+      - "Your aeroplane has a radio and a transponder with automatic
+        pressure-altitude reporting, all working."
+    question: >-
+      What must you obtain before entering the Class C airspace, what
+      equipment is required, and what must you do on the radio while
+      inside it?
+    rubric:
+      - id: clearance
+        description: The student states what is needed to enter.
+        weight: 2
+        key_points:
+          - VFR flights require a clearance from ATC to enter Class C
+            airspace.
+      - id: equipment
+        description: The student states the required equipment.
+        weight: 1
+        key_points:
+          - Two-way radio communication equipment, and a transponder with
+            automatic pressure-altitude reporting equipment.
+      - id: listening-watch
+        description: The student states the radio requirement inside.
+        weight: 1
+        key_points:
+          - Maintain a continuous listening watch on the frequency
+            assigned by ATC.
+  - id: clearance-received
+    facts:
+      - "ATC clears you through the Class C airspace at 3,500 ft and asks
+        you to read back the clearance."
+      - "Later, ATC instructs you to turn right heading 090."
+    question: >-
+      What must you do with the clearance and with the instruction?
+    rubric:
+      - id: comply-clearance
+        description: The student states the duty for a clearance.
+        weight: 1
+        key_points:
+          - Comply with the clearance once received and accepted.
+      - id: read-back
+        description: The student states the read-back requirement.
+        weight: 1
+        key_points:
+          - On a VFR flight, read back the clearance when ATC requests it,
+            as here.
+      - id: instruction
+        description: The student states the duty for an instruction.
+        weight: 1
+        key_points:
+          - Comply with and acknowledge the instruction.

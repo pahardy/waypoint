@@ -221,6 +221,54 @@ Step 5a (PPAER content), issue #36:
 - Review: the judge checked the content; the owner may approve it
   without a read-through. The instructor review gate below stays open.
 
+Step 5b (PSTAR content), issue #38:
+- Eight PSTAR exercises, each on a TP 11919 section no exercise covered.
+  Sources are the CARs and the TC AIM only (TP 11919 is in the database
+  as questions); no FAA sources. Aerodromes are fictional; no scenario
+  uses weather.
+
+  | Exercise | Kind | TP 11919 section | Sources |
+  |---|---|---|---|
+  | wake-turbulence | oral | 7 Wake turbulence | TC AIM AIR 2.9, 2.9.1, 2.9.2 |
+  | alcohol | oral | 8 Aeromedical | CAR 602.03; TC AIM AIR 3.9 |
+  | occurrence-reporting | oral | 14 Aviation occurrences | TC AIM GEN 3.3, 3.3.1, 3.3.3, 3.4 |
+  | required-equipment | oral | 5 Equipment | CAR 605.14 |
+  | closed-markings | oral | 4 Aerodromes | TC AIM AGA 5.4.3, 5.6 |
+  | flight-itinerary | scenario | 9 Flight plans and itineraries | CAR 602.73, 602.75, 602.76, 602.77 |
+  | mandatory-frequency | scenario | 3 Communications | CAR 602.97, 602.101; TC AIM RAC 4.5.4 |
+  | controlled-airspace-entry | scenario | 13 Controlled airspace | TC AIM RAC 2.8.3; CAR 602.31 |
+
+- `check-exercises` (2026-11-25): one finding, fixed. required-equipment
+  asked for oil pressure and oil temperature indicators, but CAR
+  605.14(f) and (h) require them only for an engine with an oil pressure
+  system and a separate oil system; the prompt now says the engine has
+  both. All 8 then pass.
+- Smoke test, a strong, a partial and a weak answer per exercise, graded
+  once (scenario scores are the stage mean):
+
+  | Exercise | Strong | Partial | Weak |
+  |---|---|---|---|
+  | wake-turbulence | 100% | 50% | 0% |
+  | alcohol | 100% | 50% | 0% |
+  | occurrence-reporting | 100% | 40% | 0% |
+  | required-equipment | 100% | 50% | 0% |
+  | closed-markings | 100% | 50% | 0% |
+  | flight-itinerary | 100% | 50% (67, 33) | 0% |
+  | mandatory-frequency | 100% | 50% (50, 50) | 0% |
+  | controlled-airspace-entry | 100% | 42% (50, 33) | 0% |
+
+  All within the bands (strong at least 75%, partial between, weak at
+  most 25%). Every partial answer got partly met where it gave half a
+  criterion, so partly met is reachable. One lenient mark:
+  mandatory-frequency's partial answer ("I'll call India radio") got met
+  on ground-station without saying reports are broadcast when no station
+  operates. Not tuned here.
+- Exercise ids are their headings on /exercises, so three were named to
+  read well ("Mandatory frequency", not "Mf arrival").
+- Cost: under $1 (9 judge calls, 33 grading calls).
+- Review: as in 5a, the judge checked the content; the instructor review
+  gate stays open.
+
 ## Done when
 
 - Grading agrees with itself on at least 90% of criteria across

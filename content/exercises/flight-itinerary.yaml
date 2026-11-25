@@ -1,0 +1,68 @@
+# Scenario. Key points are taken from the cited passages: CAR 602.73 (filing
+# requirement), 602.75 (where and how to file), 602.76 (changes) and 602.77
+# (arrival reports). The aerodromes are fictional.
+id: flight-itinerary
+exam: PSTAR
+objective_id: pstar.regulations.009
+prompt: >-
+  You are planning a day VFR flight from Foxtrot (ZZZF) to Golf (ZZZG),
+  fictional uncontrolled aerodromes 60 NM apart.
+sources:
+  - cars:CAR 602.73:0
+  - cars:CAR 602.75:0
+  - cars:CAR 602.76:0
+  - cars:CAR 602.77:0
+stages:
+  - id: before-departure
+    facts:
+      - "Golf is 60 NM from Foxtrot."
+      - "You decide to file a VFR flight itinerary rather than a flight
+        plan, with no search and rescue action initiation time."
+    question: >-
+      Must you file a flight plan or flight itinerary for this flight, and
+      with whom can you file the itinerary? When is it filed?
+    rubric:
+      - id: required
+        description: The student states whether filing is required.
+        weight: 1
+        key_points:
+          - A VFR flight plan or flight itinerary is required, because the
+            flight goes beyond 25 NM of the departure aerodrome.
+      - id: where
+        description: The student states with whom to file the itinerary.
+        weight: 1
+        key_points:
+          - A flight itinerary can be filed with a responsible person, an
+            air traffic services unit or a community aerodrome radio
+            station.
+      - id: acknowledged
+        description: The student states when it counts as filed.
+        weight: 1
+        key_points:
+          - It is filed only once you receive acknowledgement that it has
+            been received.
+  - id: change-of-destination
+    facts:
+      - "You filed the itinerary with a responsible person, a friend at
+        Foxtrot."
+      - "En route, you decide to land at Hotel (ZZZH), a fictional
+        aerodrome, instead of Golf."
+    question: >-
+      What must you do about the change of destination, and what must you
+      do after landing at Hotel, and by when?
+    rubric:
+      - id: notify
+        description: The student states how to handle the change.
+        weight: 1
+        key_points:
+          - Notify the responsible person, an air traffic services unit or
+            a community aerodrome radio station of the change as soon as
+            practicable.
+      - id: arrival-report
+        description: The student states the arrival report requirement.
+        weight: 2
+        key_points:
+          - File an arrival report with the responsible person as soon as
+            practicable after landing.
+          - With no search and rescue time specified, no later than 24
+            hours after the last reported estimated time of arrival.
