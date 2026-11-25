@@ -36,6 +36,7 @@ def record(conn: psycopg.Connection, items: list[NamedTuple], now: datetime) -> 
 
 
 MIN_SEEN = 5
+MAX_RECOMMENDATIONS = 5
 
 OBJECTIVES = """
     SELECT o.id, o.subject, o.text, coalesce(m.correct, 0), coalesce(m.seen, 0)
@@ -75,12 +76,14 @@ class WeakObjective(BaseModel):
 
 
 class Progress(BaseModel):
-    """An exam's progress per subject and its weak objectives."""
+    """An exam's progress per subject, its weak objectives and the ones
+    recommended for study next."""
 
     exam: str
     pass_percent: int
     subjects: list[SubjectProgress]
     weak: list[WeakObjective]
+    recommendations: list[WeakObjective]
 
 
 def percent(correct: int, seen: int) -> int | None:
@@ -125,13 +128,20 @@ def weak(objectives: list[ObjectiveCounts], pass_percent: int) -> list[WeakObjec
     ]
 
 
+def recommend(weak_objectives: list[WeakObjective]) -> list[WeakObjective]:
+    """The weakest objectives to study next: the start of the weak list."""
+    return weak_objectives[:MAX_RECOMMENDATIONS]
+
+
 def load(conn: psycopg.Connection, exam: str) -> Progress:
     """The exam's progress from `objective_mastery`."""
     objectives = [ObjectiveCounts(*r) for r in conn.execute(OBJECTIVES, (exam,))]
     pass_percent = exams.RULES[exam].pass_percent
+    found = weak(objectives, pass_percent)
     return Progress(
         exam=exam,
         pass_percent=pass_percent,
         subjects=subjects(objectives),
-        weak=weak(objectives, pass_percent),
+        weak=found,
+        recommendations=recommend(found),
     )

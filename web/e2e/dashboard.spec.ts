@@ -22,6 +22,8 @@ async function expectNoSeriousIssues(page: Page) {
   expect(serious).toEqual([]);
 }
 
+const REASON = /\d+ of \d+ correct \(\d+%\), below the 90% pass mark/;
+
 test("after a quiz with wrong answers, the dashboard shows the objective as weak", async ({
   page,
 }) => {
@@ -30,12 +32,26 @@ test("after a quiz with wrong answers, the dashboard shows the objective as weak
   await expect(page.getByRole("table", { name: "By subject" })).toContainText(
     "Aviation Regulations",
   );
-  const weak = page
-    .getByRole("region", { name: "Weak objectives" })
-    .getByRole("listitem")
-    .filter({ hasText: "Aviation Occurrences" });
-  await expect(weak).toContainText(/\d+ of \d+ correct \(\d+%\), below the 90% pass mark/);
+  const recommendations = page.getByRole("region", { name: "Study next" }).getByRole("listitem");
+  await expect(recommendations.first()).toContainText(REASON);
+  expect(await recommendations.count()).toBeLessThanOrEqual(5);
+  await page.getByText(/^All weak objectives \(\d+\)$/).click();
+  const weak = page.locator("details li").filter({ hasText: "Aviation Occurrences" });
+  await expect(weak).toContainText(REASON);
   await expect(page.getByText(/educational aid/i).first()).toBeVisible();
+});
+
+test("Start quiz on a recommendation opens a quiz on that objective only", async ({ page }) => {
+  await failOccurrencesQuiz(page);
+  await page.goto("/dashboard");
+  const first = page.getByRole("region", { name: "Study next" }).getByRole("listitem").first();
+  const topic = await first.locator("p").first().textContent();
+  await first.getByRole("button", { name: "Start quiz" }).click();
+  await expect(page).toHaveURL(/\/practice\/[0-9a-f-]{36}$/);
+  await page.getByRole("button", { name: "Submit answers" }).click();
+  const breakdown = page.getByRole("table", { name: "By topic" });
+  await expect(breakdown.getByRole("row")).toHaveCount(2);
+  await expect(breakdown).toContainText(topic ?? "");
 });
 
 for (const colorScheme of ["dark", "light"] as const) {

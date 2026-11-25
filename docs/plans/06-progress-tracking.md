@@ -84,6 +84,26 @@ Step 2 (dashboard), issue #44:
   weak objectives. A long list; step 3's 3-5 recommendations are the
   short view.
 
+Step 3 (recommendations), issue #46:
+- `GET /progress/{exam}` adds `recommendations`: the first 5
+  (`MAX_RECOMMENDATIONS`) of the weak list, with the same reasons.
+- `/dashboard`: "Study next" at the top, each recommendation with its
+  topic, reason and a Start quiz button that starts a topic quiz on that
+  objective and opens it. The full weak list is collapsed below as "All
+  weak objectives (N)". With nothing weak, Study next links to a mixed
+  quiz on /practice.
+- Tests: 2 more unit (the five weakest in order with reasons, fewer weak
+  gives fewer), 2 API assertions (recommendations per exam), 5 web unit
+  (reason and the quiz request, the collapsed count, nothing weak, no
+  answers, subject numbers), 2 more end-to-end on desktop and phone (a
+  failed objective is in the weak list and Study next has reasons;
+  Start quiz on the first recommendation gives a quiz on that objective
+  only). The end-to-end tests take the first recommendation, not a named
+  one, because the shared dev database decides which five come first.
+- Decisions (simplest option, owner's call): the top 5 of the weak list,
+  no second ranking; a quiz button, no reading link; unseen objectives
+  are not recommended.
+
 ## Tests
 
 Unit (CI):

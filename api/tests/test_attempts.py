@@ -414,6 +414,7 @@ def test_progress_shows_a_weak_objective_with_its_reason(client, db_url):
     (weak,) = progress["weak"]
     assert weak["objective_id"] == "pstar.regulations.014"
     assert weak["reason"] == "2 of 5 correct (40%), below the 90% pass mark"
+    assert progress["recommendations"] == [weak]
 
 
 def test_progress_is_per_exam(client, db_url):
@@ -429,6 +430,7 @@ def test_progress_is_per_exam(client, db_url):
     }
     assert all(s["seen"] == 0 and s["percent"] is None for s in progress["subjects"])
     assert progress["weak"] == []
+    assert progress["recommendations"] == []
 
 
 def test_progress_for_an_exam_without_questions_is_refused(client):

@@ -1,4 +1,11 @@
-from waypoint_api.progress import ObjectiveCounts, mastery, percent, subjects, weak
+from waypoint_api.progress import (
+    ObjectiveCounts,
+    mastery,
+    percent,
+    recommend,
+    subjects,
+    weak,
+)
 
 
 def counts(objective_id, correct, seen, subject="air-law"):
@@ -55,3 +62,15 @@ def test_subjects_total_their_objectives_in_order():
         ("air-law", 3, 4, 75),
         ("navigation", 1, 2, 50),
     ]
+
+
+def test_recommendations_are_the_five_weakest_in_order():
+    found = weak([counts(f"o{n}", n, 10) for n in range(7)], 60)
+    recommended = recommend(found)
+    assert [o.objective_id for o in recommended] == ["o0", "o1", "o2", "o3", "o4"]
+    assert all(o.reason for o in recommended)
+
+
+def test_fewer_weak_objectives_give_fewer_recommendations():
+    found = weak([counts("a", 1, 5), counts("b", 5, 5), counts("c", 0, 4)], 60)
+    assert [o.objective_id for o in recommend(found)] == ["a"]
