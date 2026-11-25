@@ -75,7 +75,9 @@ curl -N -X POST localhost:8000/chat -H 'Content-Type: application/json' \
   passage (practice questions) or its TP 11919 references (PSTAR). A PPAER mock with a
   subject under 60% is a partial pass and names the supplementary exam.
 
-Exam rules live in `exams.py` and are deterministic code.
+Exam rules live in `exams.py` and are deterministic code. Submitting an
+attempt also adds its items to `objective_mastery` (correct and seen per
+objective; an unanswered item is seen and wrong); see `progress.py`.
 
 ```
 uv run draft-questions --subject navigation --count 25   # about $1 per 20; both API keys

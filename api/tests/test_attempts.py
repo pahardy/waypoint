@@ -354,3 +354,49 @@ def test_ppaer_review_gives_the_explanation_and_cited_passage(client, db_url):
         "Passage text.",
     )
     assert source["edition"] == "2026-1"
+
+
+# Progress
+
+
+def mastery_rows(db_url):
+    """Each objective's (correct, seen, last_seen_at)."""
+    with psycopg.connect(db_url) as conn:
+        rows = conn.execute(
+            "SELECT objective_id, correct, seen, last_seen_at FROM objective_mastery"
+        )
+        return {r[0]: r[1:] for r in rows}
+
+
+def test_submitting_records_only_the_objectives_covered(client, db_url):
+    attempt = start(client, "quiz", "pstar.regulations.014")
+    for position, correct in enumerate(answer_key(db_url, attempt)[:3]):
+        answer(client, attempt, position, correct)
+    client.post(f"/attempts/{attempt['id']}/submit")
+    assert mastery_rows(db_url) == {"pstar.regulations.014": (3, 5, START)}
+
+
+def test_submitting_twice_counts_once(client, db_url):
+    attempt = start(client, "quiz", "pstar.regulations.014")
+    client.post(f"/attempts/{attempt['id']}/submit")
+    client.post(f"/attempts/{attempt['id']}/submit")
+    assert mastery_rows(db_url) == {"pstar.regulations.014": (0, 5, START)}
+
+
+def test_later_attempts_add_to_the_counts(client, db_url, time):
+    first = start(client, "quiz", "pstar.regulations.014")
+    client.post(f"/attempts/{first['id']}/submit")
+    time.now = START + timedelta(days=1)
+    second = start(client, "quiz", "pstar.regulations.014")
+    answer(client, second, 0, answer_key(db_url, second)[0])
+    client.post(f"/attempts/{second['id']}/submit")
+    assert mastery_rows(db_url) == {"pstar.regulations.014": (1, 10, time.now)}
+
+
+def test_a_mock_records_every_objective_it_covered(client, db_url):
+    attempt = start(client, "mock")
+    client.post(f"/attempts/{attempt['id']}/submit")
+    rows = mastery_rows(db_url)
+    assert set(rows) == {q["objective_id"] for q in attempt["questions"]}
+    assert sum(seen for _, seen, _ in rows.values()) == 50
+    assert sum(correct for correct, _, _ in rows.values()) == 0
