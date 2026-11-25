@@ -64,7 +64,8 @@ Eval (on demand, real model):
    measure agreement.
 3. Build one two-stage scenario.
 4. Add the web pages.
-5. Write 5 oral questions and 3 scenarios per pathway.
+5. Write 5 oral questions and 3 scenarios per pathway. Done: PPAER
+   (#36), PSTAR (#38), flight test (#40); 24 exercises.
 
 ## Progress
 
@@ -267,6 +268,50 @@ Step 5b (PSTAR content), issue #38:
   read well ("Mandatory frequency", not "Mf arrival").
 - Cost: under $1 (9 judge calls, 33 grading calls).
 - Review: as in 5a, the judge checked the content; the instructor review
+  gate stays open.
+
+Step 5c (flight-test content), issue #40:
+- Eight flight-test exercises, each on a different TP 13723 item, cited
+  from the guide's own pages. They ask for the aim, what the examiner
+  assesses and the related procedures, not flying skill. Aircraft-specific
+  numbers are left to the POH/AFM; the numbers used (2,000 ft AGL, 1,000
+  ft, 3 NM, 15 minutes) are the guide's. Ex. 23 A's go/no-go criterion
+  and Ex. 29 (procedures are aircraft-specific; carb ice and pitot-static
+  are covered) were left out.
+
+  | Exercise | Kind | TP 13723 item | Sources |
+  |---|---|---|---|
+  | documents-and-airworthiness | oral | Ex. 2 A | p.18 |
+  | weight-and-balance | oral | Ex. 2 C | p.19 |
+  | power-off-stall | oral | Ex. 12 A | pp.23-24 |
+  | overshoot | oral | Ex. 18 C | p.32 |
+  | precautionary-landing | oral | Ex. 21 | pp.32-33 |
+  | forced-landing | scenario | Ex. 22 | pp.33-34 |
+  | cross-country-navigation | scenario | Ex. 23 B, C | pp.35-36 |
+  | diversion | scenario | Ex. 23 D | pp.36-37 |
+
+- `check-exercises` (2026-11-25): one finding, fixed.
+  cross-country-navigation asked for the fuel to reach the first turning
+  point; Ex. 23 C(f)(iv) says the destination or first refuelling stop.
+  All 8 then pass.
+- Smoke test, graded once each:
+
+  | Exercise | Strong | Partial | Weak |
+  |---|---|---|---|
+  | documents-and-airworthiness | 100% | 50% | 0% |
+  | weight-and-balance | 100% | 50% | 0% |
+  | power-off-stall | 100% | 50% | 0% |
+  | overshoot | 100% | 50% | 0% |
+  | precautionary-landing | 100% | 50% | 0% |
+  | forced-landing | 100% | 34% (50, 17) | 0% |
+  | cross-country-navigation | 100% | 50% (33, 67) | 0% |
+  | diversion | 100% | 44% (50, 38) | 0% |
+
+  All within the bands. forced-landing's partial stage 2 was marked
+  strictly: varying speed within limits got partly met because the answer
+  left out establishing glide speed first. Defensible under the rubric.
+- Cost: under $1 (9 judge calls, 33 grading calls).
+- Step 5 is done: 24 exercises, 8 per pathway. The instructor review
   gate stays open.
 
 ## Done when

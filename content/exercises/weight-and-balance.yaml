@@ -1,0 +1,33 @@
+# Oral exercise. Key points are taken from the cited passage (TP 13723 Ex. 2 C,
+# p.19).
+id: weight-and-balance
+exam: FLIGHT_TEST
+objective_id: flight-test.ex02c
+prompt: >-
+  Before your flight test, you must complete weight and balance
+  calculations for the aeroplane. Explain which calculations the examiner
+  expects, which weights you must check against the limits, and what you
+  must be able to explain about the centre of gravity.
+sources:
+  - tp13723:TP 13723 p.19:0
+rubric:
+  - id: calculations
+    description: The student states which calculations are required.
+    weight: 1
+    key_points:
+      - Two calculations, one for the planned simulated VFR cross-country
+        flight and one for the actual flight-test flight.
+  - id: limits
+    description: The student states what must be within limits.
+    weight: 2
+    key_points:
+      - Determine that the take-off, landing and zero-fuel weights and the
+        computed centre of gravity are within permissible limits.
+  - id: correction
+    description: The student addresses out-of-limits loading and CG effects.
+    weight: 1
+    key_points:
+      - Know how to correct a centre of gravity out of limits or an
+        exceeded gross weight.
+      - Explain the effect of different centre of gravity locations on the
+        aeroplane's flight characteristics.

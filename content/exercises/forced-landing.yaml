@@ -1,0 +1,69 @@
+# Scenario. Key points are taken from the cited passages (TP 13723 Ex. 22,
+# pp.33-34). The wind is synthetic.
+id: forced-landing
+exam: FLIGHT_TEST
+objective_id: flight-test.ex22a
+prompt: >-
+  On your flight test, cruising over farmland, the examiner closes the
+  throttle and declares "Simulated engine failure".
+sources:
+  - tp13723:TP 13723 p.33:0
+  - tp13723:TP 13723 p.34:0
+stages:
+  - id: engine-failure
+    facts:
+      - "You are at 3,000 ft AGL. Synthetic wind: from the west at 10 kt."
+      - "Several large fields are within gliding distance."
+    question: >-
+      What do you do first with the aeroplane, how do you choose where to
+      land, and what cockpit actions are expected during the descent?
+    rubric:
+      - id: glide
+        description: The student states the first control action.
+        weight: 1
+        key_points:
+          - Control the aeroplane and establish the recommended best glide
+            speed.
+      - id: field
+        description: The student explains the choice of landing area.
+        weight: 2
+        key_points:
+          - Select a suitable landing area and a touchdown zone in the first
+            third of it, considering wind, terrain, obstacles and other
+            factors.
+      - id: cockpit
+        description: The student states the cockpit management actions.
+        weight: 1
+        key_points:
+          - Complete the vital actions from memory, then the engine failure
+            checklist, if time permits.
+          - Simulate a radio call if time permits, and give a passenger
+            emergency safety review.
+  - id: approach
+    facts:
+      - "On the approach you are high: at this rate you would touch down
+        well over 1,000 ft beyond the end of your chosen touchdown zone."
+      - "You could still land on the field you chose."
+    question: >-
+      How would the examiner assess touching down that far beyond your
+      touchdown zone, what may you do about speed and profile, and may you
+      change to another field?
+    rubric:
+      - id: major-error
+        description: The student states how the overrun is assessed.
+        weight: 1
+        key_points:
+          - Touching down more than 1,000 ft beyond the end of the selected
+            touchdown zone is a major error, marked 2 or less.
+      - id: adjust
+        description: The student states what may be varied.
+        weight: 1
+        key_points:
+          - After first establishing glide speed, you may vary the airspeed
+            and flight profile, without exceeding aircraft limitations.
+      - id: change-field
+        description: The student states when a change of field is acceptable.
+        weight: 1
+        key_points:
+          - A change of field is acceptable from a point where a landing
+            could still have been made on the original field.
