@@ -1,0 +1,36 @@
+# Oral exercise. Key points are taken from the cited passages (TC AIM AIR 2.9,
+# 2.9.1 and 2.9.2).
+id: wake-turbulence
+exam: PSTAR
+objective_id: pstar.regulations.007
+prompt: >-
+  You are on final approach in a light training aeroplane behind a large,
+  heavy aircraft landing on the same runway in light wind. Explain what
+  makes wake turbulence strongest, how the vortices move, and how you would
+  fly your approach and landing to avoid them.
+sources:
+  - tc-aim:AIR 2.9:0
+  - tc-aim:AIR 2.9.1:0
+  - tc-aim:AIR 2.9.2:0
+rubric:
+  - id: strength
+    description: The student states what makes the vortices strongest.
+    weight: 1
+    key_points:
+      - Vortices are strongest when the generating aircraft is heavy, clean
+        and slow; weight is the most significant factor.
+  - id: movement
+    description: The student describes how the vortices move.
+    weight: 1
+    key_points:
+      - Vortices descend after they form and drift with the wind.
+      - In light wind, a vortex can stay in the touchdown zone for a period
+        of time.
+  - id: avoidance
+    description: The student explains how to avoid the wake when landing.
+    weight: 2
+    key_points:
+      - Stay at or above the preceding aircraft's final approach flight
+        path.
+      - Note its touchdown point and land beyond it, if it is safe to do
+        so.

@@ -1,0 +1,65 @@
+# Scenario. Key points are taken from the cited passages: CAR 602.97 (MF
+# equipment and listening watch), 602.101 (arrival reports) and TC AIM
+# RAC 4.5.4 (to whom reports are made). The aerodrome is fictional.
+id: mandatory-frequency
+exam: PSTAR
+objective_id: pstar.regulations.003
+prompt: >-
+  You are flying VFR by day to India (ZZZI), a fictional uncontrolled
+  aerodrome with a mandatory frequency (MF) area of 5 NM and 3,100 ft ASL.
+sources:
+  - cars:CAR 602.97:0
+  - cars:CAR 602.101:0
+  - tc-aim:RAC 4.5.4:0
+stages:
+  - id: approaching
+    facts:
+      - "You are 15 NM from India, outside the MF area, at 4,500 ft ASL."
+      - "A ground station, a flight service station, is in operation at
+        India."
+    question: >-
+      What must you report before entering the MF area, when, and to whom?
+      What must you do on the frequency while inside the area?
+    rubric:
+      - id: initial-report
+        description: The student states the report before entering.
+        weight: 2
+        key_points:
+          - Report before entering the MF area, at least five minutes
+            before where circumstances permit.
+          - Give the aircraft's position, altitude, estimated time of
+            landing and arrival procedure intentions.
+      - id: ground-station
+        description: The student states to whom the reports go.
+        weight: 1
+        key_points:
+          - Reports are directed to the ground station when it is in
+            operation; otherwise they are broadcast.
+      - id: listening-watch
+        description: The student states the listening watch requirement.
+        weight: 1
+        key_points:
+          - Maintain a listening watch on the mandatory frequency.
+  - id: circuit
+    facts:
+      - "You enter the MF area and join the circuit on the downwind leg."
+    question: >-
+      What further reports must you make until you have landed?
+    rubric:
+      - id: joining
+        description: The student states the report when joining the circuit.
+        weight: 1
+        key_points:
+          - Report when joining the circuit, giving the position in the
+            circuit.
+      - id: downwind-final
+        description: The student states the downwind and final reports.
+        weight: 1
+        key_points:
+          - Report on the downwind leg and on final approach.
+      - id: clear
+        description: The student states the report after landing.
+        weight: 1
+        key_points:
+          - Report when clear of the surface on which the aircraft has
+            landed.

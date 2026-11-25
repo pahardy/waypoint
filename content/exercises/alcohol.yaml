@@ -1,0 +1,34 @@
+# Oral exercise. Key points are taken from the cited passages (CAR 602.03 and
+# TC AIM AIR 3.9).
+id: alcohol
+exam: PSTAR
+objective_id: pstar.regulations.008
+prompt: >-
+  You had drinks at a party last night and are booked to fly solo this
+  morning. Explain what the Canadian Aviation Regulations say about
+  alcohol, what Transport Canada recommends, and whether coffee can help
+  you sober up faster.
+sources:
+  - cars:CAR 602.03:0
+  - tc-aim:AIR 3.9:0
+rubric:
+  - id: regulation
+    description: The student states the regulatory alcohol rules.
+    weight: 2
+    key_points:
+      - No person may act as a crew member within 12 hours after consuming
+        an alcoholic beverage.
+      - No person may act as a crew member while under the influence of
+        alcohol.
+  - id: recommendation
+    description: The student states Transport Canada's recommendation.
+    weight: 1
+    key_points:
+      - It is best to allow at least 24 hours between the last drink and
+        take-off.
+  - id: metabolism
+    description: The student explains why coffee does not help.
+    weight: 1
+    key_points:
+      - The body metabolizes alcohol at a fixed rate; coffee, medication or
+        oxygen do not change it.
