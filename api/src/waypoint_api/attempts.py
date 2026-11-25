@@ -10,7 +10,7 @@ import psycopg
 from psycopg.rows import namedtuple_row
 from pydantic import BaseModel
 
-from waypoint_api import exams
+from waypoint_api import exams, progress
 from waypoint_api.instructor import Citation, cite
 from waypoint_api.retrieval import Passage
 
@@ -251,6 +251,7 @@ def submit(conn: psycopg.Connection, attempt_id: UUID, now: datetime) -> None:
         " outcome = %s WHERE id = %s",
         (now, correct, outcome == "pass", outcome, attempt_id),
     )
+    progress.record(conn, items, now)
     conn.commit()
 
 
