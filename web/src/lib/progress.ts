@@ -23,6 +23,7 @@ export type Progress = {
   pass_percent: number;
   subjects: SubjectProgress[];
   weak: WeakObjective[];
+  recommendations: WeakObjective[];
 };
 
 export const getProgress = (exam: string) => request<Progress>(`/progress/${exam}`);
