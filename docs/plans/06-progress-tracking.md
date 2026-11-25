@@ -57,6 +57,33 @@ Step 1 (record mastery on submit), issue #42:
   - Oral exercises and scenarios don't update mastery; their rubric marks
     don't map to one objective as right or wrong.
 
+Step 2 (dashboard), issue #44:
+- `GET /progress/{PSTAR|PPAER}`: per subject, correct, seen and percent;
+  then the weak objectives with their reasons, for example "2 of 5
+  correct (40%), below the 90% pass mark". Calculated in `progress.py`.
+- Weak rule: seen at least 5 times (`MIN_SEEN`) and below the exam's
+  pass mark (`exams.meets`, so exactly at the mark is not weak). Lowest
+  first; ties by objective id. Percentages are rounded down, so 59.9%
+  shows as 59%, never as "60%, below the 60% pass mark".
+- `/dashboard`: an exam choice, the subject table (correct, seen,
+  percent as text), the weak objectives with reasons, an empty state and
+  the disclaimer. Linked from the home page. No readiness wording.
+- Tests: 6 more unit (seen 4 times, exactly at the mark, the reason's
+  numbers, ordering and ties, subject totals, rounding), 3 API and
+  database (a weak objective and its reason, per exam, FLIGHT_TEST
+  refused), 3 web unit (numbers, empty state, no weak objectives), 3
+  end-to-end on desktop and phone (an unanswered topic quiz makes
+  Aviation Occurrences weak with its reason; axe clean in both themes).
+  The end-to-end tests submit unanswered quizzes so the wrong answers are
+  certain on the shared dev database.
+- Decisions (simplest option, owner's call): threshold is the exam's pass
+  mark, N is 5; plain correct / seen, no recency weighting; one exam at a
+  time.
+- Seen on the dev database (history almost all from end-to-end runs):
+  PSTAR 22% with all 14 objectives weak; PPAER 1-3% per subject with 100
+  weak objectives. A long list; step 3's 3-5 recommendations are the
+  short view.
+
 ## Tests
 
 Unit (CI):

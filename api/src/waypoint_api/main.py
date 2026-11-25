@@ -12,7 +12,7 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, model_validator
 
-from waypoint_api import attempts, exams, llm, sessions
+from waypoint_api import attempts, exams, llm, progress, sessions
 from waypoint_api.ask import database_search
 from waypoint_api.conversations import Conversation, SavedMessage, load, save
 from waypoint_api.exercises import Exercise, Scenario, source_passages
@@ -254,6 +254,15 @@ def exam_info(
         quiz_length=exams.QUIZ_LENGTH,
         topics=attempts.topics(conn, exam),
     )
+
+
+@app.get("/progress/{exam}")
+def read_progress(
+    exam: Literal["PSTAR", "PPAER"],
+    conn: Annotated[psycopg.Connection, Depends(database)],
+) -> progress.Progress:
+    """Answers so far per subject, and the weak objectives with reasons."""
+    return progress.load(conn, exam)
 
 
 @app.post("/attempts", status_code=201)
