@@ -1,0 +1,49 @@
+import AxeBuilder from "@axe-core/playwright";
+import { type Page, expect, test } from "@playwright/test";
+
+/** Submit a 5-question topic quiz unanswered: every item counts as wrong. */
+async function failOccurrencesQuiz(page: Page) {
+  await page.goto("/practice");
+  const quiz = page.getByRole("region", { name: "PSTAR topic quiz" });
+  await quiz.getByLabel("Topic").selectOption({ label: "Aviation Occurrences (5)" });
+  await quiz.getByRole("button", { name: "Start quiz" }).click();
+  await expect(page).toHaveURL(/\/practice\/[0-9a-f-]{36}$/);
+  await page.getByRole("button", { name: "Submit answers" }).click();
+  await expect(page).toHaveURL(/\/results\/[0-9a-f-]{36}$/);
+}
+
+async function expectNoSeriousIssues(page: Page) {
+  const results = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
+    .analyze();
+  const serious = results.violations.filter((v) =>
+    ["serious", "critical"].includes(v.impact ?? ""),
+  );
+  expect(serious).toEqual([]);
+}
+
+test("after a quiz with wrong answers, the dashboard shows the objective as weak", async ({
+  page,
+}) => {
+  await failOccurrencesQuiz(page);
+  await page.goto("/dashboard");
+  await expect(page.getByRole("table", { name: "By subject" })).toContainText(
+    "Aviation Regulations",
+  );
+  const weak = page
+    .getByRole("region", { name: "Weak objectives" })
+    .getByRole("listitem")
+    .filter({ hasText: "Aviation Occurrences" });
+  await expect(weak).toContainText(/\d+ of \d+ correct \(\d+%\), below the 90% pass mark/);
+  await expect(page.getByText(/educational aid/i).first()).toBeVisible();
+});
+
+for (const colorScheme of ["dark", "light"] as const) {
+  test(`the dashboard has no serious accessibility issues (${colorScheme})`, async ({ page }) => {
+    await page.emulateMedia({ colorScheme });
+    await failOccurrencesQuiz(page);
+    await page.goto("/dashboard");
+    await expect(page.getByRole("table", { name: "By subject" })).toBeVisible();
+    await expectNoSeriousIssues(page);
+  });
+}

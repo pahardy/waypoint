@@ -400,3 +400,36 @@ def test_a_mock_records_every_objective_it_covered(client, db_url):
     assert set(rows) == {q["objective_id"] for q in attempt["questions"]}
     assert sum(seen for _, seen, _ in rows.values()) == 50
     assert sum(correct for correct, _, _ in rows.values()) == 0
+
+
+def test_progress_shows_a_weak_objective_with_its_reason(client, db_url):
+    attempt = start(client, "quiz", "pstar.regulations.014")
+    for position, correct in enumerate(answer_key(db_url, attempt)[:2]):
+        answer(client, attempt, position, correct)
+    client.post(f"/attempts/{attempt['id']}/submit")
+    progress = client.get("/progress/PSTAR").json()
+    assert progress["subjects"] == [
+        {"subject": "regulations", "correct": 2, "seen": 5, "percent": 40}
+    ]
+    (weak,) = progress["weak"]
+    assert weak["objective_id"] == "pstar.regulations.014"
+    assert weak["reason"] == "2 of 5 correct (40%), below the 90% pass mark"
+
+
+def test_progress_is_per_exam(client, db_url):
+    attempt = start(client, "quiz", "pstar.regulations.014")
+    client.post(f"/attempts/{attempt['id']}/submit")
+    progress = client.get("/progress/PPAER").json()
+    assert progress["pass_percent"] == 60
+    assert {s["subject"] for s in progress["subjects"]} == {
+        "air-law",
+        "navigation",
+        "meteorology",
+        "aeronautics",
+    }
+    assert all(s["seen"] == 0 and s["percent"] is None for s in progress["subjects"])
+    assert progress["weak"] == []
+
+
+def test_progress_for_an_exam_without_questions_is_refused(client):
+    assert client.get("/progress/FLIGHT_TEST").status_code == 422

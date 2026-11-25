@@ -79,6 +79,10 @@ Exam rules live in `exams.py` and are deterministic code. Submitting an
 attempt also adds its items to `objective_mastery` (correct and seen per
 objective; an unanswered item is seen and wrong); see `progress.py`.
 
+- `GET /progress/{PSTAR|PPAER}`: correct, seen and percent per subject,
+  and the weak objectives (seen at least 5 times, below the pass mark),
+  lowest first, each with a reason giving the numbers.
+
 ```
 uv run draft-questions --subject navigation --count 25   # about $1 per 20; both API keys
 ```

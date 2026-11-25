@@ -19,6 +19,9 @@ export default function Home() {
       <Link href="/exercises" className="text-sky underline">
         Exercises
       </Link>
+      <Link href="/dashboard" className="text-sky underline">
+        Dashboard
+      </Link>
       <Disclaimer />
     </main>
   );
