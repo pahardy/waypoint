@@ -2,7 +2,7 @@
 
 from collections import Counter
 from datetime import datetime
-from typing import NamedTuple
+from typing import Literal, NamedTuple
 
 import psycopg
 from pydantic import BaseModel
@@ -35,11 +35,14 @@ def record(conn: psycopg.Connection, items: list[NamedTuple], now: datetime) -> 
     )
 
 
+Confidence = Literal["low", "medium", "high"]
+
 MIN_SEEN = 5
 MAX_RECOMMENDATIONS = 5
 
 OBJECTIVES = """
-    SELECT o.id, o.subject, o.text, coalesce(m.correct, 0), coalesce(m.seen, 0)
+    SELECT o.id, o.subject, o.text, coalesce(m.correct, 0), coalesce(m.seen, 0),
+           m.self_confidence
     FROM objective o LEFT JOIN objective_mastery m ON m.objective_id = o.id
     WHERE o.exam = %s ORDER BY o.id
 """
@@ -53,6 +56,7 @@ class ObjectiveCounts(NamedTuple):
     topic: str
     correct: int
     seen: int
+    confidence: Confidence | None = None
 
 
 class SubjectProgress(BaseModel):
@@ -65,13 +69,14 @@ class SubjectProgress(BaseModel):
 
 
 class WeakObjective(BaseModel):
-    """An objective answered often enough, and below the pass mark."""
+    """An objective below the pass mark after enough answers, or rated low
+    in confidence, and why."""
 
     objective_id: str
     topic: str
     correct: int
     seen: int
-    percent: int
+    percent: int | None
     reason: str
 
 
@@ -105,15 +110,29 @@ def subjects(objectives: list[ObjectiveCounts]) -> list[SubjectProgress]:
     ]
 
 
+def below_mark(o: ObjectiveCounts, pass_percent: int) -> bool:
+    """Seen at least MIN_SEEN times and below the pass mark."""
+    return o.seen >= MIN_SEEN and not exams.meets(o.correct, o.seen, pass_percent)
+
+
+def reason(o: ObjectiveCounts, pass_percent: int) -> str:
+    """The numbers behind a weak objective, then a low rating if given."""
+    low = "rated low confidence" if o.confidence == "low" else None
+    if o.seen == 0:
+        return "Rated low confidence"
+    numbers = f"{o.correct} of {o.seen} correct ({percent(o.correct, o.seen)}%)"
+    if below_mark(o, pass_percent):
+        numbers += f", below the {pass_percent}% pass mark"
+    return f"{numbers}; {low}" if low else numbers
+
+
 def weak(objectives: list[ObjectiveCounts], pass_percent: int) -> list[WeakObjective]:
-    """Objectives seen at least MIN_SEEN times with mastery below the pass
-    mark, lowest first; ties by objective id."""
+    """Objectives below the pass mark after MIN_SEEN answers, or rated low
+    in confidence; lowest mastery first, ties by objective id."""
     found = [
-        o
-        for o in objectives
-        if o.seen >= MIN_SEEN and not exams.meets(o.correct, o.seen, pass_percent)
+        o for o in objectives if below_mark(o, pass_percent) or o.confidence == "low"
     ]
-    found.sort(key=lambda o: (o.correct / o.seen, o.objective_id))
+    found.sort(key=lambda o: (mastery(o.correct, o.seen) or 0.0, o.objective_id))
     return [
         WeakObjective(
             objective_id=o.objective_id,
@@ -121,8 +140,7 @@ def weak(objectives: list[ObjectiveCounts], pass_percent: int) -> list[WeakObjec
             correct=o.correct,
             seen=o.seen,
             percent=percent(o.correct, o.seen),
-            reason=f"{o.correct} of {o.seen} correct ({percent(o.correct, o.seen)}%),"
-            f" below the {pass_percent}% pass mark",
+            reason=reason(o, pass_percent),
         )
         for o in found
     ]
@@ -131,6 +149,19 @@ def weak(objectives: list[ObjectiveCounts], pass_percent: int) -> list[WeakObjec
 def recommend(weak_objectives: list[WeakObjective]) -> list[WeakObjective]:
     """The weakest objectives to study next: the start of the weak list."""
     return weak_objectives[:MAX_RECOMMENDATIONS]
+
+
+def rate(
+    conn: psycopg.Connection, objective_id: str, confidence: Confidence | None
+) -> bool:
+    """Set or clear an answered objective's confidence rating. False if the
+    objective has not been answered."""
+    updated = conn.execute(
+        "UPDATE objective_mastery SET self_confidence = %s WHERE objective_id = %s",
+        (confidence, objective_id),
+    ).rowcount
+    conn.commit()
+    return updated == 1
 
 
 def load(conn: psycopg.Connection, exam: str) -> Progress:

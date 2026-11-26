@@ -64,11 +64,14 @@ export const SUBJECTS: Record<string, string> = {
   aeronautics: "Aeronautics - General Knowledge",
 };
 
+export type Confidence = "low" | "medium" | "high";
+
 export type TopicScore = {
   objective_id: string;
   topic: string;
   correct: number;
   total: number;
+  confidence: Confidence | null;
 };
 
 export type Results = {
@@ -137,3 +140,9 @@ export function clockText(seconds: number): string {
   const ss = String(s % 60).padStart(2, "0");
   return h ? `${h}:${String(m).padStart(2, "0")}:${ss}` : `${m}:${ss}`;
 }
+
+export const rateConfidence = (objectiveId: string, confidence: Confidence | null) =>
+  request<void>(`/objectives/${objectiveId}/confidence`, {
+    method: "PUT",
+    body: JSON.stringify({ confidence }),
+  });

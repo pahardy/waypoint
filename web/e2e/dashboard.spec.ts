@@ -54,6 +54,19 @@ test("Start quiz on a recommendation opens a quiz on that objective only", async
   await expect(breakdown).toContainText(topic ?? "");
 });
 
+test("a topic rated low on the results page shows as low confidence", async ({ page }) => {
+  await failOccurrencesQuiz(page);
+  const saved = page.waitForResponse(
+    (r) => r.url().endsWith("/objectives/pstar.regulations.014/confidence") && r.status() === 204,
+  );
+  await page.getByLabel("Your confidence in Aviation Occurrences").selectOption("low");
+  await saved;
+  await page.goto("/dashboard");
+  await page.getByText(/^All weak objectives \(\d+\)$/).click();
+  const weak = page.locator("details li").filter({ hasText: "Aviation Occurrences" });
+  await expect(weak).toContainText(/; rated low confidence$/);
+});
+
 for (const colorScheme of ["dark", "light"] as const) {
   test(`the dashboard has no serious accessibility issues (${colorScheme})`, async ({ page }) => {
     await page.emulateMedia({ colorScheme });

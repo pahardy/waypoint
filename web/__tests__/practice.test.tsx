@@ -174,3 +174,33 @@ test("a reviewed PSTAR question shows its TP 11919 references", async () => {
   expect(screen.getByText("TC AIM-RAC – Closing a Flight Plan")).toBeDefined();
   expect(screen.queryByRole("button", { name: /^Source:/ })).toBeNull();
 });
+
+test("a topic's confidence shows the saved rating and sends a change", async () => {
+  const topic = {
+    objective_id: "o1",
+    topic: "Altimeter setting",
+    correct: 0,
+    total: 1,
+    confidence: "medium",
+  };
+  const fetch = vi.fn();
+  fetch
+    .mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      json: () => Promise.resolve({ ...resultsWith(reviewed({})), topics: [topic] }),
+    })
+    .mockResolvedValueOnce({ ok: true, status: 204 });
+  vi.stubGlobal("fetch", fetch);
+  render(<ResultsView attemptId="a1" />);
+  const select = (await screen.findByLabelText(
+    "Your confidence in Altimeter setting",
+  )) as HTMLSelectElement;
+  expect(select.value).toBe("medium");
+  fireEvent.change(select, { target: { value: "low" } });
+  await vi.waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
+  const [url, init] = fetch.mock.calls[1];
+  expect(url).toMatch(/\/objectives\/o1\/confidence$/);
+  expect(init.method).toBe("PUT");
+  expect(JSON.parse(init.body)).toEqual({ confidence: "low" });
+});

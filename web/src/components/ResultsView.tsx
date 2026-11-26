@@ -6,11 +6,14 @@ import Badge from "@/components/Badge";
 import CitationChip from "@/components/CitationChip";
 import SourceDetail from "@/components/SourceDetail";
 import {
+  type Confidence,
   type ReviewItem,
   SUBJECTS,
   type Results,
   type SubjectScore,
+  type TopicScore,
   getResults,
+  rateConfidence,
 } from "@/lib/practice";
 
 function percent(correct: number, total: number): number {
@@ -171,6 +174,7 @@ export default function ResultsView({ attemptId }: { attemptId: string }) {
             <tr>
               <th scope="col" className="py-1">Topic</th>
               <th scope="col" className="py-1 text-right">Correct</th>
+              <th scope="col" className="py-1 text-right">Your confidence</th>
             </tr>
           </thead>
           <tbody>
@@ -179,6 +183,9 @@ export default function ResultsView({ attemptId }: { attemptId: string }) {
                 <td className="py-2">{t.topic}</td>
                 <td className="py-2 text-right font-mono">
                   {t.correct} / {t.total}
+                </td>
+                <td className="py-2 text-right">
+                  <ConfidenceSelect topic={t} />
                 </td>
               </tr>
             ))}
@@ -201,5 +208,50 @@ export default function ResultsView({ attemptId }: { attemptId: string }) {
         Practise again
       </Link>
     </div>
+  );
+}
+
+const CONFIDENCE_LABELS: Record<Confidence, string> = {
+  low: "Low",
+  medium: "Medium",
+  high: "High",
+};
+
+/** The student's confidence in a topic, saved as soon as it changes. */
+function ConfidenceSelect({ topic }: { topic: TopicScore }) {
+  const [value, setValue] = useState<string>(topic.confidence ?? "");
+  const [error, setError] = useState(false);
+
+  async function change(next: string) {
+    setValue(next);
+    try {
+      await rateConfidence(topic.objective_id, (next || null) as Confidence | null);
+      setError(false);
+    } catch {
+      setError(true);
+    }
+  }
+
+  return (
+    <>
+      <select
+        aria-label={`Your confidence in ${topic.topic}`}
+        value={value}
+        onChange={(e) => change(e.target.value)}
+        className="rounded border border-muted bg-bg p-1"
+      >
+        <option value="">Not rated</option>
+        {Object.entries(CONFIDENCE_LABELS).map(([key, label]) => (
+          <option key={key} value={key}>
+            {label}
+          </option>
+        ))}
+      </select>
+      {error && (
+        <p role="alert" className="text-sm text-fail">
+          Not saved.
+        </p>
+      )}
+    </>
   );
 }

@@ -31,7 +31,7 @@ app = FastAPI(title="Waypoint API")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
-    allow_methods=["GET", "POST"],
+    allow_methods=["GET", "POST", "PUT"],
     allow_headers=["Content-Type"],
 )
 
@@ -263,6 +263,23 @@ def read_progress(
 ) -> progress.Progress:
     """Answers so far per subject, and the weak objectives with reasons."""
     return progress.load(conn, exam)
+
+
+class ConfidenceRequest(BaseModel):
+    """A confidence rating, or null to clear it."""
+
+    confidence: progress.Confidence | None
+
+
+@app.put("/objectives/{objective_id}/confidence", status_code=204)
+def rate_confidence(
+    objective_id: str,
+    body: ConfidenceRequest,
+    conn: Annotated[psycopg.Connection, Depends(database)],
+) -> None:
+    """Set or clear the student's confidence in an answered objective."""
+    if not progress.rate(conn, objective_id, body.confidence):
+        raise HTTPException(404, "Answer a question on this objective first.")
 
 
 @app.post("/attempts", status_code=201)

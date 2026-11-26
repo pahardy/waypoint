@@ -435,3 +435,52 @@ def test_progress_is_per_exam(client, db_url):
 
 def test_progress_for_an_exam_without_questions_is_refused(client):
     assert client.get("/progress/FLIGHT_TEST").status_code == 422
+
+
+def rate(client, objective_id, confidence):
+    return client.put(
+        f"/objectives/{objective_id}/confidence", json={"confidence": confidence}
+    )
+
+
+def test_a_rating_can_be_set_changed_and_cleared(client, db_url):
+    attempt = start(client, "quiz", "pstar.regulations.014")
+    results = client.post(f"/attempts/{attempt['id']}/submit").json()
+    assert results["topics"][0]["confidence"] is None
+    for confidence in ("high", "low", None):
+        assert rate(client, "pstar.regulations.014", confidence).status_code == 204
+        topics = client.get(f"/attempts/{attempt['id']}/results").json()["topics"]
+        assert topics[0]["confidence"] == confidence
+
+
+def test_a_low_rating_shows_on_progress(client, db_url):
+    attempt = start(client, "quiz", "pstar.regulations.014")
+    for position, correct in enumerate(answer_key(db_url, attempt)):
+        answer(client, attempt, position, correct)
+    client.post(f"/attempts/{attempt['id']}/submit")
+    assert client.get("/progress/PSTAR").json()["weak"] == []
+    rate(client, "pstar.regulations.014", "low")
+    (weak,) = client.get("/progress/PSTAR").json()["recommendations"]
+    assert weak["reason"] == "5 of 5 correct (100%); rated low confidence"
+
+
+def test_rating_an_unanswered_objective_is_not_found(client):
+    assert rate(client, "pstar.regulations.014", "low").status_code == 404
+
+
+def test_an_unknown_rating_is_refused(client):
+    attempt = start(client, "quiz", "pstar.regulations.014")
+    client.post(f"/attempts/{attempt['id']}/submit")
+    assert rate(client, "pstar.regulations.014", "very low").status_code == 422
+
+
+def test_the_web_app_may_send_a_rating(client):
+    preflight = client.options(
+        "/objectives/pstar.regulations.014/confidence",
+        headers={
+            "Origin": "http://localhost:3000",
+            "Access-Control-Request-Method": "PUT",
+            "Access-Control-Request-Headers": "content-type",
+        },
+    )
+    assert preflight.status_code == 200
