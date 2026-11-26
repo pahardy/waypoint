@@ -35,8 +35,10 @@ def test_migrations_are_not_reapplied(empty_database):
 def test_objective_mastery_is_backfilled_from_submitted_attempts(
     empty_database, tmp_path
 ):
-    for path in sorted(MIGRATIONS_DIR.glob("*.sql"))[:9]:
-        (tmp_path / path.name).write_text(path.read_text())
+    # Before 0010, plus 0012, which the seed's objective columns need.
+    for path in sorted(MIGRATIONS_DIR.glob("*.sql")):
+        if path.name < "0010" or path.name.startswith("0012"):
+            (tmp_path / path.name).write_text(path.read_text())
     apply_migrations(empty_database, tmp_path)
     seed(empty_database)
     with psycopg.connect(empty_database) as conn:

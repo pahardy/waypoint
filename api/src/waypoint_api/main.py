@@ -12,7 +12,7 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, model_validator
 
-from waypoint_api import attempts, exams, llm, progress, sessions
+from waypoint_api import attempts, exams, flight_test, llm, progress, sessions
 from waypoint_api.ask import database_search
 from waypoint_api.conversations import Conversation, SavedMessage, load, save
 from waypoint_api.exercises import Exercise, Scenario, source_passages
@@ -280,6 +280,26 @@ def rate_confidence(
     """Set or clear the student's confidence in an answered objective."""
     if not progress.rate(conn, objective_id, body.confidence):
         raise HTTPException(404, "Answer a question on this objective first.")
+
+
+@app.get("/flight-test")
+def read_flight_test(
+    conn: Annotated[psycopg.Connection, Depends(database)],
+) -> list[flight_test.ChecklistItem]:
+    """The TP 13723 items in guide order, with the student's checklist."""
+    return flight_test.load(conn)
+
+
+@app.put("/flight-test/{objective_id}", status_code=204)
+def save_flight_test_item(
+    objective_id: str,
+    entry: flight_test.ChecklistEntry,
+    conn: Annotated[psycopg.Connection, Depends(database)],
+    now: Annotated[datetime, Depends(clock)],
+) -> None:
+    """Save the student's reviewed mark and note for one item."""
+    if not flight_test.save(conn, objective_id, entry, now):
+        raise HTTPException(404, "Not a flight-test item.")
 
 
 @app.post("/attempts", status_code=201)

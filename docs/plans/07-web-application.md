@@ -51,6 +51,36 @@ document holds the shared structure. Look and feel follow
 5. Hosting decision: keep it local, or deploy the frontend and backend
    to a hosting provider.
 
+## Progress
+
+`/flight-test`, issue #50 (spec capability 5, the flight-test study
+companion):
+- The 32 TP 13723 items in guide order, grouped by exercise, as
+  checklist rows with a dotted leader and the status as text (TO REVIEW
+  or REVIEWED). Each row opens to its aim, a citation chip for its guide
+  page, links to the exercises that practise it, a Reviewed checkbox and
+  a "Questions for my instructor" note (saved on blur, at most 500
+  characters). A count at the top, and the statement that marking items
+  reviewed does not mean the student is ready for, or will pass, the
+  flight test.
+- API: `GET /flight-test`, `PUT /flight-test/{objective_id}` (404 for
+  other objectives). Migration 0012 adds `flight_test_checklist` and
+  `objective.detail`, which holds the aims from `objectives.yaml`; the
+  seed did not store it before, so run `uv run migrate` and `uv run
+  seed`.
+- Tests: 6 API and database, 3 web unit, 3 end-to-end on desktop and
+  phone (mark and note kept after a reload; axe clean in both themes).
+  Desktop and phone edit different items, so parallel runs on the shared
+  database don't collide.
+- Fixed while testing: the checkbox waited for the save before it
+  changed, so clicking it showed nothing at first. It now changes at once
+  and reverts, with "Not saved.", if the save fails.
+- Decisions (simplest option, owner's call): reviewed or not, no other
+  status; aims and pages as stored, nothing model-written; exercise links
+  go to /exercises.
+- Spec capability 5 is covered; sharing with an instructor waits for
+  accounts and consent.
+
 ## Tests
 
 Component (CI, Vitest and React Testing Library):
