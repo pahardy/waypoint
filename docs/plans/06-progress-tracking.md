@@ -104,6 +104,34 @@ Step 3 (recommendations), issue #46:
   no second ranking; a quiz button, no reading link; unseen objectives
   are not recommended.
 
+Step 4 (self-rated confidence), issue #48:
+- Migration 0011: `self_confidence` is text, `low`, `medium` or `high`,
+  or null.
+- `PUT /objectives/{id}/confidence` sets or clears a rating; 404 until
+  the objective has been answered, 422 for an unknown value. Results
+  carry each topic's rating, and the "By topic" table has a rating
+  control that saves on change.
+- Weak rule: (seen at least 5 and below the pass mark) or rated low.
+  Reasons: "2 of 5 correct (40%), below the 90% pass mark; rated low
+  confidence", "4 of 4 correct (100%); rated low confidence", or "Rated
+  low confidence" with no answers. Order and recommendations unchanged.
+- Tests: 5 more unit (low flagged whatever the counts, medium and high
+  change nothing, both reasons, no answers, order), 5 API (set, change
+  and clear; low shows on /progress; 404; 422; the CORS preflight for
+  PUT), 1 web unit (shows the saved rating and sends the change), 1
+  end-to-end on desktop and phone (rate low on results, then "rated low
+  confidence" on the dashboard).
+- Found by the end-to-end test, both fixed: CORS allowed only GET and
+  POST, so the browser's PUT preflight got "400 Disallowed CORS method";
+  and the dev database lacked migration 0011 ("invalid input syntax for
+  type smallint"), which the API tests miss because they build a fresh
+  database. Run `uv run migrate` after pulling a migration.
+- Decisions (simplest option, owner's call): per objective; rated on the
+  results page only; three words, not a number.
+
+Phase 6 is done, except the "users see only their own progress" test,
+which waits for accounts (plan 07).
+
 ## Tests
 
 Unit (CI):

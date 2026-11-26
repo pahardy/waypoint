@@ -82,7 +82,10 @@ objective; an unanswered item is seen and wrong); see `progress.py`.
 - `GET /progress/{PSTAR|PPAER}`: correct, seen and percent per subject,
   and the weak objectives (seen at least 5 times, below the pass mark),
   lowest first, each with a reason giving the numbers; `recommendations`
-  are the first 5 of them.
+  are the first 5 of them. An objective rated low in confidence is weak
+  too.
+- `PUT /objectives/{id}/confidence` `{confidence: "low" | "medium" | "high" | null}`:
+  set or clear the student's rating; 404 until the objective is answered.
 
 ```
 uv run draft-questions --subject navigation --count 25   # about $1 per 20; both API keys

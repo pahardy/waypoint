@@ -73,6 +73,7 @@ class TopicScore(BaseModel):
     topic: str
     correct: int
     total: int
+    confidence: progress.Confidence | None
 
 
 class Results(BaseModel):
@@ -161,12 +162,13 @@ ITEMS = """
            q.answer_index, q.explanation, q.source_refs AS references,
            c.id AS chunk_id, d.id AS document_id, d.title AS document_title,
            d.edition, d.jurisdiction, c.section_ref, c.heading_path, c.page,
-           c.subject AS chunk_subject, c.text
+           c.subject AS chunk_subject, c.text, m.self_confidence AS confidence
     FROM attempt_item i
     JOIN question q ON q.id = i.question_id
     JOIN objective o ON o.id = q.objective_id
     LEFT JOIN chunk c ON c.id = q.source_chunk_id
     LEFT JOIN document d ON d.id = c.document_id
+    LEFT JOIN objective_mastery m ON m.objective_id = q.objective_id
     WHERE i.attempt_id = %s ORDER BY i.position
 """
 ATTEMPT = """
@@ -340,19 +342,26 @@ def results(conn: psycopg.Connection, attempt_id: UUID) -> Results | None:
         outcome=row.outcome,
         submitted_at=row.submitted_at,
         subjects=subject_scores(subject_counts(items), pass_percent, row.outcome),
-        topics=topic_scores(review),
+        topics=topic_scores(review, {r.objective_id: r.confidence for r in items}),
         review=review,
     )
 
 
-def topic_scores(review: list[ReviewItem]) -> list[TopicScore]:
-    """Correct answers per topic, in objective order."""
+def topic_scores(
+    review: list[ReviewItem], confidence: dict[str, progress.Confidence | None]
+) -> list[TopicScore]:
+    """Correct answers per topic, in objective order, with the student's
+    current confidence rating."""
     topics: dict[str, TopicScore] = {}
     for item in review:
         entry = topics.setdefault(
             item.objective_id,
             TopicScore(
-                objective_id=item.objective_id, topic=item.topic, correct=0, total=0
+                objective_id=item.objective_id,
+                topic=item.topic,
+                correct=0,
+                total=0,
+                confidence=confidence[item.objective_id],
             ),
         )
         entry.total += 1
