@@ -125,6 +125,10 @@ A scenario has stages; each reveals facts (synthetic weather) and asks a
 question graded on its own rubric. Stages advance in code; the overall
 score is the mean of the stage scores.
 
+- `GET /flight-test`: the 32 TP 13723 items in guide order, with aim,
+  guide-page citation, related exercises and the student's reviewed mark
+  and note. `PUT /flight-test/{objective_id}` `{reviewed, note}` saves
+  them (note at most 500 characters).
 - `GET /exercises`: oral exercises and scenarios (`kind`).
 - `POST /sessions` `{exercise_id}`: start a session. `GET /sessions/{id}`:
   revealed facts, current stage, graded stages and, once finished, the

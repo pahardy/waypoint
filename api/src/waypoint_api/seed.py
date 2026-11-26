@@ -19,16 +19,17 @@ def load_objectives(conn: psycopg.Connection, path: Path) -> int:
     with conn.cursor() as cur:
         cur.executemany(
             """
-            INSERT INTO objective (id, exam, subject, area, topic, text, ref,
-                                   source, page)
+            INSERT INTO objective (id, exam, subject, area, topic, text, detail,
+                                   ref, source, page)
             VALUES (%(id)s, %(exam)s, %(subject)s, %(area)s, %(topic)s, %(text)s,
-                    %(ref)s, %(source)s, %(page)s)
+                    %(detail)s, %(ref)s, %(source)s, %(page)s)
             ON CONFLICT (id) DO UPDATE SET
                 exam = EXCLUDED.exam, subject = EXCLUDED.subject,
                 area = EXCLUDED.area, topic = EXCLUDED.topic, text = EXCLUDED.text,
-                ref = EXCLUDED.ref, source = EXCLUDED.source, page = EXCLUDED.page
+                detail = EXCLUDED.detail, ref = EXCLUDED.ref,
+                source = EXCLUDED.source, page = EXCLUDED.page
             """,
-            [{"ref": None, **o} for o in objectives],
+            [{"ref": None, "detail": None, **o} for o in objectives],
         )
     return len(objectives)
 
